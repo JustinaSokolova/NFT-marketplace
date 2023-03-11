@@ -10,7 +10,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -37,7 +36,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
+    marginLeft: `-${drawerWidth - 20}px`,
     ...(open && {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
@@ -76,6 +75,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function Layout() {
   const theme = useTheme();
+
   const [open, setOpen] = useState(true);
 
   const handleDrawerOpen = () => {
@@ -85,21 +85,35 @@ export default function Layout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  // sx={{
+  //   ...(theme.palette.mode === "dark"
+  //     ? { bgcolor: "#424242", color: "#fff" }
+  //     : { bgcolor: "#fff", color: "#000000de" }),
+  // }}
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+        }}
+      >
         <CssBaseline />
         <AppBar
           sx={{
             position: "fixed",
-            ...(theme.palette.mode === "dark"
-              ? { bgcolor: "#b388ff", color: "#000" }
-              : { bgcolor: "#673ab7" }),
+            boxShadow: "none",
+            border: "none",
+            bgcolor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
           }}
           open={open}
         >
-          <Toolbar>
+          <Toolbar
+            sx={{
+              bgcolor: theme.palette.background.paper,
+              color: theme.palette.text.primary,
+            }}
+          >
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -117,16 +131,22 @@ export default function Layout() {
             >
               Navy.online
             </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <MainButton color="secondary" size="medium">
                 Connect wallet
               </MainButton>
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
-                color="inherit"
+                color="secondary"
               >
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={17} color="warning">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
@@ -137,7 +157,6 @@ export default function Layout() {
                 // aria-controls={menuId}
                 aria-haspopup="true"
                 // onClick={handleProfileMenuOpen}
-                color="inherit"
               >
                 <AccountCircle />
               </IconButton>
@@ -152,6 +171,7 @@ export default function Layout() {
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
+              borderRight: "none",
             },
           }}
           variant="persistent"
@@ -167,7 +187,7 @@ export default function Layout() {
               )}
             </IconButton>
           </DrawerHeader>
-          <Divider />
+          {/* <Divider /> */}
           <Box
             sx={{
               height: "100%",
@@ -176,7 +196,7 @@ export default function Layout() {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1, ml: "16px" }}>
               <List>{mainListItems}</List>
               <List>{secondaryListItems}</List>
             </Box>
@@ -187,8 +207,18 @@ export default function Layout() {
             </Box>
           </Box>
         </Drawer>
-        <Main open={open}>
-          <DrawerHeader />
+        <Main
+          open={open}
+          sx={{
+            padding: "20px",
+            mt: "68px",
+            mr: "20px",
+            borderRadius: "12px 12px 0px 0px",
+            ...(theme.palette.mode === "dark"
+              ? { bgcolor: theme.palette.background[900] }
+              : { bgcolor: theme.palette.primary.light }),
+          }}
+        >
           <Outlet />
         </Main>
       </Box>

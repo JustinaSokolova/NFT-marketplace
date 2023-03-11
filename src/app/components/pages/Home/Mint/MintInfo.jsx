@@ -5,6 +5,8 @@ import API from "../../../../data";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import CategoryCard from "./CategoryCard";
+import { useTheme } from "@mui/material/styles";
+
 import RarityNftColor from "../../../ui/RarityNftColor";
 import СollectionPreview from "./СollectionPreview";
 import BoxContainer from "../../../common/BoxContainer";
@@ -12,6 +14,8 @@ import BoxContainer from "../../../common/BoxContainer";
 const MintInfo = () => {
   const [data, setData] = useState();
   const [сoinUsdPrice, setCoinUsdPrice] = useState({ usd: 0 });
+  const theme = useTheme();
+
   useEffect(() => {
     API.fetchMint.fetchMint().then((data) => setData(data));
   }, []);
@@ -34,7 +38,11 @@ const MintInfo = () => {
     }, 60000);
     return () => clearInterval(id);
   });
-
+  // sx={{
+  //   ...(theme.palette.mode === "dark"
+  //     ? { bgcolor: "#424242", color: "#fff" }
+  //     : { bgcolor: "#fff", color: "#000000de" }),
+  // }}
   return data ? (
     <>
       <Box
@@ -44,6 +52,9 @@ const MintInfo = () => {
           justifyContent: "center",
           alignItems: "flex-start",
           gap: "24px",
+          ...(theme.palette.mode === "dark"
+            ? { bgcolor: theme.palette.background[900] }
+            : { bgcolor: theme.palette.primary.light }),
         }}
       >
         <BoxContainer elevation={1}>

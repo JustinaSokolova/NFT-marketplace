@@ -14,9 +14,9 @@ import PublicIcon from "@mui/icons-material/Public";
 
 export const mainListItems = (
   <>
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton>
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: "48px" }}>
           <DashboardIcon />
         </ListItemIcon>
         <Link
@@ -30,9 +30,9 @@ export const mainListItems = (
         </Link>
       </ListItemButton>
     </ListItem>
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton>
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: "48px" }}>
           <RocketLaunchIcon />
         </ListItemIcon>
         <Link
@@ -52,9 +52,9 @@ export const mainListItems = (
 export const secondaryListItems = (
   <>
     <ListSubheader>Collections</ListSubheader>
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton>
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: "48px" }}>
           <SailingIcon />
         </ListItemIcon>
         <Link
@@ -68,9 +68,9 @@ export const secondaryListItems = (
         </Link>
       </ListItemButton>
     </ListItem>
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton>
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: "48px" }}>
           <FaceIcon />
         </ListItemIcon>
         <Link
@@ -84,9 +84,9 @@ export const secondaryListItems = (
         </Link>
       </ListItemButton>
     </ListItem>
-    <ListItem disablePadding>
+    <ListItem>
       <ListItemButton>
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: "48px" }}>
           <PublicIcon />
         </ListItemIcon>
         <Link

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import themeContext from "./themeContext";
 import { styled } from "@mui/material/styles";
 
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 
 const ToggleTheme = () => {
@@ -63,7 +63,10 @@ const ToggleTheme = () => {
       },
     },
     "& .MuiSwitch-thumb": {
-      backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+      backgroundColor:
+        theme.palette.mode === "dark"
+          ? theme.palette.primary.dark
+          : theme.palette.text.primary,
       width: 32,
       height: 32,
       "&:before": {
@@ -88,9 +91,9 @@ const ToggleTheme = () => {
   }));
 
   return (
-    <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
+    <Button sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
       <MaterialUISwitch checked={checked} onChange={handleBtnColor} />
-    </IconButton>
+    </Button>
   );
 };
 
