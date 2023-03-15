@@ -7,7 +7,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
 import MainButton from "../../../ui/MainButton";
 
-const СollectionPreview = ({ data, сoinUsdPrice }) => {
+import { useCoinRate } from "../../../../hooks/useCoinRate";
+
+const СollectionPreview = ({ data }) => {
+  const { сoinUsdPrice, isLoading } = useCoinRate();
+
   const mintPriceUsd = (
     data.mintingDetails[0].mintPriceEth * сoinUsdPrice.usd
   ).toFixed(4);
@@ -58,7 +62,8 @@ const СollectionPreview = ({ data, сoinUsdPrice }) => {
             }}
           >
             Price: {data.mintingDetails[0].mintPriceEth}{" "}
-            {data.mintingDetails[0].coinSymbol} / {mintPriceUsd} USD
+            {data.mintingDetails[0].coinSymbol} /{" "}
+            {!isLoading ? mintPriceUsd : "0.0"} USD
           </Box>
         </CardActions>
       </Card>

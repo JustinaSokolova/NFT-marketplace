@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Typography from "@mui/material/Typography";
-import API from "../../../../data";
+import { toast } from "react-toastify";
 
+import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import CategoryCard from "./CategoryCard";
@@ -10,40 +10,27 @@ import { useTheme } from "@mui/material/styles";
 import RarityNftColor from "../../../ui/RarityNftColor";
 import СollectionPreview from "./СollectionPreview";
 import BoxContainer from "../../../common/BoxContainer";
+import mintService from "../../../../services/mint.service";
 
 const MintInfo = () => {
   const [data, setData] = useState();
-  const [сoinUsdPrice, setCoinUsdPrice] = useState({ usd: 0 });
+  const [isLoading, setLoading] = useState(true);
   const theme = useTheme();
 
   useEffect(() => {
-    API.fetchMint.fetchMint().then((data) => setData(data));
+    const getMintInfo = async () => {
+      try {
+        const data = await mintService.get();
+        setData(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMintInfo();
   }, []);
 
-  const getCoinRate = () => {
-    API.fetchCoinRateUsd
-      .fetchCoinRateUsd()
-      .then((rate) => setCoinUsdPrice(rate));
-  };
-
-  useEffect(() => {
-    getCoinRate();
-    console.log("useEffect 1");
-  }, []);
-
-  useEffect(() => {
-    let id = setInterval(() => {
-      getCoinRate();
-      console.log("useEffect 2");
-    }, 60000);
-    return () => clearInterval(id);
-  });
-  // sx={{
-  //   ...(theme.palette.mode === "dark"
-  //     ? { bgcolor: "#424242", color: "#fff" }
-  //     : { bgcolor: "#fff", color: "#000000de" }),
-  // }}
-  return data ? (
+  return !isLoading ? (
     <>
       <Box
         sx={{
@@ -172,7 +159,7 @@ const MintInfo = () => {
         </BoxContainer>
         <Box sx={{ position: "sticky", top: "64px" }}>
           <BoxContainer elevation={1}>
-            <СollectionPreview data={data} сoinUsdPrice={сoinUsdPrice} />
+            <СollectionPreview data={data} />
           </BoxContainer>
         </Box>
       </Box>

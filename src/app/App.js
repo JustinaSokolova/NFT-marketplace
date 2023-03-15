@@ -9,6 +9,7 @@ import Islands from "./layouts/Islands";
 
 import { useDarkMode } from "./hooks/useDarkMode";
 import ThemeCustomization from "./themes";
+import { CoinRateProvider } from "./hooks/useCoinRate";
 
 function App() {
   const [componentMounted] = useDarkMode();
@@ -20,16 +21,18 @@ function App() {
   return (
     <>
       <ThemeCustomization>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="mint" element={<Mint />} />
-            <Route path="ships" element={<Ships />} />
-            <Route path="captains" element={<Captains />} />
-            <Route path="islands" element={<Islands />} />
-            {/* <Redirect to="/" /> */}
-          </Route>
-        </Routes>
+        <CoinRateProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="mint" element={<Mint />} />
+              <Route path="ships" element={<Ships />} />
+              <Route path="captains" element={<Captains />} />
+              <Route path="islands" element={<Islands />} />
+              {/* <Redirect to="/" /> */}
+            </Route>
+          </Routes>
+        </CoinRateProvider>
       </ThemeCustomization>
     </>
   );
