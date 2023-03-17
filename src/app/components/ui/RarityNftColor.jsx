@@ -25,6 +25,7 @@ const RarityNftColor = ({ rarity }) => {
     color: theme.palette.getContrastText(getColorButton(rarity)),
     backgroundColor: getColorButton(rarity),
     fontSize: 10,
+    borderRadius: "12px",
     boxShadow: "none",
     "&:hover": {
       background: getColorButton(rarity),

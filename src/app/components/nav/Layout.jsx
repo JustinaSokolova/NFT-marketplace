@@ -3,7 +3,7 @@ import React, { useState } from "react";
 // import PropTypes from "prop-types";
 
 import { Outlet } from "react-router-dom";
-import { mainListItems, secondaryListItems } from "./ListItems";
+import { MainListItems, SecondaryListItems } from "./ListItems";
 
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -105,6 +105,7 @@ export default function Layout() {
             border: "none",
             bgcolor: theme.palette.background.paper,
             color: theme.palette.text.primary,
+            height: "88px",
           }}
           open={open}
         >
@@ -112,6 +113,7 @@ export default function Layout() {
             sx={{
               bgcolor: theme.palette.background.paper,
               color: theme.palette.text.primary,
+              height: "88px",
             }}
           >
             <IconButton
@@ -138,7 +140,7 @@ export default function Layout() {
                 alignItems: "center",
               }}
             >
-              <MainButton color="secondary" size="medium">
+              <MainButton color="secondary" size="medium" variant="contained">
                 Connect wallet
               </MainButton>
               <IconButton
@@ -178,7 +180,7 @@ export default function Layout() {
           anchor="left"
           open={open}
         >
-          <DrawerHeader>
+          <DrawerHeader sx={{ height: "98px" }}>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
@@ -197,11 +199,15 @@ export default function Layout() {
             }}
           >
             <Box sx={{ flexGrow: 1, ml: "16px" }}>
-              <List>{mainListItems}</List>
-              <List>{secondaryListItems}</List>
+              <List>
+                <MainListItems />
+              </List>
+              <List>
+                <SecondaryListItems />
+              </List>
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              <MainButton color="secondary" size="medium">
+              <MainButton color="secondary" size="medium" variant="contained">
                 Log In
               </MainButton>
             </Box>
@@ -210,10 +216,11 @@ export default function Layout() {
         <Main
           open={open}
           sx={{
-            padding: "20px",
-            mt: "68px",
+            padding: "24px",
+            mt: "88px",
             mr: "20px",
             borderRadius: "12px 12px 0px 0px",
+            minHeight: "calc(100vh - 88px)",
             ...(theme.palette.mode === "dark"
               ? { bgcolor: theme.palette.background[900] }
               : { bgcolor: theme.palette.primary.light }),

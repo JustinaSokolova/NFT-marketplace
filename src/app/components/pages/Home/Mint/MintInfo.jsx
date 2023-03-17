@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import CategoryCard from "./CategoryCard";
-import { useTheme } from "@mui/material/styles";
 
 import RarityNftColor from "../../../ui/RarityNftColor";
 import СollectionPreview from "./СollectionPreview";
@@ -15,7 +14,6 @@ import mintService from "../../../../services/mint.service";
 const MintInfo = () => {
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
-  const theme = useTheme();
 
   useEffect(() => {
     const getMintInfo = async () => {
@@ -39,9 +37,6 @@ const MintInfo = () => {
           justifyContent: "center",
           alignItems: "flex-start",
           gap: "24px",
-          ...(theme.palette.mode === "dark"
-            ? { bgcolor: theme.palette.background[900] }
-            : { bgcolor: theme.palette.primary.light }),
         }}
       >
         <BoxContainer elevation={1}>

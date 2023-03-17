@@ -20,11 +20,12 @@ export default function componentStyleOverrides(theme) {
         },
       },
     },
+
     MuiCardHeader: {
       styleOverrides: {
         root: {
           // color: theme.colors?.textDark,
-          padding: "24px",
+          // padding: "24px",
         },
         title: {
           fontSize: "1.125rem",

@@ -51,7 +51,7 @@ const СollectionPreview = ({ data }) => {
             alignItems: "center",
           }}
         >
-          <MainButton color="primary" size="small">
+          <MainButton color="primary" size="small" variant="contained">
             Mint
           </MainButton>
           <Box
