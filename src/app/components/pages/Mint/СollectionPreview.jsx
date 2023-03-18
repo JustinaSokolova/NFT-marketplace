@@ -5,9 +5,9 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
-import MainButton from "../../../ui/MainButton";
+import MainButton from "../../ui/MainButton";
 
-import { useCoinRate } from "../../../../hooks/useCoinRate";
+import { useCoinRate } from "../../../hooks/useCoinRate";
 
 const СollectionPreview = ({ data }) => {
   const { сoinUsdPrice, isLoading } = useCoinRate();

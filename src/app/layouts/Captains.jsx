@@ -1,5 +1,5 @@
 import React from "react";
-import CollectionPage from "../components/pages/Home/Collection/CollectionPage";
+import CollectionPage from "../components/pages/Collection/CollectionPage";
 import captainsService from "../services/captains.service";
 
 const Captains = () => {

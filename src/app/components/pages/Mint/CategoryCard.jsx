@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import RarityNftColor from "../../../ui/RarityNftColor";
+import RarityNftColor from "../../ui/RarityNftColor";
 
 const CategoryCard = ({ categoryDetails }) => {
   return categoryDetails.map((item, i) => {

@@ -6,10 +6,10 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import CategoryCard from "./CategoryCard";
 
-import RarityNftColor from "../../../ui/RarityNftColor";
+import RarityNftColor from "../../ui/RarityNftColor";
 import СollectionPreview from "./СollectionPreview";
-import BoxContainer from "../../../common/BoxContainer";
-import mintService from "../../../../services/mint.service";
+import BoxContainer from "../../common/BoxContainer";
+import mintService from "../../../services/mint.service";
 
 const MintInfo = () => {
   const [data, setData] = useState();

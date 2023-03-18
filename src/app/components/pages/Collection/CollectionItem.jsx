@@ -1,13 +1,13 @@
 import React from "react";
-import RarityNftColor from "../../../ui/RarityNftColor";
+import RarityNftColor from "../../ui/RarityNftColor";
+import MainButton from "../../ui/MainButton";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
-import MainButton from "../../../ui/MainButton";
 
-import { useCoinRate } from "../../../../hooks/useCoinRate";
+import { useCoinRate } from "../../../hooks/useCoinRate";
 // import { displayDate } from "../../../../utils/displayDate";
 
 const CollectionItem = (props) => {
@@ -21,7 +21,13 @@ const CollectionItem = (props) => {
   return (
     <>
       <Box sx={{ position: "relative" }}>
-        <Box sx={{ position: "absolute", top: "1px", right: "0px" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "1px",
+            right: "0px",
+          }}
+        >
           <RarityNftColor rarity={rarity} />
         </Box>
         <Card
@@ -40,9 +46,11 @@ const CollectionItem = (props) => {
             alt="nft image"
             image={image}
             sx={{
-              maxHeight: "100%",
-              maxWidth: "100%",
+              maxHeight: "180px",
+              maxWidth: "180px",
               objectFit: "contain",
+              borderRadius: "8px",
+              mt: "10px",
             }}
           />
           <CardActions
