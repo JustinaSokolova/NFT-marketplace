@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
 import CardMedia from "@mui/material/CardMedia";
 import RarityNftColor from "../../ui/RarityNftColor";
 
@@ -10,7 +10,12 @@ const CategoryCard = ({ categoryDetails }) => {
   return categoryDetails.map((item, i) => {
     return (
       <Card
-        sx={{ maxWidth: "120px", maxHeight: "100%", m: 1 }}
+        sx={{
+          width: "120px",
+          height: "120px",
+          m: 1,
+          position: "relative",
+        }}
         variant="outlined"
         key={10 + i}
       >
@@ -18,17 +23,11 @@ const CategoryCard = ({ categoryDetails }) => {
           component="img"
           alt="nft details"
           image={item.imageUrl}
-          sx={{ maxHeight: "120px", maxWidth: "100%", objectFit: "contain" }}
+          sx={{ height: "120px", width: "120px", objectFit: "contain" }}
         />
-        <CardContent
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={{ position: "absolute", top: "4px", right: "4px" }}>
           <RarityNftColor rarity={item.rarity}></RarityNftColor>
-        </CardContent>
+        </Box>
       </Card>
     );
   });

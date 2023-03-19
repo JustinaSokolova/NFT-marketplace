@@ -4,9 +4,9 @@ const captainsEndpoint =
   "collection/0x61a03eed4c0220bb6ee89b0cda10dc171f772577/all";
 
 const captainsService = {
-  get: async (page) => {
+  get: async (page, size) => {
     const { data } = await httpService.get(captainsEndpoint, {
-      params: { page },
+      params: { page, size },
     });
     return data;
   },

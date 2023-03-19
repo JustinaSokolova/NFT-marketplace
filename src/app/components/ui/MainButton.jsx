@@ -4,7 +4,13 @@ import Button from "@mui/material/Button";
 const MainButton = ({ children, color, size, variant, disabled }) => {
   return (
     <Button
-      sx={{ minWidth: "160px", m: 2 }}
+      sx={{
+        minWidth: "160px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        m: "16px",
+      }}
       variant={variant}
       href="#contained-buttons"
       color={color}

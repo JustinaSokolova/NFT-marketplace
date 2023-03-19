@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: "QuickDog";
+  src: local("QuickDog."),
+    url("./app/assets/fonts/QuickDog/QuickDog.ttf") format("truetype");
+  font-weight: bold;
+}

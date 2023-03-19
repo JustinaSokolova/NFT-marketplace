@@ -126,10 +126,15 @@ export default function Layout() {
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="h5"
+              variant="h2"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                color: theme.palette.success.dark,
+              }}
+              className="font-logo"
             >
               Navy.online
             </Typography>

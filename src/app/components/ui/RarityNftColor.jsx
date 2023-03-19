@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { orange, purple, lightGreen, grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import SkullIcon from "../../assets/icons/skull-pixel-art.png";
 
 const RarityNftColor = ({ rarity }) => {
   const getColorButton = (rarity) => {
@@ -22,29 +23,59 @@ const RarityNftColor = ({ rarity }) => {
   };
   let ColorButton;
   ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(getColorButton(rarity)),
-    backgroundColor: getColorButton(rarity),
-    fontSize: 10,
-    borderRadius: "15px",
+    // color: theme.palette.getContrastText(getColorButton(rarity)),
+    // backgroundColor: getColorButton(rarity),
+    backgroundColor: "#7c4dff3a",
+    borderRadius: "0px",
     boxShadow: "none",
+    variant: "contained",
+    padding: "3px 6px",
+    minWidth: "28px",
+    maxWidth: "100px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     "&:hover": {
-      background: getColorButton(rarity),
+      // background: getColorButton(rarity),
+      backgroundColor: "#7c4dff3a",
       borderColor: "none",
       boxShadow: "none",
     },
     cursor: "default",
   }));
 
-  return (
-    <ColorButton
-      variant="contained"
-      size="small"
-      sx={{ display: "block" }}
-      key={rarity}
-    >
-      {rarity}
-    </ColorButton>
-  );
+  const skullIcon = <img src={SkullIcon} alt="rarity icon" width="14px" />;
+
+  if (rarity === "Legendary") {
+    return (
+      <ColorButton key={rarity}>
+        {skullIcon}
+        {skullIcon}
+        {skullIcon}
+        {skullIcon}
+      </ColorButton>
+    );
+  }
+  if (rarity === "Epic") {
+    return (
+      <ColorButton key={rarity}>
+        {skullIcon}
+        {skullIcon}
+        {skullIcon}
+      </ColorButton>
+    );
+  }
+  if (rarity === "Rare") {
+    return (
+      <ColorButton key={rarity}>
+        {skullIcon}
+        {skullIcon}
+      </ColorButton>
+    );
+  }
+  if (rarity === "Common") {
+    return <ColorButton key={rarity}>{skullIcon}</ColorButton>;
+  }
 };
 
 RarityNftColor.propTypes = {

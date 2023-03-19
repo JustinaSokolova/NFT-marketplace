@@ -17,6 +17,7 @@ const CollectionPage = ({ collectionService }) => {
   const [isLoading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const pageSize = 24;
 
   const {
     result: collection,
@@ -30,7 +31,7 @@ const CollectionPage = ({ collectionService }) => {
   useEffect(() => {
     const getCollectionInfo = async () => {
       try {
-        const data = await getCollection.get(currentPage);
+        const data = await getCollection.get(currentPage, pageSize);
         setCollectionData(data);
         setLoading(false);
         if (data.info.pages < currentPage) {
@@ -43,8 +44,6 @@ const CollectionPage = ({ collectionService }) => {
     };
     getCollectionInfo();
   }, [currentPage]);
-
-  const pageSize = 24;
 
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);

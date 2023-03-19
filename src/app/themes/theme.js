@@ -44,6 +44,11 @@ const getThemePallete = (mode) => {
               main: colors?.error.main,
               dark: colors?.error.dark,
             },
+            orange: {
+              light: colors?.light,
+              main: colors?.main,
+              dark: colors?.dark,
+            },
             grey: {
               50: colors?.grey[50],
               100: colors?.grey[100],
@@ -93,6 +98,11 @@ const getThemePallete = (mode) => {
               light: colors?.error.light,
               main: colors?.error.main,
               dark: colors?.error.dark,
+            },
+            orange: {
+              light: colors?.light,
+              main: colors?.main,
+              dark: colors?.dark,
             },
             grey: {
               50: colors?.grey[50],

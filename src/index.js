@@ -10,6 +10,7 @@ import App from "./app/App";
 import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider } from "@mui/material/styles";
 import "./app/assets/scss/style.scss";
+import "./app/assets/fonts/QuickDog/QuickDog.ttf";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
