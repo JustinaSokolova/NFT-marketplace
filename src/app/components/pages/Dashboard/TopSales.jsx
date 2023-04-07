@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import topSalesNftService from "../../../services/topSalesNft.service";
+import SliderComp from "../../common/SliderComp";
 
 const TopSales = () => {
-  const [topSalesData, settopSalesData] = useState();
+  const [topSalesData, setTopSalesData] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   const monthTime = 30;
@@ -12,7 +13,7 @@ const TopSales = () => {
   async function getSalesList(value) {
     try {
       const content = await topSalesNftService.get(value);
-      settopSalesData(content);
+      setTopSalesData(content);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -23,8 +24,6 @@ const TopSales = () => {
     getSalesList(monthTime);
   }, []);
 
-  console.log(topSalesData);
-
-  return <div>TopSales</div>;
+  return !isLoading ? <SliderComp props={topSalesData} /> : "Loading";
 };
 export default TopSales;

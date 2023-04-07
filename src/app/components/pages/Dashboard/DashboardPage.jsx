@@ -75,11 +75,11 @@ const DashboardPage = () => {
 
       <Grid item xs={12}>
         <BoxContainer elevation={1}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <TopSales isLoading={isLoading} />
-            </Grid>
-          </Grid>
+          {/* <Grid container spacing={3}>
+            <Grid item xs={12} md={8}> */}
+          <TopSales />
+          {/* </Grid>
+          </Grid> */}
         </BoxContainer>
       </Grid>
     </Grid>
