@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-const MainButton = ({ children, color, size, variant, disabled }) => {
+const MainButton = ({ children, color, size, variant, href, disabled }) => {
   return (
     <Button
       sx={{
@@ -12,7 +12,7 @@ const MainButton = ({ children, color, size, variant, disabled }) => {
         m: "16px",
       }}
       variant={variant}
-      href="#contained-buttons"
+      href={href || "#contained-buttons"}
       color={color}
       size={size}
       disabled={disabled}

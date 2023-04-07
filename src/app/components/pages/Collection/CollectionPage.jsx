@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import CollectionItem from "./CollectionItem";
-
 import Box from "@mui/material/Box";
+
+import CollectionItem from "./CollectionItem";
 import PaginationComp from "../../common/PaginationComp";
 
 const initCollectionData = {
@@ -36,7 +36,7 @@ const CollectionPage = ({ collectionService }) => {
         setLoading(false);
         if (data.info.pages < currentPage) {
           setCurrentPage(1);
-          navigate("/captains");
+          navigate(location.pathname);
         }
       } catch (error) {
         console.log(error);

@@ -3,7 +3,8 @@ import React, { useState } from "react";
 // import PropTypes from "prop-types";
 
 import { Outlet } from "react-router-dom";
-import { MainListItems, SecondaryListItems } from "./ListItems";
+import { Link } from "react-router-dom";
+import ListItems from "./ListItems";
 
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -15,16 +16,16 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-
 import IconButton from "@mui/material/IconButton";
 import CssBaseline from "@mui/material/CssBaseline";
 import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import ToggleTheme from "../ToggleTheme";
 import MainButton from "../ui/MainButton";
+import Logo from "../ui/Logo";
 
 const drawerWidth = 240;
 
@@ -85,11 +86,7 @@ export default function Layout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  // sx={{
-  //   ...(theme.palette.mode === "dark"
-  //     ? { bgcolor: "#424242", color: "#fff" }
-  //     : { bgcolor: "#fff", color: "#000000de" }),
-  // }}
+
   return (
     <>
       <Box
@@ -125,19 +122,7 @@ export default function Layout() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant="h2"
-              noWrap
-              component="div"
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", sm: "block" },
-                color: theme.palette.success.dark,
-              }}
-              className="font-logo"
-            >
-              Navy.online
-            </Typography>
+            <Logo variant="h2" />
             <Box
               sx={{
                 display: "flex",
@@ -205,16 +190,20 @@ export default function Layout() {
           >
             <Box sx={{ flexGrow: 1, ml: "16px" }}>
               <List>
-                <MainListItems />
-              </List>
-              <List>
-                <SecondaryListItems />
+                <ListItems />
               </List>
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              <MainButton color="secondary" size="medium" variant="contained">
-                Log In
-              </MainButton>
+              <Link to="/login" className="nav-link" aria-current="page">
+                <MainButton
+                  href="/login"
+                  color="secondary"
+                  size="medium"
+                  variant="contained"
+                >
+                  Log In
+                </MainButton>
+              </Link>
             </Box>
           </Box>
         </Drawer>

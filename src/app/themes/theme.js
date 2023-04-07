@@ -12,11 +12,15 @@ const getThemePallete = (mode) => {
               light: colors?.primary.light,
               main: colors?.primary.main,
               dark: colors?.primary.dark,
+              200: colors?.primary[200],
+              800: colors?.primary[800],
             },
             secondary: {
               light: colors?.secondary.light,
               main: colors?.secondary.main,
               dark: colors?.secondary.dark,
+              200: colors?.secondary[200],
+              800: colors?.secondary[800],
             },
             background: {
               paper: colors?.background.paper,
@@ -64,11 +68,15 @@ const getThemePallete = (mode) => {
               light: colors?.primary.light,
               main: colors?.primary.main,
               dark: colors?.primary.dark,
+              200: colors?.primary[200],
+              800: colors?.primary[800],
             },
             secondary: {
               light: colors?.darkSecondary.light,
               main: colors?.darkSecondary.main,
               dark: colors?.darkSecondary.dark,
+              200: colors?.darkSecondary[200],
+              800: colors?.darkSecondary[800],
             },
             background: {
               paper: colors?.darkBackground.paper,

@@ -18,3 +18,10 @@ code {
     url("./app/assets/fonts/QuickDog/QuickDog.ttf") format("truetype");
   font-weight: bold;
 }
+
+@font-face {
+  font-family: "TropicalJungle";
+  src: local("TropicalJungle."),
+    url("./app/assets/fonts/TropicalJungle/TropicalJungle.ttf") format("truetype");
+  font-weight: bold;
+}
