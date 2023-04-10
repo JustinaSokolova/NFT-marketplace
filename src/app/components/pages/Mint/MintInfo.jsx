@@ -4,12 +4,15 @@ import { toast } from "react-toastify";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
-import CategoryCard from "./CategoryCard";
+import { Grid } from "@mui/material";
 
+import CategoryCard from "./CategoryCard";
 import RarityNftColor from "../../ui/RarityNftBadge";
 import СollectionPreview from "./СollectionPreview";
 import BoxContainer from "../../common/BoxContainer";
 import mintService from "../../../services/mint.service";
+import SkeletonDescription from "../../ui/skeleton/SkeletonDescription";
+import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 
 const MintInfo = () => {
   const [data, setData] = useState();
@@ -160,7 +163,21 @@ const MintInfo = () => {
       </Box>
     </>
   ) : (
-    <Box>Loading...</Box>
+    <>
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        spacing={3}
+      >
+        <Grid item xs={9}>
+          <SkeletonDescription />
+        </Grid>
+        <Grid item xs={3}>
+          <SkeletonCardNft />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

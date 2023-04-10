@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 
 import CollectionItem from "./CollectionItem";
 import PaginationComp from "../../common/PaginationComp";
+import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 
 const initCollectionData = {
   info: { count: 0, pages: 0 },
@@ -69,10 +70,15 @@ const CollectionPage = ({ collectionService }) => {
           }}
         >
           {collection.map((item) => (
-            <CollectionItem key={item.tokenId} {...item} />
+            <CollectionItem
+              key={item.tokenId}
+              {...item}
+              isLoadingItem={isLoading}
+            />
           ))}
         </Box>
         <PaginationComp
+          isLoadingItem={isLoading}
           itemsCount={count}
           pagesCount={pages}
           pageSize={pageSize}
@@ -82,7 +88,28 @@ const CollectionPage = ({ collectionService }) => {
       </Box>
     </>
   ) : (
-    <Box>Loading...</Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        // alignContent: "flex-start",
+        gap: "24px",
+      }}
+    >
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+      <SkeletonCardNft />
+    </Box>
   );
 };
 
