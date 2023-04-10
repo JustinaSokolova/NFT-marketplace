@@ -9,17 +9,61 @@
   text-shadow: 1px 1px white, 2px 2px #777;
 }
 
-// // ==============================|| LIGHT BOX ||============================== //
-// .fullscreen .react-images__blanket {
-//   z-index: 1200;
-// }
+.custom-dot-list-style > li button {
+  border-color: #c5c8ca;
+}
 
-// // ==============================|| APEXCHART ||============================== //
+.custom-carousel-button--next {
+  color: #f9f9f9ee;
+  position: absolute;
+  right: 0;
+  outline: 0;
+  transition: all 0.5s;
+  border-radius: 35px;
+  z-index: 1000;
+  border: 5px;
+  border-color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  min-width: 43px;
+  min-height: 43px;
+  opacity: 1;
+  cursor: pointer;
 
-// .apexcharts-legend-series .apexcharts-legend-marker {
-//   margin-right: 8px;
-// }
+  &:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
 
+.custom-carousel-button--prev {
+  color: #f6f6f6ee;
+  position: absolute;
+  left: 0;
+  outline: 0;
+  transition: all 0.5s;
+  border-radius: 35px;
+  z-index: 1000;
+  border: 0;
+  background: rgba(0, 0, 0, 0.5);
+  min-width: 43px;
+  min-height: 43px;
+  opacity: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.cronos-icon {
+  border-radius: 50%;
+  background: #fff;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  font-size: 0px;
+}
 // // ==============================|| PERFECT SCROLLBAR ||============================== //
 
 // .scrollbar-container {

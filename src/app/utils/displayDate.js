@@ -1,13 +1,12 @@
 export function displayDate(data) {
   const date = new Date(data * 1000);
-  console.log(date);
   const dateNow = new Date();
   const yearDif = dateNow.getFullYear() - date.getFullYear();
-  if (yearDif === 0) {
+  if (yearDif <= 0) {
     const dayDif = dateNow.getHours() - date.getHours();
-    if (dayDif === 0) {
+    if (dayDif <= 24) {
       const hourDif = dateNow.getHours() - date.getHours();
-      if (hourDif === 0) {
+      if (hourDif <= 0) {
         const minutesDif = dateNow.getMinutes() - date.getMinutes();
 
         if (minutesDif >= 0 && minutesDif < 5) return "1 minute ago";
@@ -17,8 +16,10 @@ export function displayDate(data) {
         }
         return "30 minutes ago";
       }
-      return `${date.getHours()}:${date.getMinutes()}`;
+      if (hourDif === 1) return `${hourDif} hour ago`;
+      return `${hourDif} hours ago`;
     }
+
     return date.toLocaleString("en-GB", { month: "long", day: "numeric" });
   }
   return (

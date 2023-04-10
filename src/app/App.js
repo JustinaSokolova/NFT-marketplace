@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
-              <Route path="/login/:type?" component={<LoginPage />} />
+              <Route path="login/:type?" component={<LoginPage />} />
               <Route path="mint" element={<Mint />} />
               <Route path="ships" element={<Ships />} />
               <Route path="captains" element={<Captains />} />

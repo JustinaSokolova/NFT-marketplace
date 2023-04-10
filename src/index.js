@@ -11,6 +11,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider } from "@mui/material/styles";
 import "./app/assets/scss/style.scss";
 import "./app/assets/fonts/QuickDog/QuickDog.ttf";
+import "react-multi-carousel/lib/styles.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

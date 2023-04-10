@@ -1,13 +1,8 @@
 import React from "react";
 // import PropTypes from "prop-types";
 
-// material-ui
 import { styled, useTheme } from "@mui/material/styles";
 import { Avatar, Box, Grid, Typography, Card } from "@mui/material";
-
-// project imports
-
-// assets
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const CardWrapper = styled(Card)(({ theme }) => ({
@@ -71,7 +66,7 @@ const TotalSalesCard = ({ value, title, coinSymbol }) => {
                       mb: 0.75,
                     }}
                   >
-                    {value} {coinSymbol ? coinSymbol : ""}
+                    {value.toFixed(1)} {coinSymbol ? coinSymbol : ""}
                   </Typography>
                 </Grid>
                 <Grid item>

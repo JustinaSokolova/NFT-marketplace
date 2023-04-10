@@ -17,7 +17,7 @@ const CollectionPage = ({ collectionService }) => {
   const [isLoading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const pageSize = 24;
+  const pageSize = 18;
 
   const {
     result: collection,
