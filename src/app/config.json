@@ -1,3 +1,5 @@
 {
-  "apiEndpoint": "https://navy.online/marketplace/"
+  "apiEndpoint": "https://navy.online/marketplace/",
+  "pageSize": 18,
+  "drawerWidth": 240
 }

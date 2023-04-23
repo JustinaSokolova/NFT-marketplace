@@ -13,15 +13,22 @@ import "./app/assets/scss/style.scss";
 import "./app/assets/fonts/QuickDog/QuickDog.ttf";
 import "react-multi-carousel/lib/styles.css";
 
+import { createStore } from "./app/store/createStore";
+import { Provider } from "react-redux";
+
+const store = createStore();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <StyledEngineProvider injectFirst>
-    <BrowserRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </BrowserRouter>
-  </StyledEngineProvider>
+  <Provider store={store}>
+    <StyledEngineProvider injectFirst>
+      <BrowserRouter>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </BrowserRouter>
+    </StyledEngineProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

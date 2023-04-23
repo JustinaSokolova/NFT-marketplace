@@ -7,50 +7,58 @@ import CollectionItem from "./CollectionItem";
 import PaginationComp from "../../common/PaginationComp";
 import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 
-const initCollectionData = {
-  info: { count: 0, pages: 0 },
-  result: [],
-};
+// const initCollectionData = {
+//   info: { count: 0, pages: 0 },
+//   result: [],
+// };
 
-const CollectionPage = ({ collectionService }) => {
-  const getCollection = { ...collectionService };
-  const [collectionData, setCollectionData] = useState(initCollectionData);
-  const [isLoading, setLoading] = useState(true);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const pageSize = 18;
+const CollectionPage = ({
+  collection,
+  isLoading,
+  onPageChange,
+  currentPage,
+  count,
+  pages,
+}) => {
+  // const getCollection = { ...collectionService };
 
-  const {
-    result: collection,
-    info: { count, pages },
-  } = collectionData;
+  // const [collectionData, setCollectionData] = useState(initCollectionData);
+  // const [isLoading, setLoading] = useState(true);
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const pageSize = 18;
 
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(location.search?.split("=")[1] || 1)
-  );
+  // const {
+  //   result: collection,
+  //   info: { count, pages },
+  // } = collectionData;
 
-  useEffect(() => {
-    const getCollectionInfo = async () => {
-      try {
-        const data = await getCollection.get(currentPage, pageSize);
-        setCollectionData(data);
-        setLoading(false);
-        if (data.info.pages < currentPage) {
-          setCurrentPage(1);
-          navigate(location.pathname);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getCollectionInfo();
-  }, [currentPage]);
+  // const [currentPage, setCurrentPage] = useState(
+  //   parseInt(location.search?.split("=")[1] || 1)
+  // );
 
-  const handlePageChange = (pageIndex) => {
-    setCurrentPage(pageIndex);
-  };
+  // useEffect(() => {
+  //   const getCollectionInfo = async () => {
+  //     try {
+  //       const data = await getCollection.get(currentPage, pageSize);
+  //       setCollectionData(data);
+  //       setLoading(false);
+  //       if (data.info.pages < currentPage) {
+  //         setCurrentPage(1);
+  //         navigate(location.pathname);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getCollectionInfo();
+  // }, [currentPage]);
 
-  return !isLoading ? (
+  // const handlePageChange = (pageIndex) => {
+  //   setCurrentPage(pageIndex);
+  // };
+
+  return !isLoading && count > 0 ? (
     <>
       <Box
         sx={{
@@ -65,7 +73,6 @@ const CollectionPage = ({ collectionService }) => {
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            // alignContent: "flex-start",
             gap: "24px",
           }}
         >
@@ -81,9 +88,8 @@ const CollectionPage = ({ collectionService }) => {
           isLoadingItem={isLoading}
           itemsCount={count}
           pagesCount={pages}
-          pageSize={pageSize}
           currentPage={currentPage}
-          onPageChange={handlePageChange}
+          onPageChange={onPageChange}
         />
       </Box>
     </>
@@ -93,7 +99,6 @@ const CollectionPage = ({ collectionService }) => {
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        // alignContent: "flex-start",
         gap: "24px",
       }}
     >

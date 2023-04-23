@@ -1,6 +1,6 @@
 import httpService from "./http.service";
 
-const topSalesNftEndpoint = "topSales/642edafc8657652de31d1164/";
+const topSalesNftEndpoint = "topSales/";
 
 const topSalesNftService = {
   get: async (value) => {

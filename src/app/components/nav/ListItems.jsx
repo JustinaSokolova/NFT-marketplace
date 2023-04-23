@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React from "react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+
 import Link from "@mui/material/Link";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -13,26 +14,23 @@ import SailingIcon from "@mui/icons-material/Sailing";
 import FaceIcon from "@mui/icons-material/Face";
 import PublicIcon from "@mui/icons-material/Public";
 
+import StyledNavLink from "./StyledNavLink";
+
 const ListItems = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
-
+  const location = useLocation();
   return (
     <>
       <List>
-        <ListItem>
-          <ListItemButton
-            selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0)}
-          >
+        <ListItem label="dashboard">
+          <ListItemButton>
+            {
+              // selected вешать сюда - ListItemButton
+            }
             <ListItemIcon sx={{ minWidth: "48px" }}>
               <DashboardIcon />
             </ListItemIcon>
             <Link
-              component={RouterLink}
+              component={StyledNavLink}
               to="/"
               color="inherit"
               underline="none"
@@ -42,16 +40,13 @@ const ListItems = () => {
             </Link>
           </ListItemButton>
         </ListItem>
-        <ListItem>
-          <ListItemButton
-            selected={selectedIndex === 1}
-            onClick={(event) => handleListItemClick(event, 1)}
-          >
+        <ListItem label="mint">
+          <ListItemButton>
             <ListItemIcon sx={{ minWidth: "48px" }}>
               <RocketLaunchIcon />
             </ListItemIcon>
             <Link
-              component={RouterLink}
+              component={StyledNavLink}
               to="mint"
               color="inherit"
               underline="none"
@@ -65,11 +60,8 @@ const ListItems = () => {
 
       <List>
         <ListSubheader>Collections</ListSubheader>
-        <ListItem>
-          <ListItemButton
-            selected={selectedIndex === 2}
-            onClick={(event) => handleListItemClick(event, 2)}
-          >
+        <ListItem label="ships">
+          <ListItemButton>
             <ListItemIcon sx={{ minWidth: "48px" }}>
               <SailingIcon />
             </ListItemIcon>
@@ -84,11 +76,8 @@ const ListItems = () => {
             </Link>
           </ListItemButton>
         </ListItem>
-        <ListItem>
-          <ListItemButton
-            selected={selectedIndex === 3}
-            onClick={(event) => handleListItemClick(event, 3)}
-          >
+        <ListItem label="captains">
+          <ListItemButton>
             <ListItemIcon sx={{ minWidth: "48px" }}>
               <FaceIcon />
             </ListItemIcon>
@@ -103,11 +92,8 @@ const ListItems = () => {
             </Link>
           </ListItemButton>
         </ListItem>
-        <ListItem>
-          <ListItemButton
-            selected={selectedIndex === 4}
-            onClick={(event) => handleListItemClick(event, 4)}
-          >
+        <ListItem label="islands">
+          <ListItemButton>
             <ListItemIcon sx={{ minWidth: "48px" }}>
               <PublicIcon />
             </ListItemIcon>

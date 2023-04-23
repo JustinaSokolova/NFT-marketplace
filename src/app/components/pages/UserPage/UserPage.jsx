@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import BoxContainer from "../../common/BoxContainer";
-import topSalesNftService from "../../../services/topSalesNft.service";
 import SliderComp from "../../common/SliderComp";
-
 import SkeletonTopSales from "../../ui/skeleton/SkeletonTopSales";
-import FilterButtonGroup from "./FilterButtonGroup";
 
-const TopSales = () => {
+import topSalesNftService from "../../../services/topSalesNft.service";
+import { useNavigate } from "react-router-dom";
+
+const UserPage = () => {
   const [topSalesData, setTopSalesData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [selectedTime, setSelectedTime] = useState(30);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getSalesList(selectedTime);
@@ -32,6 +34,10 @@ const TopSales = () => {
     }
   }
 
+  const handleClick = () => {
+    navigate(-1);
+  };
+
   return (
     <BoxContainer elevation={1}>
       <Box
@@ -40,15 +46,30 @@ const TopSales = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "flex-start",
           gap: "24px",
         }}
       >
-        <FilterButtonGroup
-          title="Top Sales"
-          onButtonSelect={handleSelectedTime}
-          selectedTime={selectedTime}
-        />
+        <Button
+          color="primary"
+          variant="outlined"
+          size="medium"
+          sx={{
+            maxWidth: "140px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          onClick={handleClick}
+        >
+          <NavigateBeforeIcon />
+          Go back
+        </Button>
+        <Box sx={{ typography: "h6" }}>My NFT</Box>
         <Box sx={{ width: "100%", margin: "0 auto" }}>
+          {
+            // вместо слайдера сделать пагинацию
+          }
           {!isLoading ? (
             <SliderComp props={topSalesData} />
           ) : (
@@ -59,4 +80,4 @@ const TopSales = () => {
     </BoxContainer>
   );
 };
-export default TopSales;
+export default UserPage;

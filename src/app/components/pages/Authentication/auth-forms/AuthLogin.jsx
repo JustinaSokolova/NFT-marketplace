@@ -24,11 +24,12 @@ import * as Yup from "yup";
 import { Formik } from "formik"; // npm установить!!!
 
 import useScriptRef from "../../../../hooks/useScriptRef";
+import MetaMaskIcon from "../../../../assets/icons/icons8-metamask.png";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const FirebaseLogin = ({ ...others }) => {
+const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md")); // ???
@@ -55,19 +56,25 @@ const FirebaseLogin = ({ ...others }) => {
             size="large"
             variant="outlined"
             sx={{
-              color: "grey.700",
-              backgroundColor: theme.palette.grey[50],
-              borderColor: theme.palette.grey[100],
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "12px",
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.grey.light,
+              ...(theme.palette.mode === "dark"
+                ? { backgroundColor: theme.palette.background[800] }
+                : { backgroundColor: theme.palette.primary.light }),
             }}
           >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-              <img
-                // src={Google}  найти иконку метамаска?
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img src={MetaMaskIcon} alt="MetaMask" width={22} height={22} />
             </Box>
             Connect wallet
           </Button>
@@ -88,10 +95,10 @@ const FirebaseLogin = ({ ...others }) => {
                 m: 2,
                 py: 0.5,
                 px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
+                borderColor: theme.palette.grey.light,
+                color: theme.palette.text.primary,
                 fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`,
+                borderRadius: "8px",
               }}
               disableRipple
               disabled
@@ -183,47 +190,48 @@ const FirebaseLogin = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-
-            <FormControl
-              fullWidth
-              error={Boolean(touched.password && errors.password)}
-              sx={{ ...theme.typography.customInput }}
-            >
-              <InputLabel htmlFor="outlined-adornment-password-login">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password-login"
-                type={showPassword ? "text" : "password"}
-                value={values.password}
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-                inputProps={{}}
-              />
-              {touched.password && errors.password && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-password-login"
-                >
-                  {errors.password}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <Box sx={{ mt: 3, mb: 1 }}>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.password && errors.password)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-password-login">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password-login"
+                  type={showPassword ? "text" : "password"}
+                  value={values.password}
+                  name="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        size="large"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  inputProps={{}}
+                />
+                {touched.password && errors.password && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-password-login"
+                  >
+                    {errors.password}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Box>
             {/* <Stack
               direction="row"
               alignItems="center"
@@ -275,4 +283,4 @@ const FirebaseLogin = ({ ...others }) => {
   );
 };
 
-export default FirebaseLogin;
+export default AuthLogin;

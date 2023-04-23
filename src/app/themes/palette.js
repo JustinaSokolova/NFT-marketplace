@@ -16,6 +16,7 @@ export default function themePalette() {
       200: colors?.secondary200,
       800: colors?.secondary800,
     },
+
     error: {
       light: colors?.errorLight,
       main: colors?.errorMain,
@@ -44,7 +45,9 @@ export default function themePalette() {
       600: colors?.heading,
       700: colors?.darkTextPrimary,
       900: colors?.textDark,
+      light: colors?.greyLight,
     },
+
     text: {
       primary: colors?.grey700,
       secondary: colors?.grey500,
@@ -56,8 +59,8 @@ export default function themePalette() {
       default: colors?.backgroundDefault,
     },
     darkBackground: {
-      paper: colors?.darkPaper,
-      default: colors?.darkPaper,
+      paper: colors?.darkPaper, //
+      default: colors?.darkBackground,
       800: colors?.darkLevel1,
       900: colors?.darkLevel2,
       opacity: colors?.darkSecondaryOpacity,

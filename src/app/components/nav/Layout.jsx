@@ -26,8 +26,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ToggleTheme from "../ToggleTheme";
 import MainButton from "../ui/MainButton";
 import Logo from "../ui/Logo";
-
-const drawerWidth = 240;
+import config from "../../config.json";
+import UserMenu from "./UserMenu";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -37,7 +37,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth - 20}px`,
+    marginLeft: `-${config.drawerWidth - 20}px`,
     ...(open && {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
@@ -56,8 +56,8 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
+    width: `calc(100% - ${config.drawerWidth}px)`,
+    marginLeft: `${config.drawerWidth}px`,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -74,17 +74,26 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function Layout() {
+const Layout = () => {
   const theme = useTheme();
 
   const [open, setOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuId = "primary-search-account-menu";
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const isMenuOpen = Boolean(anchorEl);
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -95,73 +104,81 @@ export default function Layout() {
         }}
       >
         <CssBaseline />
-        <AppBar
-          sx={{
-            position: "fixed",
-            boxShadow: "none",
-            border: "none",
-            bgcolor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-            height: "88px",
-          }}
-          open={open}
-        >
-          <Toolbar
+        <Box>
+          <AppBar
             sx={{
+              position: "fixed",
+              boxShadow: "none",
+              border: "none",
               bgcolor: theme.palette.background.paper,
               color: theme.palette.text.primary,
               height: "88px",
             }}
+            open={open}
           >
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2, ...(open && { display: "none" }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Logo variant="h2" />
-            <Box
+            <Toolbar
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                bgcolor: theme.palette.background.paper,
+                color: theme.palette.text.primary,
+                height: "88px",
               }}
             >
-              <MainButton color="secondary" size="medium" variant="contained">
-                Connect wallet
-              </MainButton>
               <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="secondary"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{ mr: 2, ...(open && { display: "none" }) }}
               >
-                <Badge badgeContent={17} color="warning">
-                  <NotificationsIcon />
-                </Badge>
+                <MenuIcon />
               </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                // onClick={handleProfileMenuOpen}
+              <Logo variant="h2" />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                <AccountCircle />
-              </IconButton>
-              <ToggleTheme />
-            </Box>
-          </Toolbar>
-        </AppBar>
+                <MainButton color="secondary" size="medium" variant="contained">
+                  Connect wallet
+                </MainButton>
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="secondary"
+                >
+                  <Badge badgeContent={17} color="warning">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                >
+                  <AccountCircle />
+                </IconButton>
+                <ToggleTheme />
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <UserMenu
+            menuId={menuId}
+            anchorEl={anchorEl}
+            isMenuOpen={isMenuOpen}
+            handleMenuClose={handleMenuClose}
+          />
+        </Box>
         <Drawer
           sx={{
-            width: drawerWidth,
+            width: config.drawerWidth,
             flexShrink: 0,
             "& .MuiDrawer-paper": {
-              width: drawerWidth,
+              width: config.drawerWidth,
               boxSizing: "border-box",
               borderRight: "none",
             },
@@ -194,9 +211,14 @@ export default function Layout() {
               </List>
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              <Link to="/login" className="nav-link" aria-current="page">
+              <Link
+                to="/auth/login"
+                className="nav-link"
+                aria-current="page"
+                underline="none"
+              >
                 <MainButton
-                  href="/login"
+                  href="/auth/login"
                   color="secondary"
                   size="medium"
                   variant="contained"
@@ -216,8 +238,8 @@ export default function Layout() {
             borderRadius: "12px 12px 0px 0px",
             minHeight: "calc(100vh - 88px)",
             ...(theme.palette.mode === "dark"
-              ? { bgcolor: theme.palette.background[900] }
-              : { bgcolor: theme.palette.primary.light }),
+              ? { backgroundColor: theme.palette.default }
+              : { backgroundColor: theme.palette.primary.light }),
           }}
         >
           <Outlet />
@@ -225,4 +247,5 @@ export default function Layout() {
       </Box>
     </>
   );
-}
+};
+export default Layout;

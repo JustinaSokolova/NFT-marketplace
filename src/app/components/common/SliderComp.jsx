@@ -98,6 +98,9 @@ const SliderComp = ({ props }) => {
     );
   };
 
+  if (props.length <= 0)
+    return "There are no sold NFTs for the selected period";
+
   return (
     <Box
       sx={{

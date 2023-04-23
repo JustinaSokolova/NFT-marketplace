@@ -26,7 +26,7 @@ const SkeletonTopSales = () => (
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Skeleton variant="rectangular" height={430} />
+          <Skeleton variant="rectangular" height={330} />
         </Grid>
       </Grid>
     </CardContent>

@@ -26,29 +26,25 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 import useScriptRef from "../../../../hooks/useScriptRef";
-import Google from "assets/images/icons/social-google.svg";
-import {
-  strengthColor,
-  strengthIndicator,
-} from "../../../../utils/password-strength";
+import MetaMaskIcon from "../../../../assets/icons/icons8-metamask.png";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  strengthColor,
+  strengthIndicator,
+} from "../../../../utils/passwordStrength";
 
-const FirebaseRegister = ({ ...others }) => {
+const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const customization = useSelector((state) => state.customization); // ???
+  // const customization = useSelector((state) => state.customization); // ???
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
-
-  // const googleHandler = async () => {
-  //   console.error("Register");
-  // };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -78,19 +74,25 @@ const FirebaseRegister = ({ ...others }) => {
             // onClick={googleHandler}
             size="large"
             sx={{
-              color: "grey.700",
-              backgroundColor: theme.palette.grey[50],
-              borderColor: theme.palette.grey[100],
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "12px",
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.grey.light,
+              ...(theme.palette.mode === "dark"
+                ? { backgroundColor: theme.palette.background[800] }
+                : { backgroundColor: theme.palette.primary.light }),
             }}
           >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-              <img
-                src={Google}
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img src={MetaMaskIcon} alt="MetaMask" width={22} height={22} />
             </Box>
             Connect wallet
           </Button>
@@ -105,10 +107,10 @@ const FirebaseRegister = ({ ...others }) => {
                 m: 2,
                 py: 0.5,
                 px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
+                borderColor: theme.palette.grey.light,
+                color: theme.palette.text.primary,
                 fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`,
+                borderRadius: "8px", ///
               }}
               disableRipple
               disabled
@@ -198,50 +200,51 @@ const FirebaseRegister = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-
-            <FormControl
-              fullWidth
-              error={Boolean(touched.password && errors.password)}
-              sx={{ ...theme.typography.customInput }}
-            >
-              <InputLabel htmlFor="outlined-adornment-password-register">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password-register"
-                type={showPassword ? "text" : "password"}
-                value={values.password}
-                name="password"
-                label="Password"
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e);
-                  changePassword(e.target.value);
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                inputProps={{}}
-              />
-              {touched.password && errors.password && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-password-register"
-                >
-                  {errors.password}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <Box sx={{ mt: 3, mb: 1 }}>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.password && errors.password)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-password-register">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password-register"
+                  type={showPassword ? "text" : "password"}
+                  value={values.password}
+                  name="password"
+                  label="Password"
+                  onBlur={handleBlur}
+                  onChange={(e) => {
+                    handleChange(e);
+                    changePassword(e.target.value);
+                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        size="large"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  inputProps={{}}
+                />
+                {touched.password && errors.password && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-password-register"
+                  >
+                    {errors.password}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Box>
 
             {strength !== 0 && (
               <FormControl fullWidth>
@@ -277,8 +280,13 @@ const FirebaseRegister = ({ ...others }) => {
                   label={
                     <Typography variant="subtitle1">
                       Agree with &nbsp;
-                      <Typography variant="subtitle1" component={Link} to="#">
-                        Terms & Condition.
+                      <Typography
+                        variant="subtitle1"
+                        component={Link}
+                        to="#"
+                        color={theme.palette.text.primary}
+                      >
+                        Terms & Condition
                       </Typography>
                     </Typography>
                   }
@@ -311,4 +319,4 @@ const FirebaseRegister = ({ ...others }) => {
   );
 };
 
-export default FirebaseRegister;
+export default AuthRegister;

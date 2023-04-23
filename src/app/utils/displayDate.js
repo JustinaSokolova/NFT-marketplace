@@ -1,11 +1,17 @@
 export function displayDate(data) {
   const date = new Date(data * 1000);
-  const dateNow = new Date();
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  const dateNow = new Date(Date.now());
   const yearDif = dateNow.getFullYear() - date.getFullYear();
+
   if (yearDif <= 0) {
-    const dayDif = dateNow.getHours() - date.getHours();
-    if (dayDif <= 24) {
+    const dayDifInMs = dateNow.getTime() - date.getTime();
+    const diffInDays = Math.round(dayDifInMs / oneDay);
+
+    if (diffInDays <= 0) {
       const hourDif = dateNow.getHours() - date.getHours();
+
       if (hourDif <= 0) {
         const minutesDif = dateNow.getMinutes() - date.getMinutes();
 

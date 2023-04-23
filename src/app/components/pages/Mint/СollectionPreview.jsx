@@ -5,16 +5,16 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
-import MainButton from "../../ui/MainButton";
 
+import MainButton from "../../ui/MainButton";
+import { cronosIcon } from "../../ui/CronosIcon";
 import { useCoinRate } from "../../../hooks/useCoinRate";
 
 const СollectionPreview = ({ data }) => {
   const { сoinUsdPrice, isLoading } = useCoinRate();
 
-  const mintPriceUsd = (
-    data.mintingDetails[0].mintPriceEth * сoinUsdPrice.usd
-  ).toFixed(4);
+  const mintPriceUsd =
+    "$" + (data.mintingDetails[0].mintPriceEth * сoinUsdPrice.usd).toFixed(4);
   return (
     <>
       <Box
@@ -56,14 +56,17 @@ const СollectionPreview = ({ data }) => {
           </MainButton>
           <Box
             sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
               typography: "body1",
+              fontWeight: "bold",
               whiteSpace: "pre-wrap",
-              textAlign: "center",
             }}
           >
-            Price: {data.mintingDetails[0].mintPriceEth}{" "}
-            {data.mintingDetails[0].coinSymbol} /{" "}
-            {!isLoading ? mintPriceUsd : "0.0"} USD
+            Price: {data.mintingDetails[0].coinSymbol === "CRO" && cronosIcon}{" "}
+            {data.mintingDetails[0].mintPriceEth} /{" "}
+            {!isLoading ? mintPriceUsd : "0.0"}
           </Box>
         </CardActions>
       </Card>

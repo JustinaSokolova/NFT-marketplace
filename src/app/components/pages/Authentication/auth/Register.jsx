@@ -4,9 +4,10 @@ import { useTheme } from "@mui/material/styles";
 import { Divider, Grid, Stack, Typography, useMediaQuery } from "@mui/material";
 
 import AuthWrapper from "../AuthWrapper";
-import AuthCardWrapper from "../AuthCardWrapper";
-import Logo from "ui-component/Logo";
+
+import Logo from "../../../ui/Logo";
 import AuthRegister from "../auth-forms/AuthRegister";
+import AuthCardWrapper from "../AuthCardWrapper1.jsx";
 
 const Register = () => {
   const theme = useTheme();
@@ -36,9 +37,13 @@ const Register = () => {
                   justifyContent="center"
                 >
                   <Grid item sx={{ mb: 3 }}>
-                    <Link to="#">
-                      <Logo />
-                    </Link>
+                    <Typography
+                      component={Link}
+                      to="#"
+                      sx={{ textDecoration: "none" }}
+                    >
+                      <Logo variant={"h3"} />
+                    </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Grid
@@ -56,11 +61,13 @@ const Register = () => {
                           <Typography
                             color={theme.palette.secondary.main}
                             gutterBottom
-                            variant={matchDownSM ? "h3" : "h2"}
+                            variant={matchDownSM ? "h6" : "h5"}
+                            fontWeight={"bold"}
                           >
                             Sign up
                           </Typography>
                           <Typography
+                            color={theme.palette.text.primary}
                             variant="caption"
                             fontSize="16px"
                             textAlign={matchDownSM ? "center" : "inherit"}
@@ -87,9 +94,10 @@ const Register = () => {
                     >
                       <Typography
                         component={Link}
-                        to="/pages/login/login3"
+                        to="/auth/login"
                         variant="subtitle1"
                         sx={{ textDecoration: "none" }}
+                        color={theme.palette.text.primary}
                       >
                         Already have an account?
                       </Typography>

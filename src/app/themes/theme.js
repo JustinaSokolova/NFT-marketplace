@@ -60,6 +60,7 @@ const getThemePallete = (mode) => {
               600: colors?.grey[600],
               700: colors?.grey[700],
               900: colors?.grey[900],
+              light: colors?.grey.light,
             },
             // divider: colors?.grey[500],
           }
@@ -119,6 +120,7 @@ const getThemePallete = (mode) => {
               600: colors?.grey[600],
               700: colors?.grey[700],
               900: colors?.grey[900],
+              light: colors?.grey.light,
             },
             // divider: colors?.darkText.primary,
           }),
