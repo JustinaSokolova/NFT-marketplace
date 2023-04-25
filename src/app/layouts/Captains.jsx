@@ -23,16 +23,13 @@ const Captains = () => {
   );
 
   useEffect(() => {
-    console.log("fff");
-    dispatch(loadCaptainsList(currentPage));
     if (collectionInfo.pages < currentPage) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
-  }, [currentPage]);
+  }, [currentPage, collectionInfo.pages]);
 
   const handlePageChange = (pageIndex) => {
-    console.log(pageIndex);
     setCurrentPage(pageIndex);
     dispatch(loadCaptainsList(pageIndex));
   };

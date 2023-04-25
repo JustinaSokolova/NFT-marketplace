@@ -64,6 +64,23 @@
   display: inline-block;
   font-size: 0px;
 }
+
+.bg-image__profile {
+  background: url("../img/shipsbg.jpg");
+  background-size: 100%;
+}
+
+.bg-image__settings {
+  background: url("../img/islandbg.png");
+  background-size: 100%;
+  -webkit-filter: brightness(120%);
+  filter: brightness(120%);
+}
+
+.svg-cursor {
+  cursor: pointer;
+  fill: #fff;
+}
 // // ==============================|| PERFECT SCROLLBAR ||============================== //
 
 // .scrollbar-container {

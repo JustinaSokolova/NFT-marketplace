@@ -46,7 +46,6 @@ export const loadShipsList =
       dispatch(shipsRequested());
       try {
         const content = await shipsService.get(currentPage, config.pageSize);
-        console.log(content);
         dispatch(shipsReceved(content));
       } catch (error) {
         dispatch(shipsRequesFailed(error.message));

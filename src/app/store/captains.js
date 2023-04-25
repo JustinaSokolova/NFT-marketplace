@@ -38,23 +38,20 @@ function isOutdated(date) {
   return false;
 }
 
-export const loadCaptainsList =
-  (currentPage = 1) =>
-  async (dispatch, getState) => {
-    const { lastFetch } = getState().captains;
-    if (isOutdated(lastFetch)) {
-      dispatch(captainsRequested());
-      try {
-        const content = await captainsService.get(currentPage, config.pageSize);
-        console.log(content);
-        dispatch(captainsReceved(content));
-      } catch (error) {
-        dispatch(captainsRequesFailed(error.message));
-      }
-    }
-  };
+export const loadCaptainsList = (currentPage) => async (dispatch, getState) => {
+  // const { lastFetch } = getState().captains;
+  // if (isOutdated(lastFetch)) {
+  dispatch(captainsRequested());
+  try {
+    const content = await captainsService.get(currentPage, config.pageSize);
+    dispatch(captainsReceved(content));
+  } catch (error) {
+    dispatch(captainsRequesFailed(error.message));
+  }
+  // }
+};
 
-export const getCaptains = () => (state) => state.captains.entities;
+export const getCaptains = () => (state) => state.captains.entities; // ф-ии селекторы
 export const getCaptainsInfo = () => (state) => state.captains.entitiesInfo;
 
 export const getCaptainsLoadingStatus = () => (state) =>

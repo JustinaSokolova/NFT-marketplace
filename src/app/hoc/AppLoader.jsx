@@ -19,7 +19,7 @@ export const AppLoader = ({ children }) => {
     // if (isLoggedIn) {
     //   dispatch(loadUsersList());
     // }
-  }, []);
+  }, [dispatch]);
 
   if (captainsStatusLoading) return <Loader />;
   return children;

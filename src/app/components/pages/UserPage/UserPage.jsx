@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Button } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -8,7 +9,7 @@ import SliderComp from "../../common/SliderComp";
 import SkeletonTopSales from "../../ui/skeleton/SkeletonTopSales";
 
 import topSalesNftService from "../../../services/topSalesNft.service";
-import { useNavigate } from "react-router-dom";
+import UserWallet from "./UserWallet";
 
 const UserPage = () => {
   const [topSalesData, setTopSalesData] = useState([]);
@@ -43,11 +44,18 @@ const UserPage = () => {
       <Box
         sx={{
           width: "100%",
+          height: "220px",
+        }}
+        className="bg-image__profile"
+      ></Box>
+      <Box
+        sx={{
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          gap: "24px",
+          p: "16px",
         }}
       >
         <Button
@@ -59,13 +67,15 @@ const UserPage = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            mb: "24px",
           }}
           onClick={handleClick}
         >
           <NavigateBeforeIcon />
           Go back
         </Button>
-        <Box sx={{ typography: "h6" }}>My NFT</Box>
+        <UserWallet />
+        <Box sx={{ typography: "h5" }}>My NFT</Box>
         <Box sx={{ width: "100%", margin: "0 auto" }}>
           {
             // вместо слайдера сделать пагинацию

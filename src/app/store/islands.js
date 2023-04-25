@@ -46,7 +46,6 @@ export const loadIslandsList =
       dispatch(islandsRequested());
       try {
         const content = await islandsService.get(currentPage, config.pageSize);
-        console.log(content);
         dispatch(islandsReceved(content));
       } catch (error) {
         dispatch(islandsRequesFailed(error.message));

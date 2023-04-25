@@ -1,6 +1,5 @@
 export default function componentStyleOverrides(theme) {
   const colors = theme.palette;
-  // console.log(colors.background);
 
   return {
     MuiButton: {
