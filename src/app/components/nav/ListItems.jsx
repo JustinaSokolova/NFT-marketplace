@@ -1,111 +1,86 @@
 import React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
 
-import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemIcon from "@mui/material/ListItemIcon";
 import ListSubheader from "@mui/material/ListSubheader";
 
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SailingIcon from "@mui/icons-material/Sailing";
-import FaceIcon from "@mui/icons-material/Face";
-import PublicIcon from "@mui/icons-material/Public";
+// import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+// import DashboardIcon from "@mui/icons-material/Dashboard";
+// import SailingIcon from "@mui/icons-material/Sailing";
+// import FaceIcon from "@mui/icons-material/Face";
+// import PublicIcon from "@mui/icons-material/Public";
 
 import StyledNavLink from "./StyledNavLink";
+import DashboardIcon from "../../assets/icons/dashboard.png";
+import MintIcon from "../../assets/icons/rocket.png";
+import ShipIcon from "../../assets/icons/ship.png";
+import CaptainIcon from "../../assets/icons/pirate.png";
+import IslandIcon from "../../assets/icons/mountain.png";
 
 const ListItems = () => {
-  const location = useLocation();
   return (
     <>
       <List>
-        <ListItem label="dashboard">
-          <ListItemButton>
-            {
-              // selected вешать сюда - ListItemButton
-            }
-            <ListItemIcon sx={{ minWidth: "48px" }}>
-              <DashboardIcon />
-            </ListItemIcon>
-            <Link
-              component={StyledNavLink}
-              to="/"
-              color="inherit"
-              underline="none"
-              rel="noopener"
-            >
-              Dashboard
-            </Link>
+        <ListItem>
+          <ListItemButton className="block-flex-start">
+            <Box sx={{ mr: 2, mt: 1 }}>
+              <img
+                src={DashboardIcon}
+                width="24px"
+                height="24px"
+                alt="Dashboard Icon"
+              />
+            </Box>
+            <StyledNavLink to="/">Dashboard</StyledNavLink>
           </ListItemButton>
         </ListItem>
-        <ListItem label="mint">
-          <ListItemButton>
-            <ListItemIcon sx={{ minWidth: "48px" }}>
-              <RocketLaunchIcon />
-            </ListItemIcon>
-            <Link
-              component={StyledNavLink}
-              to="mint"
-              color="inherit"
-              underline="none"
-              rel="noopener"
-            >
-              Minting
-            </Link>
+        <ListItem>
+          <ListItemButton className="block-flex-start">
+            <Box sx={{ mr: 2 }}>
+              <img src={MintIcon} width="26px" height="26px" alt="Mint Icon" />
+            </Box>
+            <StyledNavLink to="mint">Minting</StyledNavLink>
           </ListItemButton>
         </ListItem>
       </List>
 
       <List>
         <ListSubheader>Collections</ListSubheader>
-        <ListItem label="ships">
-          <ListItemButton>
-            <ListItemIcon sx={{ minWidth: "48px" }}>
-              <SailingIcon />
-            </ListItemIcon>
-            <Link
-              component={RouterLink}
-              to="ships"
-              color="inherit"
-              underline="none"
-              rel="noopener"
-            >
-              Ships
-            </Link>
+        <ListItem>
+          <ListItemButton className="block-flex-start">
+            <Box sx={{ mr: 2 }}>
+              <img src={ShipIcon} width="26px" height="26px" alt="Ship Icon" />
+            </Box>
+            <StyledNavLink to="ships">Ships</StyledNavLink>
           </ListItemButton>
         </ListItem>
-        <ListItem label="captains">
-          <ListItemButton>
-            <ListItemIcon sx={{ minWidth: "48px" }}>
-              <FaceIcon />
-            </ListItemIcon>
-            <Link
-              component={RouterLink}
-              to="captains"
-              color="inherit"
-              underline="none"
-              rel="noopener"
-            >
-              Captains
-            </Link>
+        <ListItem>
+          <ListItemButton className="block-flex-start">
+            <Box sx={{ mr: 2 }}>
+              <img
+                src={CaptainIcon}
+                width="26px"
+                height="26px"
+                alt="Captain Icon"
+              />
+            </Box>
+            <StyledNavLink to="captains">Captains</StyledNavLink>
           </ListItemButton>
         </ListItem>
-        <ListItem label="islands">
-          <ListItemButton>
-            <ListItemIcon sx={{ minWidth: "48px" }}>
-              <PublicIcon />
-            </ListItemIcon>
-            <Link
-              component={RouterLink}
-              to="islands"
-              color="inherit"
-              underline="none"
-              rel="noopener"
-            >
-              Islands
-            </Link>
+        <ListItem>
+          <ListItemButton className="block-flex-start">
+            <Box sx={{ mr: 2 }}>
+              <img
+                src={IslandIcon}
+                width="26px"
+                height="26px"
+                alt="Island Icon"
+              />
+            </Box>
+            <StyledNavLink to="islands">Islands</StyledNavLink>
           </ListItemButton>
         </ListItem>
       </List>

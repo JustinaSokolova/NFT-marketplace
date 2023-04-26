@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import MainButton from "../../ui/MainButton";
 import { cronosIcon } from "../../ui/CronosIcon";
 import { useCoinRate } from "../../../hooks/useCoinRate";
 
@@ -51,9 +52,14 @@ const СollectionPreview = ({ data }) => {
             alignItems: "center",
           }}
         >
-          <MainButton color="primary" size="small" variant="contained">
-            Mint
-          </MainButton>
+          <Button
+            color="primary"
+            size="small"
+            variant="contained"
+            className="main-btn"
+          >
+            <NavLink>Mint</NavLink>
+          </Button>
           <Box
             sx={{
               display: "flex",

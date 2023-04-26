@@ -42,7 +42,7 @@ const MintInfo = () => {
           gap: "24px",
         }}
       >
-        <BoxContainer elevation={1}>
+        <BoxContainer>
           <Typography
             variant="h5"
             noWrap
@@ -156,7 +156,7 @@ const MintInfo = () => {
           )}
         </BoxContainer>
         <Box sx={{ position: "sticky", top: "64px" }}>
-          <BoxContainer elevation={1}>
+          <BoxContainer>
             <СollectionPreview data={data} />
           </BoxContainer>
         </Box>

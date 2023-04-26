@@ -36,7 +36,7 @@ const OverallStats = () => {
   return !isLoading ? (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <BoxContainer elevation={1}>
+        <BoxContainer>
           <FilterButtonGroup
             title="Overall Stats"
             onButtonSelect={handleSelectedTime}
@@ -79,7 +79,7 @@ const OverallStats = () => {
   ) : (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <BoxContainer elevation={1}>
+        <BoxContainer>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Skeleton variant="rectangular" height={20} />

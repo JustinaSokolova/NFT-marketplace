@@ -21,7 +21,7 @@ const AuthCardWrapper = ({ children, ...other }) => {
           flexBasis: "50%",
         },
         ...(theme.palette.mode === "dark"
-          ? { backgroundColor: theme.palette.default }
+          ? { backgroundColor: theme.palette.background.default }
           : { backgroundColor: theme.palette.background.paper }),
       }}
       content={false}

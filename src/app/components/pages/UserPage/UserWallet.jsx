@@ -11,7 +11,7 @@ import IslandIcon from "../../../assets/icons/mountain.png";
 
 const UserWallet = () => {
   return (
-    <Box>
+    <Box sx={{ mb: "24px" }}>
       <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
       <Box
         sx={{

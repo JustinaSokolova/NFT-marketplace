@@ -33,7 +33,7 @@ const TopSales = () => {
   }
 
   return (
-    <BoxContainer elevation={1}>
+    <BoxContainer>
       <Box
         sx={{
           width: "100%",

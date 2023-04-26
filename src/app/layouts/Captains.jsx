@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import CollectionPage from "../components/pages/Collection/CollectionPage";
+import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
 import {
   getCaptains,
   getCaptainsInfo,
@@ -14,35 +15,45 @@ const Captains = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const collectionData = useSelector(getCaptains());
+
+  const collectionCaptainsData = useSelector(getCaptains());
   const isLoading = useSelector(getCaptainsLoadingStatus());
-  const collectionInfo = useSelector(getCaptainsInfo());
+  const collectionCaptainsInfo = useSelector(getCaptainsInfo());
 
   const [currentPage, setCurrentPage] = useState(
     parseInt(location.search?.split("=")[1] || 1)
   );
 
   useEffect(() => {
-    if (collectionInfo.pages < currentPage) {
+    dispatch(loadCaptainsList(currentPage));
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && collectionCaptainsInfo.pages < currentPage) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
-  }, [currentPage, collectionInfo.pages]);
+  }, [currentPage]);
 
   const handlePageChange = (pageIndex) => {
-    setCurrentPage(pageIndex);
-    dispatch(loadCaptainsList(pageIndex));
+    if (pageIndex !== currentPage) {
+      setCurrentPage(pageIndex);
+      dispatch(loadCaptainsList(pageIndex));
+    }
   };
 
-  return (
+  return !isLoading ? (
     <CollectionPage
-      collection={collectionData}
+      collection={collectionCaptainsData}
       isLoading={isLoading}
       currentPage={currentPage}
-      count={collectionInfo.count}
-      pages={collectionInfo.pages}
+      count={collectionCaptainsInfo.count}
+      pages={collectionCaptainsInfo.pages}
+      pathName={location.pathname}
       onPageChange={handlePageChange}
     />
+  ) : (
+    <SkeletonCollectionPage />
   );
 };
 

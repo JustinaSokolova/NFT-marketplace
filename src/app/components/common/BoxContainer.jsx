@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/system";
 
-const BoxContainer = ({ children, elevation }) => {
+const BoxContainer = ({ children }) => {
+  const theme = useTheme();
   return (
-    <Box>
-      <Paper sx={{ p: "24px" }} elevation={elevation}>
-        {children}
-      </Paper>
-    </Box>
+    <Paper
+      sx={{
+        p: "24px",
+        ...(theme.palette.mode === "dark"
+          ? { backgroundColor: theme.palette.background[900] }
+          : { backgroundColor: theme.palette.background.paper }),
+      }}
+      elevation={0}
+    >
+      {children}
+    </Paper>
   );
 };
 BoxContainer.propTypes = {

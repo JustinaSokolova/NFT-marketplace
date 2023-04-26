@@ -40,7 +40,7 @@ const UserPage = () => {
   };
 
   return (
-    <BoxContainer elevation={1}>
+    <BoxContainer>
       <Box
         sx={{
           width: "100%",
@@ -68,6 +68,7 @@ const UserPage = () => {
             justifyContent: "space-between",
             alignItems: "center",
             mb: "24px",
+            mt: "14px",
           }}
           onClick={handleClick}
         >

@@ -23,9 +23,9 @@ root.render(
   <Provider store={store}>
     <StyledEngineProvider injectFirst>
       <BrowserRouter>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
+        {/* <React.StrictMode> */}
+        <App />
+        {/* </React.StrictMode> */}
       </BrowserRouter>
     </StyledEngineProvider>
   </Provider>

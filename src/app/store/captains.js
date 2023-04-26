@@ -15,13 +15,13 @@ const captainsSlice = createSlice({
     captainsRequested: (state) => {
       state.isLoading = true;
     },
-    captainsReceved: (state, action) => {
+    captainsReceived: (state, action) => {
       state.entities = action.payload.result;
       state.entitiesInfo = action.payload.info;
       state.lastFetch = Date.now();
       state.isLoading = false;
     },
-    captainsRequesFailed: (state, action) => {
+    captainsRequestFailed: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
     },
@@ -29,7 +29,7 @@ const captainsSlice = createSlice({
 });
 
 const { reducer: captainsReducer, actions } = captainsSlice;
-const { captainsRequested, captainsReceved, captainsRequesFailed } = actions;
+const { captainsRequested, captainsReceived, captainsRequestFailed } = actions;
 
 function isOutdated(date) {
   if (Date.now() - date > 10 * 60 * 1000) {
@@ -39,14 +39,15 @@ function isOutdated(date) {
 }
 
 export const loadCaptainsList = (currentPage) => async (dispatch, getState) => {
+  console.log(11);
   // const { lastFetch } = getState().captains;
   // if (isOutdated(lastFetch)) {
   dispatch(captainsRequested());
   try {
     const content = await captainsService.get(currentPage, config.pageSize);
-    dispatch(captainsReceved(content));
+    dispatch(captainsReceived(content));
   } catch (error) {
-    dispatch(captainsRequesFailed(error.message));
+    dispatch(captainsRequestFailed(error.message));
   }
   // }
 };

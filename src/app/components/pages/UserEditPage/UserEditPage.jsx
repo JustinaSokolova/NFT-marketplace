@@ -13,7 +13,7 @@ const UserEditPage = () => {
     navigate(-1);
   };
   return (
-    <BoxContainer elevation={1}>
+    <BoxContainer>
       <Box
         sx={{
           width: "100%",
@@ -41,6 +41,7 @@ const UserEditPage = () => {
             justifyContent: "space-between",
             alignItems: "center",
             mb: "24px",
+            mt: "14px",
           }}
           onClick={handleClick}
         >

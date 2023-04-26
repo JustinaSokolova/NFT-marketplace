@@ -4,6 +4,17 @@
 // // third-party
 // @import "~react-perfect-scrollbar/dist/css/styles.css";
 
+a,
+a:link,
+a:visited,
+a:focus,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .font-logo {
   font-family: "TropicalJungle";
   text-shadow: 1px 1px white, 2px 2px #777;
@@ -80,6 +91,20 @@
 .svg-cursor {
   cursor: pointer;
   fill: #fff;
+}
+
+.block-flex-start {
+  display: "flex";
+  justify-content: "flex-start";
+  align-items: "center";
+}
+
+.main-btn {
+  min-width: 160px;
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  margin: 16px;
 }
 // // ==============================|| PERFECT SCROLLBAR ||============================== //
 

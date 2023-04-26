@@ -6,8 +6,9 @@ import { Pagination, PaginationItem } from "@mui/material";
 import config from "../../config.json";
 
 const PaginationComp = (props) => {
-  const { itemsCount, pagesCount, onPageChange, currentPage } = props;
+  const { itemsCount, pagesCount, onPageChange, currentPage, pathName } = props;
   const pageCount = Math.ceil(itemsCount / config.pageSize);
+  // const path = pathName.slice(1);
 
   if (pageCount === 1) return null;
 
@@ -24,7 +25,7 @@ const PaginationComp = (props) => {
         renderItem={(item) => (
           <PaginationItem
             component={NavLink}
-            to={`/captains?page=${item.page}`}
+            to={`${pathName}?page=${item.page}`}
             {...item}
           />
         )}
@@ -39,6 +40,7 @@ PaginationComp.propTypes = {
   // pageSize: PropTypes.number.isRequired, //  кол-во эл-в на странице
   onPageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
+  pathName: PropTypes.string.isRequired,
 };
 
 export default PaginationComp;

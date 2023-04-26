@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import themeContext from "../../components/themeContext";
 // import PropTypes from "prop-types";
 
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ListItems from "./ListItems";
 
@@ -11,6 +11,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -24,7 +25,6 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import ToggleTheme from "../ToggleTheme";
-import MainButton from "../ui/MainButton";
 import Logo from "../ui/Logo";
 import config from "../../config.json";
 import UserMenu from "./UserMenu";
@@ -101,6 +101,7 @@ const Layout = () => {
       <Box
         sx={{
           display: "flex",
+          bgcolor: theme.palette.background.paper,
         }}
       >
         <CssBaseline />
@@ -140,9 +141,14 @@ const Layout = () => {
                   alignItems: "center",
                 }}
               >
-                <MainButton color="secondary" size="medium" variant="contained">
-                  Connect wallet
-                </MainButton>
+                <Button
+                  color="secondary"
+                  size="medium"
+                  variant="contained"
+                  className="main-btn"
+                >
+                  <NavLink>Connect wallet</NavLink>
+                </Button>
                 <IconButton
                   size="large"
                   aria-label="show 17 new notifications"
@@ -211,21 +217,14 @@ const Layout = () => {
               </List>
             </Box>
             <Box sx={{ alignSelf: "center" }}>
-              <Link
-                to="/auth/login"
-                className="nav-link"
-                aria-current="page"
-                underline="none"
+              <Button
+                color="secondary"
+                size="medium"
+                variant="contained"
+                className="main-btn"
               >
-                <MainButton
-                  href="/auth/login"
-                  color="secondary"
-                  size="medium"
-                  variant="contained"
-                >
-                  Log In
-                </MainButton>
-              </Link>
+                <NavLink to="/auth/login">Log In</NavLink>
+              </Button>
             </Box>
           </Box>
         </Drawer>
@@ -238,7 +237,7 @@ const Layout = () => {
             borderRadius: "12px 12px 0px 0px",
             minHeight: "calc(100vh - 88px)",
             ...(theme.palette.mode === "dark"
-              ? { backgroundColor: theme.palette.default }
+              ? { backgroundColor: theme.palette.background.default }
               : { backgroundColor: theme.palette.primary.light }),
           }}
         >
