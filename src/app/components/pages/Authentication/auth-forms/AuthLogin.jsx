@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useTheme } from "@mui/material/styles";
 import {
@@ -15,26 +16,39 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  // Stack,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 
 import * as Yup from "yup";
-import { Formik } from "formik"; // npm установить!!!
+import { Formik } from "formik";
 
-import useScriptRef from "../../../../hooks/useScriptRef";
 import MetaMaskIcon from "../../../../assets/icons/icons8-metamask.png";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { getAuthError, getIsLogIn, logIn } from "../../../../store/user";
+
+const initialValues = {
+  email: "",
+  password: "",
+  submit: null,
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email is required")
+    .email("Invalid email address"),
+  password: Yup.string().required("Password is required"),
+});
 
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md")); // ???
-  const customization = useSelector((state) => state.customization); //
-  // const [checked, setChecked] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const messageError = useSelector(getAuthError());
+  const isLogin = useSelector(getIsLogIn());
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -125,37 +139,43 @@ const AuthLogin = ({ ...others }) => {
       </Grid>
 
       <Formik
-        initialValues={{
-          email: "info@example.com",
-          password: "123456",
-          submit: null,
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string()
-            .email("Must be a valid email")
-            .max(255)
-            .required("Email is required"),
-          password: Yup.string().max(255).required("Password is required"),
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={async (values, { setStatus, setSubmitting }) => {
+          const redirect = location.state
+            ? location.state.referrer.pathname
+            : "/";
+
+          console.log("до диспача");
+          dispatch(logIn(values))
+            .then(() => {
+              console.log("then");
               setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
+              navigate(redirect, { replace: true });
+            })
+            .catch(() => {
+              console.log("catch");
               setStatus({ success: false });
-              setErrors({ submit: err.message });
+              // setErrors({ submit: messageError });
+            })
+            .finally(() => {
               setSubmitting(false);
-            }
-          }
+            });
+          // if (isLogin) {
+          //   console.log("then");
+          //   setStatus({ success: true });
+          //   // navigate(redirect, { replace: true });
+          //   setSubmitting(false);
+          // } else {
+          //   console.log("catch");
+          //   setStatus({ success: false });
+          //   setSubmitting(false);
+          // }
+          // .unwrap()
         }}
       >
         {({
           errors,
-          handleBlur,
           handleChange,
           handleSubmit,
           isSubmitting,
@@ -176,7 +196,6 @@ const AuthLogin = ({ ...others }) => {
                 type="email"
                 value={values.email}
                 name="email"
-                onBlur={handleBlur}
                 onChange={handleChange}
                 label="Email Address"
                 inputProps={{}}
@@ -204,7 +223,6 @@ const AuthLogin = ({ ...others }) => {
                   type={showPassword ? "text" : "password"}
                   value={values.password}
                   name="password"
-                  onBlur={handleBlur}
                   onChange={handleChange}
                   endAdornment={
                     <InputAdornment position="end">
@@ -232,34 +250,9 @@ const AuthLogin = ({ ...others }) => {
                 )}
               </FormControl>
             </Box>
-            {/* <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              spacing={1}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={(event) => setChecked(event.target.checked)}
-                    name="checked"
-                    color="primary"
-                  />
-                }
-                label="Remember me"
-              />
-              <Typography
-                variant="subtitle1"
-                color="secondary"
-                sx={{ textDecoration: "none", cursor: "pointer" }}
-              >
-                Forgot Password?
-              </Typography>
-            </Stack> */}
-            {errors.submit && (
+            {messageError && (
               <Box sx={{ mt: 3 }}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
+                <FormHelperText error>{messageError}</FormHelperText>
               </Box>
             )}
 

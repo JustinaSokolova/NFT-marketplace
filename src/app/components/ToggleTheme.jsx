@@ -5,10 +5,11 @@ import { styled } from "@mui/material/styles";
 
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
+import localStorageService from "../services/localStorage.service";
 
 const ToggleTheme = () => {
   const [checked, setChecked] = useState(true);
-  const [buttonMode, setButtonMode] = useState("lightOn");
+  const [buttonMode, setButtonMode] = useState("darkOn");
   const colorMode = useContext(themeContext);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const ToggleTheme = () => {
   }, [buttonMode]);
 
   const setButtonTheme = (themeBtn) => {
-    window.localStorage.setItem("button_theme", themeBtn);
+    localStorageService.setThemeButtonToken(themeBtn);
     setButtonMode(themeBtn);
   };
 
@@ -29,14 +30,10 @@ const ToggleTheme = () => {
   };
 
   useEffect(() => {
-    const localThemeBtn = window.localStorage.getItem("button_theme");
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches &&
-    !localThemeBtn
-      ? setButtonTheme("darkOn")
-      : localThemeBtn
-      ? setButtonMode(localThemeBtn)
-      : setButtonTheme("lightOn");
+    const localThemeBtn = localStorageService.getThemeButtonToken();
+    // window.matchMedia &&
+    // window.matchMedia("(prefers-color-scheme: dark)").matches &&
+    !localThemeBtn ? setButtonTheme("darkOn") : setButtonMode(localThemeBtn);
   }, []);
 
   const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -64,9 +61,6 @@ const ToggleTheme = () => {
     },
     "& .MuiSwitch-thumb": {
       backgroundColor: theme.palette.primary.dark,
-      // theme.palette.mode === "dark"
-      //   ? theme.palette.primary.dark
-      //   : theme.palette.text.primary,
       width: 32,
       height: 32,
       "&:before": {

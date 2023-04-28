@@ -14,9 +14,11 @@ import UserEditPage from "./components/pages/UserEditPage/UserEditPage";
 import { useDarkMode } from "./hooks/useDarkMode";
 import ThemeCustomization from "./themes";
 import { CoinRateProvider } from "./hooks/useCoinRate";
-// import AppLoader from "./hoc/AppLoader";
+
 import Register from "./components/pages/Authentication/auth/Register";
 import Login from "./components/pages/Authentication/auth/Login";
+import Auth from "./layouts/Auth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [componentMounted] = useDarkMode();
@@ -27,7 +29,6 @@ function App() {
 
   return (
     <>
-      {/* <AppLoader> */}
       <ThemeCustomization>
         <CoinRateProvider>
           <Routes>
@@ -37,10 +38,24 @@ function App() {
               <Route path="ships" element={<Ships />} />
               <Route path="captains" element={<Captains />} />
               <Route path="islands" element={<Islands />} />
-              <Route path="user" element={<UserPage />} />
-              <Route path="settings" element={<UserEditPage />} />
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRoute redirectTo={"/auth/login"}>
+                    <UserPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="settings"
+                element={
+                  <ProtectedRoute redirectTo={"/auth/login"}>
+                    <UserEditPage />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
-            <Route path="auth">
+            <Route path="auth" element={<Auth />}>
               <Route index element={<Navigate to="/auth/register" />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
@@ -51,7 +66,6 @@ function App() {
         </CoinRateProvider>
         <ToastContainer />
       </ThemeCustomization>
-      {/* </AppLoader> */}
     </>
   );
 }

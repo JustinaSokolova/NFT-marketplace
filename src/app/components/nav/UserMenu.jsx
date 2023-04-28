@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -11,16 +12,17 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
+import { logOut } from "../../store/user";
+
 const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logOut());
+    window.location.reload();
+  };
   return (
-    <Box
-      sx={{
-        ...(theme.palette.mode === "dark"
-          ? { backgroundColor: theme.palette.background[900] }
-          : { backgroundColor: theme.palette.background.paper }),
-      }}
-    >
+    <Box>
       <Menu
         anchorEl={anchorEl}
         id={menuId}
@@ -33,12 +35,6 @@ const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
             "&:before": {
               content: '""',
               display: "block",
@@ -47,10 +43,15 @@ const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: "background.paper",
               transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
+              ...(theme.palette.mode === "dark"
+                ? { backgroundColor: theme.palette.background[800] }
+                : { backgroundColor: theme.palette.background.paper }),
             },
+            ...(theme.palette.mode === "dark"
+              ? { backgroundColor: theme.palette.background[800] }
+              : { backgroundColor: theme.palette.background.paper }),
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
@@ -58,7 +59,7 @@ const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
       >
         <Link
           component={RouterLink}
-          to="/user"
+          to="/profile"
           color="inherit"
           underline="none"
           rel="noopener"
@@ -88,12 +89,11 @@ const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
         </Link>
         <Link
           component={RouterLink}
-          to="/"
           color="inherit"
           underline="none"
           rel="noopener"
         >
-          <MenuItem onClick={handleMenuClose}>
+          <MenuItem onClick={handleLogout}>
             {" "}
             <ListItemIcon>
               <Logout fontSize="small" />

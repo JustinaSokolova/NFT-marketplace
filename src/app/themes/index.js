@@ -26,13 +26,6 @@ const ThemeCustomization = ({ children }) => {
         },
       },
       direction: "ltr",
-      // mixins: {
-      //     toolbar: {
-      //         minHeight: 60,
-      //         paddingTop: 8,
-      //         paddingBottom: 8
-      //     }
-      // },
       palette: theme.palette,
       // typography: themeTypography
     }),

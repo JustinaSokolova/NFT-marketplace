@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
@@ -19,13 +21,11 @@ import {
   OutlinedInput,
   // TextField,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
 
-import useScriptRef from "../../../../hooks/useScriptRef";
 import MetaMaskIcon from "../../../../assets/icons/icons8-metamask.png";
 
 import Visibility from "@mui/icons-material/Visibility";
@@ -34,12 +34,28 @@ import {
   strengthColor,
   strengthIndicator,
 } from "../../../../utils/passwordStrength";
+import { getAuthError, signUp } from "../../../../store/user";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email is required")
+    .email("Invalid email address"),
+  password: Yup.string().required("Password is required"),
+});
 
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  // const customization = useSelector((state) => state.customization); // ???
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const messageError = useSelector(getAuthError());
+
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
@@ -136,37 +152,28 @@ const AuthRegister = ({ ...others }) => {
       </Grid>
 
       <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          submit: null,
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string()
-            .email("Must be a valid email")
-            .max(255)
-            .required("Email is required"),
-          password: Yup.string().max(255).required("Password is required"),
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={async (values, { setStatus, setSubmitting }) => {
+          const redirect = location.state
+            ? location.state.referrer.pathname
+            : "/";
+          dispatch(signUp(values))
+            .then(() => {
               setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
+              navigate(redirect, { replace: true });
+            })
+            .catch(() => {
               setStatus({ success: false });
-              setErrors({ submit: err.message });
+              // if (messageError != null) setErrors({ submit: messageError });
+            })
+            .finally(() => {
               setSubmitting(false);
-            }
-          }
+            });
         }}
       >
         {({
           errors,
-          handleBlur,
           handleChange,
           handleSubmit,
           isSubmitting,
@@ -187,7 +194,6 @@ const AuthRegister = ({ ...others }) => {
                 type="email"
                 value={values.email}
                 name="email"
-                onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
               />
@@ -215,7 +221,6 @@ const AuthRegister = ({ ...others }) => {
                   value={values.password}
                   name="password"
                   label="Password"
-                  onBlur={handleBlur}
                   onChange={(e) => {
                     handleChange(e);
                     changePassword(e.target.value);
@@ -285,6 +290,7 @@ const AuthRegister = ({ ...others }) => {
                         component={Link}
                         to="#"
                         color={theme.palette.text.primary}
+                        className="link-underline"
                       >
                         Terms & Condition
                       </Typography>
@@ -293,9 +299,9 @@ const AuthRegister = ({ ...others }) => {
                 />
               </Grid>
             </Grid>
-            {errors.submit && (
+            {messageError && (
               <Box sx={{ mt: 3 }}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
+                <FormHelperText error>{messageError}</FormHelperText>
               </Box>
             )}
 

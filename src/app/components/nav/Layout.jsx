@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-// import themeContext from "../../components/themeContext";
-// import PropTypes from "prop-types";
-
 import { NavLink, Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
-import ListItems from "./ListItems";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -19,15 +16,15 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import CssBaseline from "@mui/material/CssBaseline";
-import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 
+import ListItems from "./ListItems";
 import ToggleTheme from "../ToggleTheme";
 import Logo from "../ui/Logo";
 import config from "../../config.json";
 import UserMenu from "./UserMenu";
+import { getIsLogIn, logOut } from "../../store/user";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -69,13 +66,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
 
 const Layout = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
 
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -94,6 +92,11 @@ const Layout = () => {
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    window.location.reload();
   };
 
   return (
@@ -149,25 +152,19 @@ const Layout = () => {
                 >
                   <NavLink>Connect wallet</NavLink>
                 </Button>
-                <IconButton
-                  size="large"
-                  aria-label="show 17 new notifications"
-                  color="secondary"
-                >
-                  <Badge badgeContent={17} color="warning">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                >
-                  <AccountCircle />
-                </IconButton>
+
+                {isLogIn && (
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                )}
                 <ToggleTheme />
               </Box>
             </Toolbar>
@@ -223,7 +220,11 @@ const Layout = () => {
                 variant="contained"
                 className="main-btn"
               >
-                <NavLink to="/auth/login">Log In</NavLink>
+                {!isLogIn ? (
+                  <NavLink to="/auth/login">Log In</NavLink>
+                ) : (
+                  <NavLink onClick={handleLogout}>Log Out</NavLink>
+                )}
               </Button>
             </Box>
           </Box>

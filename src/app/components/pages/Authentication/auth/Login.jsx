@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { Divider, Grid, Stack, Typography, useMediaQuery } from "@mui/material";
 
-import AuthWrapper from "../AuthWrapper";
 import AuthLogin from "../auth-forms/AuthLogin";
 import Logo from "../../../ui/Logo";
-import AuthCardWrapper from "../AuthCardWrapper1.jsx";
+import AuthCardWrapper from "../AuthCardWrapper.jsx";
 
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <AuthWrapper>
+    <>
       <Grid
         container
         direction="column"
@@ -108,7 +107,7 @@ const Login = () => {
           </Grid>
         </Grid>
       </Grid>
-    </AuthWrapper>
+    </>
   );
 };
 
