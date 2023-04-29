@@ -96,7 +96,7 @@ const Layout = () => {
 
   const handleLogout = () => {
     dispatch(logOut());
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (

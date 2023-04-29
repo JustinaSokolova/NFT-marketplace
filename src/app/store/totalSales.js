@@ -10,7 +10,7 @@ const totalSalesSlice = createSlice({
     // lastFetch: null,
   },
   reducers: {
-    totalSalesRequested: (state) => {
+    totalSalesRequest: (state) => {
       state.isLoading = true;
     },
     totalSalesReceived: (state, action) => {
@@ -26,7 +26,7 @@ const totalSalesSlice = createSlice({
 });
 
 const { reducer: totalSalesReducer, actions } = totalSalesSlice;
-const { totalSalesRequested, totalSalesReceived, totalSalesRequestFailed } =
+const { totalSalesRequest, totalSalesReceived, totalSalesRequestFailed } =
   actions;
 
 // function isOutdated(date) {
@@ -37,8 +37,7 @@ const { totalSalesRequested, totalSalesReceived, totalSalesRequestFailed } =
 // }
 
 export const loadTotalSalesList = (payload) => async (dispatch) => {
-  console.log(11);
-  dispatch(totalSalesRequested());
+  dispatch(totalSalesRequest());
   try {
     const content = await totalSalesService.get(payload);
     dispatch(totalSalesReceived(content));
@@ -47,8 +46,7 @@ export const loadTotalSalesList = (payload) => async (dispatch) => {
   }
 };
 
-export const getTotalSales = () => (state) => state.totalSales.entities; // ф-ии селекторы
-export const getTotalSalesInfo = () => (state) => state.totalSales.entitiesInfo;
+export const getTotalSales = () => (state) => state.totalSales.entities;
 
 export const getTotalSalesLoadingStatus = () => (state) =>
   state.totalSales.isLoading;

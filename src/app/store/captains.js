@@ -39,7 +39,6 @@ function isOutdated(date) {
 }
 
 export const loadCaptainsList = (currentPage) => async (dispatch, getState) => {
-  console.log(11);
   // const { lastFetch } = getState().captains;
   // if (isOutdated(lastFetch)) {
   dispatch(captainsRequested());
