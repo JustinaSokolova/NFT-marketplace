@@ -3,45 +3,56 @@ import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
 import generateAuthError from "../utils/generateAuthError";
 
-const initialState = localStorageService.getAccessToken()
-  ? {
-      authToken: localStorageService.getAccessToken(),
-      wallet: null,
-      error: null,
-      isLogIn: true,
-      status: false,
-    }
-  : {
-      authToken: null,
-      wallet: null,
-      error: null,
-      isLogIn: false,
-      status: false,
-    };
+const initialState = {
+  authToken: localStorageService.getAccessToken()
+    ? localStorageService.getAccessToken()
+    : null,
+  addressWallet: localStorageService.getWallet()
+    ? localStorageService.getWallet()
+    : null,
+  error: null,
+  isLogIn: localStorageService.getAccessToken() ? true : false,
+  status: false,
+};
+// : {
+//     authToken: null,
+//     addressWallet: null,
+//     error: null,
+//     isLogIn: false,
+//     status: false,
+//   };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     authRequestSuccess: (state, action) => {
-      state.authToken = action.payload;
+      state.authToken = action.payload.token;
       state.isLogIn = true;
     },
     authRequestFailed: (state, action) => {
       state.error = action.payload;
     },
-    authWallet: (state, action) => {
-      state.wallet = action.payload;
+    authWalletSuccess: (state, action) => {
+      state.addressWallet = action.payload.ethAddress;
+      state.authToken = action.payload.token;
       state.isLogIn = true;
+    },
+    authWalletFailed: (state, action) => {
+      state.error = action.payload;
     },
     userLogOut: (state) => {
       state.isLogIn = false;
       state.authToken = null;
+      state.addressWallet = null;
     },
     userUpdateSuccess: (state) => {
       state.status = true;
     },
     authRequested: (state) => {
+      state.error = null;
+    },
+    clearErrorMessage: (state) => {
       state.error = null;
     },
   },
@@ -52,14 +63,17 @@ const { reducer: userReducer, actions } = userSlice;
 const {
   authRequestSuccess,
   authRequestFailed,
-  authWallet,
+  authWalletSuccess,
+  authWalletFailed,
   userLogOut,
   userUpdateSuccess,
   authRequested,
+  clearErrorMessage,
 } = actions;
 
 const userUpdateRequested = createAction("user/userUpdateRequested");
 const updateUserFailed = createAction("user/updateUserFailed");
+export { clearErrorMessage };
 
 export const logIn = (payload) => async (dispatch) => {
   const { email, password } = payload;
@@ -67,7 +81,7 @@ export const logIn = (payload) => async (dispatch) => {
   try {
     const data = await authService.login({ email, password });
     console.log(data);
-    dispatch(authRequestSuccess(data.token));
+    dispatch(authRequestSuccess(data));
     localStorageService.setToken(data.token);
   } catch (error) {
     console.log(error);
@@ -89,7 +103,7 @@ export const signUp =
     try {
       const data = await authService.register({ email, password });
       localStorageService.setToken(data.token);
-      dispatch(authRequestSuccess(data.token));
+      dispatch(authRequestSuccess(data));
     } catch (error) {
       const { code, message } = error.response.data.error;
       if (code >= 400) {
@@ -102,7 +116,9 @@ export const signUp =
   };
 
 export const logOut = () => (dispatch) => {
+  authService.logout();
   localStorageService.removeAuthData();
+  localStorageService.removeWalletData();
   dispatch(userLogOut());
 };
 
@@ -116,11 +132,54 @@ export const updateUser = (payload) => async (dispatch) => {
   }
 };
 
+export const logInMetamask = (payload) => async (dispatch) => {
+  dispatch(authRequested());
+  try {
+    const data = await authService.loginWeb3(payload);
+    console.log(data);
+    localStorageService.setToken(data.token);
+    localStorageService.setWallet(data.ethAddress);
+    dispatch(authWalletSuccess(data));
+  } catch (error) {
+    console.log(error);
+    const { status, data } = error.response;
+    if (status >= 400) {
+      const errorMessage = generateAuthError(data.reason);
+      console.log(errorMessage);
+      dispatch(authWalletFailed(errorMessage));
+    } else {
+      console.log(error);
+      dispatch(authWalletFailed(error.message));
+    }
+  }
+};
+
+export const signUpMetamask = (payload) => async (dispatch) => {
+  dispatch(authRequested());
+  try {
+    const data = await authService.registerWeb3(payload);
+    console.log(data);
+    localStorageService.setToken(data.token);
+    localStorageService.setWallet(data.ethAddress);
+    dispatch(authWalletSuccess(data));
+  } catch (error) {
+    console.log(error);
+    const { status, data } = error.response;
+    if (status >= 400) {
+      const errorMessage = generateAuthError(data.reason);
+      console.log(errorMessage);
+      dispatch(authWalletFailed(errorMessage));
+    } else {
+      dispatch(authWalletFailed(error.message));
+    }
+  }
+};
+
 export const getIsLogIn = () => (state) => state.user.isLogIn;
 
 export const getUserAuthToken = () => (state) => state.user.authToken;
 
-export const getUserWallet = () => (state) => state.user.wallet;
+export const getUserWallet = () => (state) => state.user.addressWallet;
 
 export const getAuthError = () => (state) => state.user.error;
 

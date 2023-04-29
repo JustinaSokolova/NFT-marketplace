@@ -7,7 +7,7 @@ import { getIsLogIn } from "../store/user";
 
 const Auth = () => {
   const isLogIn = useSelector(getIsLogIn());
-  console.log("auth rout");
+
   if (isLogIn) {
     return <Navigate to="/" />;
   }

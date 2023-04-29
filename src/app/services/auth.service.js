@@ -20,6 +20,20 @@ const authService = {
     });
     return data;
   },
+  loginWeb3: async ({ ethAddress, signedMessage }) => {
+    const { data } = await httpAuth.post(`signIn`, {
+      ethAddress,
+      signedMessage,
+    });
+    return data;
+  },
+  registerWeb3: async ({ ethAddress, signedMessage }) => {
+    const { data } = await httpAuth.post(`signUp`, {
+      ethAddress,
+      signedMessage,
+    });
+    return data;
+  },
   updatePassword: async (password) => {
     const { data } = await httpAuth.post(
       `updatePassword`,
@@ -35,6 +49,7 @@ const authService = {
     return data;
   },
   logout: async () => {
+    console.log(localStorageService.getAccessToken());
     const { status } = await httpAuth.post(
       `logout`,
       {},
@@ -44,6 +59,7 @@ const authService = {
         },
       }
     );
+    console.log(status);
     return status;
   },
 };

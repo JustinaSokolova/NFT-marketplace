@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -24,7 +23,8 @@ import ToggleTheme from "../ToggleTheme";
 import Logo from "../ui/Logo";
 import config from "../../config.json";
 import UserMenu from "./UserMenu";
-import { getIsLogIn, logOut } from "../../store/user";
+import { getIsLogIn, logOut, getUserWallet } from "../../store/user";
+import { walletAddress } from "../../utils/walletAddress.js";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -71,13 +71,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Layout = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const isLogIn = useSelector(getIsLogIn());
-
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const menuId = "primary-search-account-menu";
+
+  const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
+  const userWallet = useSelector(getUserWallet());
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,7 +96,7 @@ const Layout = () => {
 
   const handleLogout = () => {
     dispatch(logOut());
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
@@ -150,7 +150,15 @@ const Layout = () => {
                   variant="contained"
                   className="main-btn"
                 >
-                  <NavLink>Connect wallet</NavLink>
+                  <NavLink
+                    sx={{
+                      textTransform: userWallet ? "lowercase" : "uppercase",
+                    }}
+                  >
+                    {isLogIn && userWallet
+                      ? walletAddress(userWallet)
+                      : "Connect wallet"}
+                  </NavLink>
                 </Button>
 
                 {isLogIn && (

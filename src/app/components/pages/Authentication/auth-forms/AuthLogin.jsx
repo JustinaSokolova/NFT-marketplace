@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -26,7 +26,15 @@ import MetaMaskIcon from "../../../../assets/icons/icons8-metamask.png";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { getAuthError, getIsLogIn, logIn } from "../../../../store/user";
+import {
+  clearErrorMessage,
+  getAuthError,
+  getIsLogIn,
+  logIn,
+  logInMetamask,
+} from "../../../../store/user";
+import { AddressSignatureMetamask } from "../../../../services/web3.service";
+import Loader from "../../../ui/Loader";
 
 const initialValues = {
   email: "",
@@ -48,15 +56,34 @@ const AuthLogin = ({ ...others }) => {
   const location = useLocation();
 
   const messageError = useSelector(getAuthError());
-  const isLogin = useSelector(getIsLogIn());
+  const isLogIn = useSelector(getIsLogIn());
+  const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, [dispatch]);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleMetamask = async () => {
+    setLoading(true);
+    const data = await AddressSignatureMetamask();
+    const redirect = location.state ? location.state.referrer.pathname : "/";
+    dispatch(logInMetamask(data))
+      .then(() => {
+        isLogIn && navigate(redirect, { replace: true });
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -66,7 +93,7 @@ const AuthLogin = ({ ...others }) => {
           <Button
             disableElevation
             fullWidth
-            // onClick={googleHandler} connect Metamask
+            onClick={handleMetamask}
             size="large"
             variant="outlined"
             sx={{
@@ -142,36 +169,22 @@ const AuthLogin = ({ ...others }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setStatus, setSubmitting }) => {
+          setLoading(true);
           const redirect = location.state
             ? location.state.referrer.pathname
             : "/";
-
-          console.log("до диспача");
           dispatch(logIn(values))
             .then(() => {
-              console.log("then");
               setStatus({ success: true });
               navigate(redirect, { replace: true });
             })
             .catch(() => {
-              console.log("catch");
               setStatus({ success: false });
-              // setErrors({ submit: messageError });
             })
             .finally(() => {
+              setLoading(false);
               setSubmitting(false);
             });
-          // if (isLogin) {
-          //   console.log("then");
-          //   setStatus({ success: true });
-          //   // navigate(redirect, { replace: true });
-          //   setSubmitting(false);
-          // } else {
-          //   console.log("catch");
-          //   setStatus({ success: false });
-          //   setSubmitting(false);
-          // }
-          // .unwrap()
         }}
       >
         {({
@@ -265,7 +278,13 @@ const AuthLogin = ({ ...others }) => {
                 type="submit"
                 variant="contained"
                 color="secondary"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
+                {loading && <Loader />}
                 Sign in
               </Button>
             </Box>

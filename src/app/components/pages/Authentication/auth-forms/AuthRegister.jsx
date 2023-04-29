@@ -34,7 +34,15 @@ import {
   strengthColor,
   strengthIndicator,
 } from "../../../../utils/passwordStrength";
-import { getAuthError, signUp } from "../../../../store/user";
+import {
+  clearErrorMessage,
+  getAuthError,
+  getIsLogIn,
+  signUp,
+  signUpMetamask,
+} from "../../../../store/user";
+import { AddressSignatureMetamask } from "../../../../services/web3.service";
+import Loader from "../../../ui/Loader";
 
 const initialValues = {
   email: "",
@@ -54,13 +62,19 @@ const AuthRegister = ({ ...others }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const isLogIn = useSelector(getIsLogIn());
   const messageError = useSelector(getAuthError());
+  const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
+
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, [dispatch]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -77,8 +91,21 @@ const AuthRegister = ({ ...others }) => {
   };
 
   useEffect(() => {
-    changePassword("123456");
+    changePassword("1234");
   }, []);
+
+  const handleMetamask = async () => {
+    setLoading(true);
+    const data = await AddressSignatureMetamask();
+    const redirect = location.state ? location.state.referrer.pathname : "/";
+    dispatch(signUpMetamask(data))
+      .then(() => {
+        isLogIn && navigate(redirect, { replace: true });
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -87,7 +114,7 @@ const AuthRegister = ({ ...others }) => {
           <Button
             variant="outlined"
             fullWidth
-            // onClick={googleHandler}
+            onClick={handleMetamask}
             size="large"
             sx={{
               display: "flex",
@@ -314,8 +341,14 @@ const AuthRegister = ({ ...others }) => {
                 type="submit"
                 variant="contained"
                 color="secondary"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                Sign up
+                {loading && <Loader />}
+                Sign in
               </Button>
             </Box>
           </form>

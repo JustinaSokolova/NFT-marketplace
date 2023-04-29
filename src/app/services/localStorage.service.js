@@ -1,4 +1,5 @@
 const TOKEN_KEY = "jwt-token";
+const WALLET_KEY = "wallet-address";
 const THEME_KEY = "theme";
 const THEME_BUTTON_KEY = "button_theme";
 
@@ -10,8 +11,20 @@ export function getAccessToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
 
+export function setWallet(address) {
+  localStorage.setItem(WALLET_KEY, address);
+}
+
+export function getWallet() {
+  return localStorage.getItem(WALLET_KEY);
+}
+
 export function removeAuthData() {
   localStorage.removeItem(TOKEN_KEY);
+}
+
+export function removeWalletData() {
+  localStorage.removeItem(WALLET_KEY);
 }
 
 export function setThemeToken(idToken) {
@@ -38,5 +51,8 @@ const localStorageService = {
   setThemeButtonToken,
   getThemeToken,
   getThemeButtonToken,
+  setWallet,
+  getWallet,
+  removeWalletData,
 };
 export default localStorageService;
