@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Box } from "@mui/material";
 
 import BoxContainer from "../../common/BoxContainer";
-import topSalesNftService from "../../../services/topSalesNft.service";
 import SliderComp from "../../common/SliderComp";
 
 import SkeletonTopSales from "../../ui/skeleton/SkeletonTopSales";
 import FilterButtonGroup from "./FilterButtonGroup";
+import {
+  getTopSalesNft,
+  getTopSalesNftLoadingStatus,
+  loadTopSalesNftList,
+} from "../../../store/topSalesNft";
 
 const TopSales = () => {
-  const [topSalesData, setTopSalesData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const topSalesNftData = useSelector(getTopSalesNft());
+  const isLoading = useSelector(getTopSalesNftLoadingStatus());
+
   const [selectedTime, setSelectedTime] = useState(30);
 
   useEffect(() => {
-    getSalesList(selectedTime);
-  }, [selectedTime]);
+    dispatch(loadTopSalesNftList(selectedTime));
+  }, [selectedTime, dispatch]);
 
   const handleSelectedTime = (value) => {
     setSelectedTime(value);
   };
-
-  async function getSalesList(value) {
-    try {
-      const content = await topSalesNftService.get(value);
-      setTopSalesData(content);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <BoxContainer>
@@ -50,7 +47,7 @@ const TopSales = () => {
         />
         <Box sx={{ width: "100%", margin: "0 auto" }}>
           {!isLoading ? (
-            <SliderComp props={topSalesData} />
+            <SliderComp props={topSalesNftData} />
           ) : (
             <SkeletonTopSales />
           )}

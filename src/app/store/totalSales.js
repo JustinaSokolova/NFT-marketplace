@@ -7,7 +7,6 @@ const totalSalesSlice = createSlice({
     entities: null,
     isLoading: true,
     error: null,
-    // lastFetch: null,
   },
   reducers: {
     totalSalesRequest: (state) => {
@@ -15,7 +14,6 @@ const totalSalesSlice = createSlice({
     },
     totalSalesReceived: (state, action) => {
       state.entities = action.payload;
-      // state.lastFetch = Date.now();
       state.isLoading = false;
     },
     totalSalesRequestFailed: (state, action) => {
@@ -28,13 +26,6 @@ const totalSalesSlice = createSlice({
 const { reducer: totalSalesReducer, actions } = totalSalesSlice;
 const { totalSalesRequest, totalSalesReceived, totalSalesRequestFailed } =
   actions;
-
-// function isOutdated(date) {
-//   if (Date.now() - date > 10 * 60 * 1000) {
-//     return true;
-//   }
-//   return false;
-// }
 
 export const loadTotalSalesList = (payload) => async (dispatch) => {
   dispatch(totalSalesRequest());
@@ -50,11 +41,5 @@ export const getTotalSales = () => (state) => state.totalSales.entities;
 
 export const getTotalSalesLoadingStatus = () => (state) =>
   state.totalSales.isLoading;
-
-export const getTotalSalesByIds = (id) => (state) => {
-  if (state.totalSales.entities) {
-    return state.totalSales.entities.find((p) => p._id === id);
-  }
-};
 
 export default totalSalesReducer;

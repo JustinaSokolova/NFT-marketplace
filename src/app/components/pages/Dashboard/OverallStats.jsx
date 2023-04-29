@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Grid } from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
 
 import BoxContainer from "../../common/BoxContainer";
 import TotalSalesCard from "./TotalSalesCard";

@@ -1,5 +1,5 @@
 import Skeleton from "@mui/material/Skeleton";
-import { Card, CardContent, Grid } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 
 const SkeletonCardNft = () => (
   <Card sx={{ width: 200, maxHeight: 300 }}>
