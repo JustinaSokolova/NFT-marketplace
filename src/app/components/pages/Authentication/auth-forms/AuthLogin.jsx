@@ -199,13 +199,13 @@ const AuthLogin = ({ ...others }) => {
             <FormControl
               fullWidth
               error={Boolean(touched.email && errors.email)}
-              sx={{ ...theme.typography.customInput }}
+              // sx={{ ...theme.typography.customInput }}
             >
-              <InputLabel htmlFor="outlined-adornment-email-login">
+              <InputLabel htmlFor="outlined-adornment-email">
                 Email Address
               </InputLabel>
               <OutlinedInput
-                id="outlined-adornment-email-login"
+                id="outlined-adornment-email"
                 type="email"
                 value={values.email}
                 name="email"
@@ -214,10 +214,7 @@ const AuthLogin = ({ ...others }) => {
                 inputProps={{}}
               />
               {touched.email && errors.email && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-email-login"
-                >
+                <FormHelperText error id="standard-weight-helper-text-email">
                   {errors.email}
                 </FormHelperText>
               )}

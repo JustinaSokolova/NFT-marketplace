@@ -5,6 +5,7 @@ import { Box, Button } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import BoxContainer from "../../common/BoxContainer";
+import ChangePassword from "./ChangePassword";
 
 const UserEditPage = () => {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ const UserEditPage = () => {
           <NavigateBeforeIcon />
           Go back
         </Button>
+        <ChangePassword />
       </Box>
     </BoxContainer>
   );
