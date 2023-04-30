@@ -219,11 +219,9 @@ const Layout = () => {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ flexGrow: 1, ml: "16px" }}>
-              <List>
-                <ListItems />
-              </List>
-            </Box>
+            <List sx={{ height: "100%", ml: "16px" }}>
+              <ListItems />
+            </List>
             <Box sx={{ alignSelf: "center" }}>
               <Button
                 color="secondary"

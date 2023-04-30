@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";

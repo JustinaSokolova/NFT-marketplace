@@ -2,8 +2,8 @@
 import { Card, CardContent, Grid } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 
-const SkeletonTopSales = () => (
-  <Card>
+const SkeletonNftListRow = () => (
+  <Card sx={{ m: "16px" }}>
     <CardContent>
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -26,11 +26,11 @@ const SkeletonTopSales = () => (
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Skeleton variant="rectangular" height={330} />
+          <Skeleton variant="rectangular" height={200} />
         </Grid>
       </Grid>
     </CardContent>
   </Card>
 );
 
-export default SkeletonTopSales;
+export default SkeletonNftListRow;

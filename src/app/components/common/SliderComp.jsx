@@ -47,27 +47,6 @@ const SliderComp = ({ props }) => {
       slidesToSlide: 1,
     },
   };
-  const ButtonGroup = ({ next, previous, goToSlide, ...rest }) => {
-    const {
-      carouselState: { currentSlide },
-    } = rest;
-    return (
-      <div
-        className="carousel-button-group mb-4  gap-4 flex justify-end
-          items-center w-full"
-      >
-        <button className="block p-3 bg-slate-300" onClick={() => previous()}>
-          {" "}
-          <ArrowBackIosNewIcon />
-        </button>
-        <button onClick={() => next()}>
-          <span className="block p-3 bg-slate-300">
-            <ArrowForwardIosIcon />
-          </span>
-        </button>
-      </div>
-    );
-  };
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
       carouselState: { currentSlide },
@@ -97,9 +76,6 @@ const SliderComp = ({ props }) => {
       </Button>
     );
   };
-
-  if (props.length <= 0)
-    return "There are no sold NFTs for the selected period";
 
   return (
     <Box

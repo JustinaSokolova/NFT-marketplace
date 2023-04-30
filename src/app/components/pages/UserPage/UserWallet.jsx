@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Box } from "@mui/material";
 
@@ -9,50 +10,45 @@ import CaptainIcon from "../../../assets/icons/pirate.png";
 import ShipIcon from "../../../assets/icons/ship.png";
 import IslandIcon from "../../../assets/icons/mountain.png";
 
-const UserWallet = () => {
+const UserWallet = ({ collection }) => {
   return (
     <Box sx={{ mb: "24px" }}>
-      <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
       <Box
         sx={{
           width: "100%",
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
       >
-        <WalletCard
-        // isLoading={isLoading}
-        // value={data.tokenPerformance.performance}
-        // coinSymbol={data.tokenPerformance.coinSymbol}
-        // title="Total Sales"
-        />
+        <WalletCard />
 
         <WalletNftCard
           icon={ShipIcon}
           collectionName="ships"
           // isLoading={isLoading}
-          // value={data.islandsSold}
-          // title="Islands Sold"
+          value={collection.ships.total}
         />
         <WalletNftCard
           icon={CaptainIcon}
           collectionName="captains"
           // isLoading={isLoading}
-          // value={data.captainsSold}
-          // title="Captans Sold"
+          value={collection.captains.total}
         />
 
         <WalletNftCard
           icon={IslandIcon}
           collectionName="islands"
           // isLoading={isLoading}
-          // value={data.shipsSold}
-          // title="Ships Sold"
+          value={collection.islands.total}
         />
       </Box>
     </Box>
   );
+};
+
+UserWallet.propTypes = {
+  collection: PropTypes.object,
 };
 export default UserWallet;

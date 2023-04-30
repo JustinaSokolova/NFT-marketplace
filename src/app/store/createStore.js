@@ -5,6 +5,7 @@ import shipsReducer from "./ships";
 import topSalesNftReducer from "./topSalesNft";
 import totalSalesReducer from "./totalSales";
 import userReducer from "./user";
+import userNftReducer from "./userBoughtNft";
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   captains: captainsReducer,
   islands: islandsReducer,
   ships: shipsReducer,
+  userNft: userNftReducer,
 });
 
 export function createStore() {

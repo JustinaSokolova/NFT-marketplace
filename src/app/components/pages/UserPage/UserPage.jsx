@@ -1,39 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Box, Button } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import BoxContainer from "../../common/BoxContainer";
-import SliderComp from "../../common/SliderComp";
-import SkeletonTopSales from "../../ui/skeleton/SkeletonTopSales";
+import {
+  getUserNftList,
+  getUserNftLoadingStatus,
+  loadUserNftList,
+} from "../../../store/userBoughtNft";
 
-import topSalesNftService from "../../../services/topSalesNft.service";
 import UserWallet from "./UserWallet";
+import UserCollection from "./UserCollection";
+import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
+import { SkeletonSalesCard } from "../../ui/skeleton/SkeletonSalesCard";
 
 const UserPage = () => {
-  const [topSalesData, setTopSalesData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [selectedTime, setSelectedTime] = useState(30);
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const userNftData = useSelector(getUserNftList());
+  const isLoading = useSelector(getUserNftLoadingStatus());
+
+  // const [currentPage, setCurrentPage] = useState(
+  //   parseInt(location.search?.split("=")[1] || 1)
+  // );
 
   useEffect(() => {
-    getSalesList(selectedTime);
-  }, [selectedTime]);
+    dispatch(loadUserNftList());
+  }, [dispatch]);
+  console.log(userNftData);
+  // useEffect(() => {
+  //   if (!isLoading && collectionUserNftInfo.pages < currentPage) {
+  //     setCurrentPage(1);
+  //     navigate(location.pathname);
+  //   }
+  // }, [currentPage]);
 
-  const handleSelectedTime = (value) => {
-    setSelectedTime(value);
-  };
-
-  async function getSalesList(value) {
-    try {
-      const content = await topSalesNftService.get(value);
-      setTopSalesData(content);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const handlePageChange = (pageIndex) => {
+  //   if (pageIndex !== currentPage) {
+  //     setCurrentPage(pageIndex);
+  //     dispatch(loadUserNftList(pageIndex));
+  //   }
+  // };
 
   const handleClick = () => {
     navigate(-1);
@@ -75,16 +88,40 @@ const UserPage = () => {
           <NavigateBeforeIcon />
           Go back
         </Button>
-        <UserWallet />
-        <Box sx={{ typography: "h5", mb: "24px" }}>My NFT</Box>
-        <Box sx={{ width: "100%", margin: "0 auto" }}>
-          {
-            // вместо слайдера сделать пагинацию
-          }
+        <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
+        <Box sx={{ width: "100%", mb: "24px" }}>
           {!isLoading ? (
-            <SliderComp props={topSalesData} />
+            <UserWallet collection={userNftData} />
           ) : (
-            <SkeletonTopSales />
+            <SkeletonNftListRow />
+          )}
+        </Box>
+        <Divider />
+        <Box sx={{ typography: "h5" }}>My NFT</Box>
+        <Box sx={{ width: "100%", margin: "0 auto" }}>
+          {!isLoading ? (
+            <UserCollection
+              collection={userNftData.captains.items}
+              title="Captains"
+            />
+          ) : (
+            <SkeletonNftListRow />
+          )}
+          {!isLoading ? (
+            <UserCollection
+              collection={userNftData.ships.items}
+              title="Ships"
+            />
+          ) : (
+            <SkeletonNftListRow />
+          )}
+          {!isLoading ? (
+            <UserCollection
+              collection={userNftData.islands.items}
+              title="Islands"
+            />
+          ) : (
+            <SkeletonNftListRow />
           )}
         </Box>
       </Box>

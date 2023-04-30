@@ -50,7 +50,6 @@ const authService = {
     return status;
   },
   logout: async () => {
-    console.log(localStorageService.getAccessToken());
     const { status } = await httpAuth.post(
       `logout`,
       {},
@@ -60,8 +59,15 @@ const authService = {
         },
       }
     );
-    console.log(status);
     return status;
+  },
+  getUserNft: async () => {
+    const { data } = await httpAuth.get(`myNft`, {
+      headers: {
+        Authorization: `Bearer ${localStorageService.getAccessToken()}`,
+      },
+    });
+    return data;
   },
 };
 

@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import BoxContainer from "../../common/BoxContainer";
 import SliderComp from "../../common/SliderComp";
 
-import SkeletonTopSales from "../../ui/skeleton/SkeletonTopSales";
+import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 import FilterButtonGroup from "./FilterButtonGroup";
 import {
   getTopSalesNft,
@@ -29,6 +29,10 @@ const TopSales = () => {
     setSelectedTime(value);
   };
 
+  if (topSalesNftData === null) {
+    return "There are no sold NFTs for the selected period";
+  }
+
   return (
     <BoxContainer>
       <Box
@@ -49,7 +53,7 @@ const TopSales = () => {
           {!isLoading ? (
             <SliderComp props={topSalesNftData} />
           ) : (
-            <SkeletonTopSales />
+            <SkeletonNftListRow />
           )}
         </Box>
       </Box>
