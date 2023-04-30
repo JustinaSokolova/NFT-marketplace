@@ -35,6 +35,12 @@ export async function AddressSignatureMetamask() {
   }
 }
 
+export async function getUserBalance(address) {
+  let balance = await web3.eth.getBalance(address);
+  balance = web3.utils.fromWei(balance);
+  return balance;
+}
+
 async function changeNetworkToTestCronosIfNeeded() {
   const testCronosChainId = 338;
   if (window.ethereum.networkVersion !== testCronosChainId) {

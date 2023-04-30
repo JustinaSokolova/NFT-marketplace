@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Box from "@mui/material/Box";
@@ -11,15 +13,34 @@ import { Alert, Snackbar } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import WalletIcon from "../../../assets/icons/wallet.png";
-import { useSelector } from "react-redux";
+
 import { getUserWallet } from "../../../store/user";
 import { walletAddressShort } from "../../../utils/walletAddressShort";
+import { getUserBalance } from "../../../services/web3.service";
+import { useCoinRate } from "../../../hooks/useCoinRate";
 
 const WalletCard = () => {
   const theme = useTheme();
+  const [copyState, setCopyState] = useState(false);
+  const [userBalance, setUserBalance] = useState(0);
+  const [shortWallet, setShortWallet] = useState();
   const userWallet = useSelector(getUserWallet());
 
-  const [copyState, setCopyState] = useState(false);
+  const { сoinUsdPrice, isLoading } = useCoinRate();
+  const userBalanceUsd = "$" + (userBalance * сoinUsdPrice.usd).toFixed(2);
+
+  async function getBalance() {
+    if (userWallet) {
+      setUserBalance(await getUserBalance(userWallet));
+    }
+  }
+
+  useEffect(() => {
+    if (userWallet) {
+      setShortWallet(walletAddressShort(userWallet));
+      getBalance();
+    }
+  }, [userWallet]);
 
   return (
     <Box sx={{ minWidth: 360, mb: "24px", mr: "24px" }}>
@@ -43,8 +64,7 @@ const WalletCard = () => {
                 mb: 0.75,
               }}
             >
-              {/* {value.toFixed(1)} {coinSymbol ? coinSymbol : ""} */} 8312.1
-              CRO
+              {userBalance} CRO
             </Typography>
             <Typography
               sx={{
@@ -53,7 +73,7 @@ const WalletCard = () => {
                 color: theme.palette.secondary[200],
               }}
             >
-              $ 866
+              {!isLoading ? userBalanceUsd : "$0.0"}
             </Typography>
           </Box>
           <Box sx={{ mr: 1, mt: 1.75, mb: 0.75 }}>
@@ -70,7 +90,7 @@ const WalletCard = () => {
             sx={{
               width: "100%",
               display: "flex",
-              justifyContent: "space-evenly",
+              justifyContent: "space-between",
               alignItems: "center",
               flexGrow: 1,
               backgroundColor: theme.palette.primary.main,
@@ -85,6 +105,7 @@ const WalletCard = () => {
                 fontWeight: 500,
                 color: theme.palette.grey[50],
                 mr: "16px",
+                ml: "16px",
               }}
             >
               Wallet address:
@@ -98,20 +119,22 @@ const WalletCard = () => {
                 mr: "24px",
               }}
             >
-              {walletAddressShort(userWallet)}
+              {userWallet ? shortWallet : ""}
             </Box>
-            <CopyToClipboard
-              text={userWallet}
-              onCopy={() => setCopyState(true)}
-              sx={{ alignSelf: "flex-end" }}
-            >
-              <ContentCopyIcon
-                className="svg-cursor"
-                sx={{
-                  fontSize: "1.25rem",
-                }}
-              />
-            </CopyToClipboard>
+            {userWallet && (
+              <CopyToClipboard
+                text={userWallet}
+                onCopy={() => setCopyState(true)}
+                sx={{ alignSelf: "flex-end", mr: "16px" }}
+              >
+                <ContentCopyIcon
+                  className="svg-cursor"
+                  sx={{
+                    fontSize: "1.25rem",
+                  }}
+                />
+              </CopyToClipboard>
+            )}
           </Box>
 
           <Snackbar
