@@ -10,17 +10,11 @@ const initialState = {
   addressWallet: localStorageService.getWallet()
     ? localStorageService.getWallet()
     : null,
+  email: null,
   error: null,
   isLogIn: localStorageService.getAccessToken() ? true : false,
   status: false,
 };
-// : {
-//     authToken: null,
-//     addressWallet: null,
-//     error: null,
-//     isLogIn: false,
-//     status: false,
-//   };
 
 const userSlice = createSlice({
   name: "user",
@@ -46,8 +40,15 @@ const userSlice = createSlice({
       state.authToken = null;
       state.addressWallet = null;
     },
+    userUpdateRequest: (state) => {
+      state.status = false;
+    },
     userUpdateSuccess: (state) => {
       state.status = true;
+    },
+    userUpdateFailed: (state, action) => {
+      state.status = false;
+      state.error = action.payload;
     },
     authRequested: (state) => {
       state.error = null;
@@ -69,10 +70,10 @@ const {
   userUpdateSuccess,
   authRequested,
   clearErrorMessage,
+  userUpdateRequest,
+  userUpdateFailed,
 } = actions;
 
-const userUpdateRequested = createAction("user/userUpdateRequested");
-const updateUserFailed = createAction("user/updateUserFailed");
 export { clearErrorMessage };
 
 export const logIn = (payload) => async (dispatch) => {
@@ -122,13 +123,23 @@ export const logOut = () => (dispatch) => {
   dispatch(userLogOut());
 };
 
-export const updateUser = (payload) => async (dispatch) => {
-  dispatch(userUpdateRequested());
+export const updateUserPassword = (payload) => async (dispatch) => {
+  dispatch(userUpdateRequest());
   try {
-    const { status } = await authService.updatePassword(payload);
+    const status = await authService.updatePassword(payload);
     if (status === 200) dispatch(userUpdateSuccess());
   } catch (error) {
-    dispatch(updateUserFailed(error.message));
+    console.log(error);
+    const { status, data } = error.response;
+    if (status >= 400) {
+      const errorMessage = generateAuthError(data.reason);
+      console.log(errorMessage);
+      dispatch(userUpdateFailed(errorMessage));
+    } else {
+      console.log(error);
+      dispatch(userUpdateFailed(error.message));
+    }
+    throw error;
   }
 };
 
@@ -180,6 +191,8 @@ export const getIsLogIn = () => (state) => state.user.isLogIn;
 export const getUserAuthToken = () => (state) => state.user.authToken;
 
 export const getUserWallet = () => (state) => state.user.addressWallet;
+
+export const getUpdateUserStatus = () => (state) => state.user.status;
 
 export const getAuthError = () => (state) => state.user.error;
 

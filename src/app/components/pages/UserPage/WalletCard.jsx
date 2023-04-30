@@ -11,11 +11,15 @@ import { Alert, Snackbar } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import WalletIcon from "../../../assets/icons/wallet.png";
+import { useSelector } from "react-redux";
+import { getUserWallet } from "../../../store/user";
+import { walletAddressShort } from "../../../utils/walletAddressShort";
 
 const WalletCard = () => {
   const theme = useTheme();
-  const wallet = "hhb4989vd4dshhb";
-  const [copyState, setcopyState] = useState(false);
+  const userWallet = useSelector(getUserWallet());
+
+  const [copyState, setCopyState] = useState(false);
 
   return (
     <Box sx={{ minWidth: 360, mb: "24px", mr: "24px" }}>
@@ -94,11 +98,11 @@ const WalletCard = () => {
                 mr: "24px",
               }}
             >
-              {wallet}
+              {walletAddressShort(userWallet)}
             </Box>
             <CopyToClipboard
-              text={wallet}
-              onCopy={() => setcopyState(true)}
+              text={userWallet}
+              onCopy={() => setCopyState(true)}
               sx={{ alignSelf: "flex-end" }}
             >
               <ContentCopyIcon
@@ -113,16 +117,16 @@ const WalletCard = () => {
           <Snackbar
             open={copyState}
             autoHideDuration={3000}
-            onClose={() => setcopyState(false)}
+            onClose={() => setCopyState(false)}
             anchorOrigin={{
               vertical: "top",
               horizontal: "center",
             }}
           >
             <Alert
-              onClose={() => setcopyState(false)}
+              onClose={() => setCopyState(false)}
               severity="success"
-              sx={{ width: "100%" }}
+              sx={{ width: "240px" }}
             >
               Copied Text
             </Alert>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Box,
@@ -9,6 +10,8 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
+  Snackbar,
+  Alert,
   // Typography,
 } from "@mui/material";
 
@@ -17,25 +20,44 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
+
 import Loader from "../../ui/Loader";
-import { useEffect } from "react";
+import {
+  clearErrorMessage,
+  getAuthError,
+  getUpdateUserStatus,
+  updateUserPassword,
+} from "../../../store/user";
 
 const initialValues = {
-  password: "",
+  currentPassword: "",
+  newPassword: "",
   submit: null,
 };
 
 const validationSchema = Yup.object().shape({
-  password: Yup.string().required("Password is required"),
+  currentPassword: Yup.string().required("Password is required"),
+  newPassword: Yup.string().required("Password is required"),
 });
 const ChangePassword = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [checkingPassword, setCheckingPassword] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
+  const messageError = useSelector(getAuthError());
+  // const updateStatus = useSelector(getUpdateUserStatus());
 
   useEffect(() => {
-    setCheckingPassword(checkingPassword); // ??????
-  }, [checkingPassword]);
+    dispatch(clearErrorMessage());
+  }, [dispatch]);
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowAlert(false);
+    console.log("close");
+  };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -52,23 +74,31 @@ const ChangePassword = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setStatus, setSubmitting }) => {
-            if (values.password === checkingPassword) {
-              setLoading(true);
-              // dispatch(logIn(values))
-              //   .then(() => {
-              //     setStatus({ success: true });
-              //   })
-              //   .catch(() => {
-              //     setStatus({ success: false });
-              //   })
-              //   .finally(() => {
-              //     setLoading(false);
-              //     setSubmitting(false);
-              //   });
-            }
+            setLoading(true);
+            dispatch(clearErrorMessage());
+            dispatch(updateUserPassword(values))
+              .then(() => {
+                console.log("then");
+                setShowAlert(true);
+                setStatus({ success: true });
+              })
+              .catch(() => {
+                setStatus({ success: false });
+              })
+              .finally(() => {
+                setLoading(false);
+                setSubmitting(false);
+              });
           }}
         >
-          {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
+          {({
+            errors,
+            touched,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            values,
+          }) => (
             <form noValidate onSubmit={handleSubmit}>
               <Box
                 sx={{
@@ -81,7 +111,49 @@ const ChangePassword = () => {
                   <FormControl
                     sx={{ m: 1, width: "25ch" }}
                     variant="outlined"
-                    error={Boolean(errors.password)}
+                    error={Boolean(touched.email && errors.password)}
+                    // sx={{ ...theme.typography.customInput }}
+                  >
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Current password
+                    </InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      value={values.currentPassword}
+                      name="currentPassword"
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            size="large"
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Current password"
+                      inputProps={{}}
+                    />
+                    {touched.email && errors.password && (
+                      <FormHelperText
+                        error
+                        id="standard-weight-helper-text-password"
+                      >
+                        {errors.password}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Box>
+                <Box>
+                  <FormControl
+                    sx={{ m: 1, width: "25ch" }}
+                    variant="outlined"
+                    error={Boolean(touched.email && errors.password)}
                     // sx={{ ...theme.typography.customInput }}
                   >
                     <InputLabel htmlFor="outlined-adornment-password">
@@ -90,8 +162,8 @@ const ChangePassword = () => {
                     <OutlinedInput
                       id="outlined-adornment-password"
                       type={showPassword ? "text" : "password"}
-                      value={values.password}
-                      name="password"
+                      value={values.newPassword}
+                      name="newPassword"
                       onChange={handleChange}
                       endAdornment={
                         <InputAdornment position="end">
@@ -109,49 +181,7 @@ const ChangePassword = () => {
                       label="New password"
                       inputProps={{}}
                     />
-                    {errors.password && (
-                      <FormHelperText
-                        error
-                        id="standard-weight-helper-text-password"
-                      >
-                        {errors.password}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                </Box>
-                <Box>
-                  <FormControl
-                    sx={{ m: 1, width: "25ch" }}
-                    variant="outlined"
-                    error={Boolean(errors.password)}
-                    // sx={{ ...theme.typography.customInput }}
-                  >
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Repeat the password
-                    </InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password"
-                      type={showPassword ? "text" : "password"}
-                      value={checkingPassword}
-                      name="password"
-                      onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      label="Repeat the password"
-                      inputProps={{}}
-                    />
-                    {errors.password && (
+                    {touched.email && errors.password && (
                       <FormHelperText
                         error
                         id="standard-weight-helper-text-password"
@@ -162,6 +192,11 @@ const ChangePassword = () => {
                   </FormControl>
                 </Box>
               </Box>
+              {messageError && (
+                <Box sx={{ mt: 3 }}>
+                  <FormHelperText error>{messageError}</FormHelperText>
+                </Box>
+              )}
               <Box sx={{ mt: 2 }}>
                 <Button
                   disableElevation
@@ -185,6 +220,23 @@ const ChangePassword = () => {
             </form>
           )}
         </Formik>
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={3000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Alert
+            onClose={handleCloseAlert}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Password changed successfully!
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );

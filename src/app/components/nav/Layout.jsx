@@ -24,7 +24,7 @@ import Logo from "../ui/Logo";
 import config from "../../config.json";
 import UserMenu from "./UserMenu";
 import { getIsLogIn, logOut, getUserWallet } from "../../store/user";
-import { walletAddress } from "../../utils/walletAddress.js";
+import { walletAddressShort } from "../../utils/walletAddressShort";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -101,13 +101,13 @@ const Layout = () => {
 
   return (
     <>
+      <CssBaseline />
       <Box
         sx={{
           display: "flex",
           bgcolor: theme.palette.background.paper,
         }}
       >
-        <CssBaseline />
         <Box>
           <AppBar
             sx={{
@@ -156,33 +156,36 @@ const Layout = () => {
                     }}
                   >
                     {isLogIn && userWallet
-                      ? walletAddress(userWallet)
+                      ? walletAddressShort(userWallet)
                       : "Connect wallet"}
                   </NavLink>
                 </Button>
 
                 {isLogIn && (
-                  <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                  >
-                    <AccountCircle />
-                  </IconButton>
+                  <Box>
+                    <IconButton
+                      size="large"
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <UserMenu
+                      menuId={menuId}
+                      anchorEl={anchorEl}
+                      isMenuOpen={isMenuOpen}
+                      handleMenuClose={handleMenuClose}
+                    />
+                  </Box>
                 )}
+
                 <ToggleTheme />
               </Box>
             </Toolbar>
           </AppBar>
-          <UserMenu
-            menuId={menuId}
-            anchorEl={anchorEl}
-            isMenuOpen={isMenuOpen}
-            handleMenuClose={handleMenuClose}
-          />
         </Box>
         <Drawer
           sx={{

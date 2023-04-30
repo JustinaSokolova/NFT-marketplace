@@ -76,7 +76,7 @@ const UserPage = () => {
           Go back
         </Button>
         <UserWallet />
-        <Box sx={{ typography: "h5" }}>My NFT</Box>
+        <Box sx={{ typography: "h5", mb: "24px" }}>My NFT</Box>
         <Box sx={{ width: "100%", margin: "0 auto" }}>
           {
             // вместо слайдера сделать пагинацию

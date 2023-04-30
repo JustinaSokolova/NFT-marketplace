@@ -34,11 +34,12 @@ const authService = {
     });
     return data;
   },
-  updatePassword: async (password) => {
-    const { data } = await httpAuth.post(
+  updatePassword: async ({ currentPassword, newPassword }) => {
+    const { status } = await httpAuth.patch(
       `updatePassword`,
       {
-        password,
+        currentPassword,
+        newPassword,
       },
       {
         headers: {
@@ -46,7 +47,7 @@ const authService = {
         },
       }
     );
-    return data;
+    return status;
   },
   logout: async () => {
     console.log(localStorageService.getAccessToken());

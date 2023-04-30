@@ -1,4 +1,4 @@
-export function walletAddress(address) {
+export function walletAddressShort(address) {
   let newStr = "";
   const firstPart = address.substring(0, 4);
   const endPart = address.substring(address.length - 4, address.length);

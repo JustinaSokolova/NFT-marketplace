@@ -29,6 +29,7 @@ const UserMenu = ({ menuId, anchorEl, isMenuOpen, handleMenuClose }) => {
         keepMounted
         open={isMenuOpen}
         onClose={handleMenuClose}
+        disableScrollLock={true}
         PaperProps={{
           elevation: 0,
           sx: {
