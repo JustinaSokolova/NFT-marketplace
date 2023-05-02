@@ -2,7 +2,7 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 
-import CollectionItem from "./CollectionItem";
+import CollectionItemCard from "./CollectionItemCard";
 import PaginationComp from "../../common/PaginationComp";
 import SkeletonCollectionPage from "../../ui/skeleton/SkeletonCollectionPage";
 
@@ -33,7 +33,7 @@ const CollectionPage = ({
           }}
         >
           {collection.map((item) => (
-            <CollectionItem key={item.tokenId} {...item} />
+            <CollectionItemCard key={item.tokenId} {...item} />
           ))}
         </Box>
         <PaginationComp

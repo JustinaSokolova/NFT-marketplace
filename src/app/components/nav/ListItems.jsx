@@ -4,14 +4,7 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
 import ListSubheader from "@mui/material/ListSubheader";
-
-// import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-// import DashboardIcon from "@mui/icons-material/Dashboard";
-// import SailingIcon from "@mui/icons-material/Sailing";
-// import FaceIcon from "@mui/icons-material/Face";
-// import PublicIcon from "@mui/icons-material/Public";
 
 import StyledNavLink from "./StyledNavLink";
 import DashboardIcon from "../../assets/icons/dashboard.png";
@@ -19,7 +12,10 @@ import MintIcon from "../../assets/icons/rocket.png";
 import ShipIcon from "../../assets/icons/ship.png";
 import CaptainIcon from "../../assets/icons/pirate.png";
 import IslandIcon from "../../assets/icons/mountain.png";
-import HomeIcon from "../../assets/icons//home2.png";
+import HomeIcon from "../../assets/icons/home2.png";
+import MailIcon from "../../assets/icons/mail.png";
+import QuestionIcon from "../../assets/icons/question-mark.png";
+import { Divider } from "@mui/material";
 
 const ListItems = () => {
   return (
@@ -35,8 +31,8 @@ const ListItems = () => {
         <Box sx={{ flexGrow: 1 }}>
           <List>
             <ListItem>
-              <ListItemButton className="block-flex-start">
-                <Box sx={{ mr: 2, mt: 1 }}>
+              <ListItemButton>
+                <Box sx={{ mr: 2 }}>
                   <img
                     src={DashboardIcon}
                     width="24px"
@@ -48,7 +44,7 @@ const ListItems = () => {
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton className="block-flex-start">
+              <ListItemButton>
                 <Box sx={{ mr: 2 }}>
                   <img
                     src={MintIcon}
@@ -65,7 +61,7 @@ const ListItems = () => {
           <List>
             <ListSubheader>Collections</ListSubheader>
             <ListItem>
-              <ListItemButton className="block-flex-start">
+              <ListItemButton>
                 <Box sx={{ mr: 2 }}>
                   <img
                     src={ShipIcon}
@@ -78,7 +74,7 @@ const ListItems = () => {
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton className="block-flex-start">
+              <ListItemButton>
                 <Box sx={{ mr: 2 }}>
                   <img
                     src={CaptainIcon}
@@ -91,7 +87,7 @@ const ListItems = () => {
               </ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton className="block-flex-start">
+              <ListItemButton>
                 <Box sx={{ mr: 2 }}>
                   <img
                     src={IslandIcon}
@@ -105,10 +101,43 @@ const ListItems = () => {
             </ListItem>
           </List>
         </Box>
-        <Box>
+        <Divider variant="middle" />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+          }}
+        >
           <List>
             <ListItem>
-              <ListItemButton className="block-flex-start">
+              <ListItemButton>
+                <Box sx={{ mr: 2, mb: "-6px" }}>
+                  <img
+                    src={QuestionIcon}
+                    width="26px"
+                    height="26px"
+                    alt="Island Icon"
+                  />
+                </Box>
+                <StyledNavLink to="faq">FAQ</StyledNavLink>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton>
+                <Box sx={{ mr: 2 }}>
+                  <img
+                    src={MailIcon}
+                    width="26px"
+                    height="26px"
+                    alt="Island Icon"
+                  />
+                </Box>
+                <StyledNavLink to="feedback">Feedback</StyledNavLink>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton>
                 <Box sx={{ mr: 2 }}>
                   <img
                     src={HomeIcon}

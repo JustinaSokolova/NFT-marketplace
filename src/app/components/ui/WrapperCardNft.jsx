@@ -11,15 +11,17 @@ const WrapperCardNft = ({ children }) => {
       display: flex;
   };
   &:hover .card-img {
-    filter: brightness(70%);
+    filter: brightness(80%);
   };
     &:hover .card-rarity{
-    filter: brightness(70%);
+    filter: brightness(80%);
   };
   &:hover .card-item{
     transform: scale(1.03);
     cursor: pointer
-    
+  };
+  &:hover .card-favourite{
+    filter: brightness(100%);
   }
 }`;
   return (

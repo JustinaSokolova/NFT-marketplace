@@ -19,6 +19,9 @@ import Register from "./components/pages/Authentication/auth/Register";
 import Login from "./components/pages/Authentication/auth/Login";
 import Auth from "./layouts/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CollectionItemPage from "./components/pages/Collection/CollectionItemPage";
+import FaqLayout from "./layouts/FaqLayout";
+import Feedback from "./layouts/Feedback";
 
 function App() {
   const [componentMounted] = useDarkMode();
@@ -35,9 +38,12 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
               <Route path="mint" element={<Mint />} />
-              <Route path="ships" element={<Ships />} />
-              <Route path="captains" element={<Captains />} />
-              <Route path="islands" element={<Islands />} />
+              <Route path="ships/*" element={<Ships />} />
+              <Route path="captains/*" element={<Captains />} />
+              <Route path="islands/*" element={<Islands />} />
+              <Route path=":tokenId" element={<CollectionItemPage />} />
+              <Route path="faq" element={<FaqLayout />} />
+              <Route path="feedback" element={<Feedback />} />
               <Route
                 path="profile"
                 element={

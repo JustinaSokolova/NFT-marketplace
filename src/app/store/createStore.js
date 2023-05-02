@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import captainsReducer from "./captains";
+import favouritesReducer from "./favourites";
 import islandsReducer from "./islands";
 import shipsReducer from "./ships";
 import topSalesNftReducer from "./topSalesNft";
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   islands: islandsReducer,
   ships: shipsReducer,
   userNft: userNftReducer,
+  favourites: favouritesReducer,
 });
 
 export function createStore() {

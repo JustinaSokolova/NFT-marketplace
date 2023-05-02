@@ -1,9 +1,14 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { pink } from "@mui/material/colors";
 
 import RarityNftBadge from "../../ui/RarityNftBadge";
 import { useCoinRate } from "../../../hooks/useCoinRate";
@@ -11,21 +16,32 @@ import { displayDate } from "../../../utils/displayDate";
 import ButtonDetails from "../../ui/ButtonDetails";
 import WrapperCardNft from "../../ui/WrapperCardNft";
 import { cronosIcon } from "../../ui/CronosIcon";
+import { addFavourites, removeFavourites } from "../../../store/favourites";
 
-const CollectionItem = (props) => {
+const CollectionItemCard = (props) => {
   const {
     tokenId,
     owner,
     price,
     image,
     rarity,
+    contractAddress,
     marketplaceState,
     coinSymbol,
     lastUpdated,
     showPrice,
+    favourite,
   } = props;
   const { сoinUsdPrice, isLoading } = useCoinRate();
   const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
+
+  const dispatch = useDispatch();
+
+  const handleToggleFavourite = () => {
+    favourite
+      ? dispatch(removeFavourites({ contractAddress, tokenId }))
+      : dispatch(addFavourites({ contractAddress, tokenId }));
+  };
 
   return (
     <>
@@ -40,10 +56,34 @@ const CollectionItem = (props) => {
           }}
         >
           <Box
+            className="card-favourite"
+            sx={{
+              position: "absolute",
+              top: "0px",
+              left: "0px",
+              zIndex: "100",
+              transition: "filter 0.3s",
+            }}
+          >
+            <IconButton
+              size="small"
+              edge="end"
+              aria-label="favourite"
+              aria-haspopup="true"
+              onClick={handleToggleFavourite}
+            >
+              {favourite ? (
+                <FavoriteIcon sx={{ color: pink[500] }} />
+              ) : (
+                <FavoriteBorderIcon sx={{ color: pink[500] }} />
+              )}
+            </IconButton>
+          </Box>
+          <Box
             className="card-rarity"
             sx={{
               position: "absolute",
-              top: "6px",
+              top: "174px",
               right: "6px",
               zIndex: "10",
               transition: "filter 0.3s",
@@ -99,30 +139,33 @@ const CollectionItem = (props) => {
                 >
                   {`#${tokenId}`}
                 </Box>
-                {marketplaceState === 0 || showPrice ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                      typography: "body1",
-                      fontWeight: "bold",
-                      whiteSpace: "pre-wrap",
-                    }}
-                  >
-                    {coinSymbol === "CRO" && cronosIcon} {price}
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      typography: "subtitle2",
-                      textTransform: "uppercase",
-                      color: "success.main",
-                    }}
-                  >
-                    Sold
-                  </Box>
-                )}
+                {
+                  marketplaceState === 0 || marketplaceState === 1 ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        typography: "body1",
+                        fontWeight: "bold",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {coinSymbol === "CRO" && cronosIcon} {price}
+                    </Box>
+                  ) : (
+                    ""
+                  )
+                  // <Box
+                  //   sx={{
+                  //     typography: "subtitle2",
+                  //     textTransform: "uppercase",
+                  //     color: "success.main",
+                  //   }}
+                  // >
+                  //   Sold
+                  // </Box>
+                }
               </Box>
               <Box
                 sx={{
@@ -146,21 +189,23 @@ const CollectionItem = (props) => {
                     typography: "body2",
                   }}
                 >
-                  {!isLoading && (showPrice || marketplaceState === 0)
+                  {!isLoading &&
+                  (marketplaceState === 0 || marketplaceState === 1)
                     ? mintPriceUsd
                     : ""}{" "}
                 </Box>
               </Box>
-
-              <Box
-                sx={{
-                  typography: "caption",
-                  alignSelf: "flex-start",
-                  mt: "-10px",
-                }}
-              >
-                {displayDate(lastUpdated)}
-              </Box>
+              {marketplaceState === 1 && (
+                <Box
+                  sx={{
+                    typography: "caption",
+                    alignSelf: "flex-start",
+                    mt: "-10px",
+                  }}
+                >
+                  {displayDate(lastUpdated)}
+                </Box>
+              )}
             </CardActions>
           </Card>
         </Box>
@@ -170,4 +215,4 @@ const CollectionItem = (props) => {
   );
 };
 
-export default CollectionItem;
+export default CollectionItemCard;

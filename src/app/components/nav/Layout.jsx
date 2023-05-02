@@ -222,7 +222,7 @@ const Layout = () => {
             <List sx={{ height: "100%", ml: "16px" }}>
               <ListItems />
             </List>
-            <Box sx={{ alignSelf: "center" }}>
+            <Box sx={{ alignSelf: "center", mb: 2 }}>
               <Button
                 color="secondary"
                 size="medium"

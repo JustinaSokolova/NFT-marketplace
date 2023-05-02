@@ -8,7 +8,6 @@ function ProtectedRoute({ redirectTo, children }) {
   const isLogIn = useSelector(getIsLogIn());
 
   if (!isLogIn) {
-    console.log("protected rout");
     return (
       <Navigate
         to={redirectTo || "auth/login"}

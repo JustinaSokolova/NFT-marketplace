@@ -33,7 +33,6 @@ export const loadUserNftList = () => async (dispatch) => {
   dispatch(userNftRequested());
   try {
     const content = await authService.getUserNft();
-    console.log(content);
     dispatch(userNftRequestSuccess(content));
   } catch (error) {
     dispatch(userNftRequestFailed(error.message));

@@ -20,6 +20,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    authRequested: (state) => {
+      state.error = null;
+    },
     authRequestSuccess: (state, action) => {
       state.authToken = action.payload.token;
       state.isLogIn = true;
@@ -50,9 +53,6 @@ const userSlice = createSlice({
       state.status = false;
       state.error = action.payload;
     },
-    authRequested: (state) => {
-      state.error = null;
-    },
     clearErrorMessage: (state) => {
       state.error = null;
     },
@@ -81,15 +81,12 @@ export const logIn = (payload) => async (dispatch) => {
   dispatch(authRequested());
   try {
     const data = await authService.login({ email, password });
-    console.log(data);
     dispatch(authRequestSuccess(data));
     localStorageService.setToken(data.token);
   } catch (error) {
-    console.log(error);
     const { status, data } = error.response;
     if (status >= 400) {
       const errorMessage = generateAuthError(data.reason);
-      console.log(errorMessage);
       dispatch(authRequestFailed(errorMessage));
     } else {
       dispatch(authRequestFailed(error.message));

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Button } from "@mui/material";
 import Divider from "@mui/material/Divider";
@@ -16,37 +16,18 @@ import {
 import UserWallet from "./UserWallet";
 import UserCollection from "./UserCollection";
 import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
-import { SkeletonSalesCard } from "../../ui/skeleton/SkeletonSalesCard";
+import { UserFavouritesNFT } from "./UserFavouritesNFT";
 
 const UserPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
   const userNftData = useSelector(getUserNftList());
   const isLoading = useSelector(getUserNftLoadingStatus());
 
-  // const [currentPage, setCurrentPage] = useState(
-  //   parseInt(location.search?.split("=")[1] || 1)
-  // );
-
   useEffect(() => {
     dispatch(loadUserNftList());
   }, [dispatch]);
-  console.log(userNftData);
-  // useEffect(() => {
-  //   if (!isLoading && collectionUserNftInfo.pages < currentPage) {
-  //     setCurrentPage(1);
-  //     navigate(location.pathname);
-  //   }
-  // }, [currentPage]);
-
-  // const handlePageChange = (pageIndex) => {
-  //   if (pageIndex !== currentPage) {
-  //     setCurrentPage(pageIndex);
-  //     dispatch(loadUserNftList(pageIndex));
-  //   }
-  // };
 
   const handleClick = () => {
     navigate(-1);
@@ -96,8 +77,13 @@ const UserPage = () => {
             <SkeletonNftListRow />
           )}
         </Box>
-        <Divider />
-        <Box sx={{ typography: "h5" }}>My NFT</Box>
+        <Divider flexItem />
+        <Box sx={{ typography: "h5", mt: "24px" }}>Favourites NFT</Box>
+        <Box sx={{ width: "100%", mb: "24px" }}>
+          <UserFavouritesNFT />
+        </Box>
+        <Divider flexItem />
+        <Box sx={{ typography: "h5", mt: "24px" }}>My NFT</Box>
         <Box sx={{ width: "100%", margin: "0 auto" }}>
           {!isLoading ? (
             <UserCollection

@@ -15,14 +15,14 @@ const UserCollection = ({ collection, title }) => {
         mt: "24px",
       }}
     >
-      <Box sx={{ typography: "h6", mt: "24px" }}>{title}</Box>
+      <Box sx={{ typography: "h6" }}>{title}</Box>
       <Box sx={{ width: "100%", margin: "0 auto" }}>
         <SliderComp props={collection} />
       </Box>
 
       {!collection.length && (
         <Box sx={{ typography: "body1" }}>
-          {`You don't have any ${title} yet`}
+          {`You don't have any ${title} yet :(`}
         </Box>
       )}
     </Box>

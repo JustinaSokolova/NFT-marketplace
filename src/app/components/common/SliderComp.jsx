@@ -5,7 +5,7 @@ import { Box, Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-import CollectionItem from "../pages/Collection/CollectionItem";
+import CollectionItemCard from "../pages/Collection/CollectionItemCard";
 
 const SliderComp = ({ props }) => {
   const handleDragStart = (e) => e.preventDefault();
@@ -98,7 +98,7 @@ const SliderComp = ({ props }) => {
       >
         {props.map((item) => (
           <Box sx={{ m: "24px" }} key={item.tokenId}>
-            <CollectionItem
+            <CollectionItemCard
               key={item.tokenId}
               {...item}
               onDragStart={handleDragStart}

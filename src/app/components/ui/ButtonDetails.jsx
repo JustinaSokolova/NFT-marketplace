@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 const ButtonDetails = () => {
   const ButtonStyled = styled(Button)(() => ({
     position: "absolute",
-    top: "30%",
+    top: "60%",
     right: "30%",
     borderRadius: "8px",
     minWidth: "80px",
