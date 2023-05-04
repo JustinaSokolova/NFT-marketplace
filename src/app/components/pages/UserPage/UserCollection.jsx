@@ -17,7 +17,7 @@ const UserCollection = ({ collection, title }) => {
     >
       <Box sx={{ typography: "h6" }}>{title}</Box>
       <Box sx={{ width: "100%", margin: "0 auto" }}>
-        <SliderComp props={collection} />
+        <SliderComp collection={collection} userNft="userNft" />
       </Box>
 
       {!collection.length && (

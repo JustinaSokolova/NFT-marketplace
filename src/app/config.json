@@ -1,5 +1,5 @@
 {
-  "apiEndpoint": "https://navy.online/marketplace/",
+  "apiEndpoint": "http://23.111.202.19:3027/marketplace/",
   "pageSize": 18,
   "drawerWidth": 240
 }

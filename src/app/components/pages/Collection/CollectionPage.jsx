@@ -8,13 +8,14 @@ import SkeletonCollectionPage from "../../ui/skeleton/SkeletonCollectionPage";
 
 const CollectionPage = ({
   collection,
+  isLoading,
   onPageChange,
   currentPage,
   count,
   pages,
   pathName,
 }) => {
-  return count > 0 ? (
+  return count > 0 || !isLoading ? (
     <>
       <Box
         sx={{
@@ -33,7 +34,7 @@ const CollectionPage = ({
           }}
         >
           {collection.map((item) => (
-            <CollectionItemCard key={item.tokenId} {...item} />
+            <CollectionItemCard key={item.tokenId} item={item} />
           ))}
         </Box>
         <PaginationComp

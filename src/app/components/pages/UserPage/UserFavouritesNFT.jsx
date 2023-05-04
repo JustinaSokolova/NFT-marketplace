@@ -8,7 +8,6 @@ import {
   getFavouritesLoadingStatus,
   loadFavouritesList,
 } from "../../../store/favourites";
-
 import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 
 export const UserFavouritesNFT = () => {
@@ -23,7 +22,7 @@ export const UserFavouritesNFT = () => {
 
   if (isLoading) return <SkeletonNftListRow />;
 
-  return favouritesNFT.length > 0 ? (
+  return !isLoading && favouritesNFT ? (
     <Box
       sx={{
         display: "flex",
@@ -33,7 +32,7 @@ export const UserFavouritesNFT = () => {
       }}
     >
       <Box sx={{ width: "100%", margin: "0 auto" }}>
-        <SliderComp props={favouritesNFT} />
+        <SliderComp collection={favouritesNFT} favItems="favItems" />
       </Box>
     </Box>
   ) : (

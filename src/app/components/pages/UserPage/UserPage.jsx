@@ -8,25 +8,34 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import BoxContainer from "../../common/BoxContainer";
 import {
-  getUserNftList,
+  fetchUserNft,
+  getUserNftCaptains,
+  getUserNftIslands,
   getUserNftLoadingStatus,
-  loadUserNftList,
+  getUserNftShips,
 } from "../../../store/userBoughtNft";
 
 import UserWallet from "./UserWallet";
 import UserCollection from "./UserCollection";
 import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 import { UserFavouritesNFT } from "./UserFavouritesNFT";
+import { loadFavouritesList } from "../../../store/favourites";
 
 const UserPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userNftData = useSelector(getUserNftList());
+  const userNftCaptains = useSelector(getUserNftCaptains());
+  const userNftShips = useSelector(getUserNftShips());
+  const userNftIslands = useSelector(getUserNftIslands());
   const isLoading = useSelector(getUserNftLoadingStatus());
 
   useEffect(() => {
-    dispatch(loadUserNftList());
+    dispatch(fetchUserNft());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(loadFavouritesList());
   }, [dispatch]);
 
   const handleClick = () => {
@@ -72,7 +81,12 @@ const UserPage = () => {
         <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
         <Box sx={{ width: "100%", mb: "24px" }}>
           {!isLoading ? (
-            <UserWallet collection={userNftData} />
+            <UserWallet
+              captainsCount={userNftCaptains.total}
+              shipsCount={userNftShips.total}
+              islandsCount={userNftIslands.total}
+              isLoading={isLoading}
+            />
           ) : (
             <SkeletonNftListRow />
           )}
@@ -85,29 +99,17 @@ const UserPage = () => {
         <Divider flexItem />
         <Box sx={{ typography: "h5", mt: "24px" }}>My NFT</Box>
         <Box sx={{ width: "100%", margin: "0 auto" }}>
-          {!isLoading ? (
+          {!isLoading && (
             <UserCollection
-              collection={userNftData.captains.items}
+              collection={userNftCaptains.items}
               title="Captains"
             />
-          ) : (
-            <SkeletonNftListRow />
           )}
-          {!isLoading ? (
-            <UserCollection
-              collection={userNftData.ships.items}
-              title="Ships"
-            />
-          ) : (
-            <SkeletonNftListRow />
+          {!isLoading && (
+            <UserCollection collection={userNftShips.items} title="Ships" />
           )}
-          {!isLoading ? (
-            <UserCollection
-              collection={userNftData.islands.items}
-              title="Islands"
-            />
-          ) : (
-            <SkeletonNftListRow />
+          {!isLoading && (
+            <UserCollection collection={userNftIslands.items} title="Islands" />
           )}
         </Box>
       </Box>

@@ -6,13 +6,13 @@ import { Box } from "@mui/material";
 import BoxContainer from "../../common/BoxContainer";
 import SliderComp from "../../common/SliderComp";
 
-import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 import FilterButtonGroup from "./FilterButtonGroup";
 import {
+  fetchTopSalesNft,
   getTopSalesNft,
   getTopSalesNftLoadingStatus,
-  loadTopSalesNftList,
 } from "../../../store/topSalesNft";
+import { loadFavouritesList } from "../../../store/favourites";
 
 const TopSales = () => {
   const dispatch = useDispatch();
@@ -22,8 +22,12 @@ const TopSales = () => {
   const [selectedTime, setSelectedTime] = useState(30);
 
   useEffect(() => {
-    dispatch(loadTopSalesNftList(selectedTime));
+    dispatch(fetchTopSalesNft(selectedTime));
   }, [selectedTime, dispatch]);
+
+  useEffect(() => {
+    dispatch(loadFavouritesList());
+  }, [dispatch]);
 
   const handleSelectedTime = (value) => {
     setSelectedTime(value);
@@ -50,11 +54,7 @@ const TopSales = () => {
           selectedTime={selectedTime}
         />
         <Box sx={{ width: "100%", margin: "0 auto" }}>
-          {!isLoading ? (
-            <SliderComp props={topSalesNftData} />
-          ) : (
-            <SkeletonNftListRow />
-          )}
+          {!isLoading && <SliderComp collection={topSalesNftData} />}
         </Box>
       </Box>
     </BoxContainer>

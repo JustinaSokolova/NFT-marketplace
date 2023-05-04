@@ -7,9 +7,9 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import CollectionItemCard from "../pages/Collection/CollectionItemCard";
 
-const SliderComp = ({ props }) => {
+const SliderComp = ({ collection, userNft, favItems }) => {
+  // console.log(userNft);
   const handleDragStart = (e) => e.preventDefault();
-
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -91,16 +91,16 @@ const SliderComp = ({ props }) => {
         showDots={true}
         slidesToSlide={2}
         dotListClass="custom-dot-list-style"
-        // renderButtonGroupOutside={true}
-        // arrows={false}
         customRightArrow={<CustomRightArrow />}
         customLeftArrow={<CustomLeftArrow />}
       >
-        {props.map((item) => (
+        {collection.map((item) => (
           <Box sx={{ m: "24px" }} key={item.tokenId}>
             <CollectionItemCard
               key={item.tokenId}
-              {...item}
+              item={item}
+              userNft={userNft}
+              favItems={favItems}
               onDragStart={handleDragStart}
             />
           </Box>

@@ -5,17 +5,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CollectionPage from "../components/pages/Collection/CollectionPage";
 import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
 import {
+  fetchCaptains,
   getCaptains,
   getCaptainsInfo,
   getCaptainsLoadingStatus,
-  loadCaptainsList,
 } from "../store/captains";
+import { loadFavouritesList } from "../store/favourites";
 
 const Captains = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const collectionCaptainsData = useSelector(getCaptains());
   const isLoading = useSelector(getCaptainsLoadingStatus());
   const collectionCaptainsInfo = useSelector(getCaptainsInfo());
@@ -25,8 +25,8 @@ const Captains = () => {
   );
 
   useEffect(() => {
-    dispatch(loadCaptainsList(currentPage));
-  }, []);
+    dispatch(fetchCaptains(currentPage));
+  }, [currentPage, dispatch]);
 
   useEffect(() => {
     if (!isLoading && collectionCaptainsInfo.pages < currentPage) {
@@ -35,10 +35,14 @@ const Captains = () => {
     }
   }, [currentPage]);
 
+  useEffect(() => {
+    if (!isLoading) dispatch(loadFavouritesList());
+  }, [isLoading, dispatch]);
+
   const handlePageChange = (pageIndex) => {
     if (pageIndex !== currentPage) {
       setCurrentPage(pageIndex);
-      dispatch(loadCaptainsList(pageIndex));
+      dispatch(fetchCaptains(pageIndex));
     }
   };
 

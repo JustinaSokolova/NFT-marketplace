@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Card from "@mui/material/Card";
@@ -17,10 +17,36 @@ import ButtonDetails from "../../ui/ButtonDetails";
 import WrapperCardNft from "../../ui/WrapperCardNft";
 import { cronosIcon } from "../../ui/CronosIcon";
 import { addFavourites, removeFavourites } from "../../../store/favourites";
+import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 
-const CollectionItemCard = (props) => {
+const CollectionItemCard = ({ item, userNft, favItems }) => {
+  const { tokenId, collectionName } = item;
+  const { сoinUsdPrice, isLoading } = useCoinRate();
+  const [isLoadingCollection, setLoadingCollection] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const nft = useSelector((state) => {
+    if (item.marketplaceState === 1) {
+      return state.topSalesNft.entities.find((nft) => nft.tokenId === tokenId);
+    }
+    if (userNft) {
+      return state.userNft[collectionName].items.find(
+        (nft) => nft.tokenId === tokenId
+      );
+    }
+    if (favItems) {
+      return state.favourites.entities.find((nft) => nft.tokenId === tokenId);
+    }
+    return state[collectionName].entities.find(
+      (nft) => nft.tokenId === tokenId
+    );
+  });
+  useEffect(() => {
+    if (nft) setLoadingCollection(false);
+  }, [nft]);
+
   const {
-    tokenId,
     owner,
     price,
     image,
@@ -29,13 +55,20 @@ const CollectionItemCard = (props) => {
     marketplaceState,
     coinSymbol,
     lastUpdated,
-    showPrice,
     favourite,
-  } = props;
-  const { сoinUsdPrice, isLoading } = useCoinRate();
-  const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
-
-  const dispatch = useDispatch();
+  } = useMemo(() => {
+    return {
+      owner: nft.owner,
+      price: nft.price,
+      image: nft.image,
+      rarity: nft.rarity,
+      contractAddress: nft.contractAddress,
+      marketplaceState: nft.marketplaceState,
+      coinSymbol: nft.coinSymbol,
+      lastUpdated: nft.lastUpdated,
+      favourite: nft.favourite,
+    };
+  }, [nft]);
 
   const handleToggleFavourite = () => {
     favourite
@@ -43,7 +76,9 @@ const CollectionItemCard = (props) => {
       : dispatch(addFavourites({ contractAddress, tokenId }));
   };
 
-  return (
+  const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
+
+  return !isLoadingCollection ? (
     <>
       <WrapperCardNft>
         <Box
@@ -72,7 +107,7 @@ const CollectionItemCard = (props) => {
               aria-haspopup="true"
               onClick={handleToggleFavourite}
             >
-              {favourite ? (
+              {favourite === true ? (
                 <FavoriteIcon sx={{ color: pink[500] }} />
               ) : (
                 <FavoriteBorderIcon sx={{ color: pink[500] }} />
@@ -195,7 +230,7 @@ const CollectionItemCard = (props) => {
                     : ""}{" "}
                 </Box>
               </Box>
-              {marketplaceState === 1 && (
+              {marketplaceState === 1 ? (
                 <Box
                   sx={{
                     typography: "caption",
@@ -205,6 +240,16 @@ const CollectionItemCard = (props) => {
                 >
                   {displayDate(lastUpdated)}
                 </Box>
+              ) : (
+                <Box
+                  sx={{
+                    typography: "caption",
+                    alignSelf: "flex-start",
+                    mt: "-10px",
+                  }}
+                >
+                  rarity: {rarity}
+                </Box>
               )}
             </CardActions>
           </Card>
@@ -212,6 +257,8 @@ const CollectionItemCard = (props) => {
         <ButtonDetails />
       </WrapperCardNft>
     </>
+  ) : (
+    <SkeletonCardNft />
   );
 };
 

@@ -10,7 +10,7 @@ import CaptainIcon from "../../../assets/icons/pirate.png";
 import ShipIcon from "../../../assets/icons/ship.png";
 import IslandIcon from "../../../assets/icons/mountain.png";
 
-const UserWallet = ({ collection }) => {
+const UserWallet = ({ captainsCount, shipsCount, islandsCount }) => {
   return (
     <Box sx={{ mb: "24px" }}>
       <Box
@@ -27,21 +27,18 @@ const UserWallet = ({ collection }) => {
         <WalletNftCard
           icon={ShipIcon}
           collectionName="ships"
-          // isLoading={isLoading}
-          value={collection.ships.total}
+          value={shipsCount}
         />
         <WalletNftCard
           icon={CaptainIcon}
           collectionName="captains"
-          // isLoading={isLoading}
-          value={collection.captains.total}
+          value={captainsCount}
         />
 
         <WalletNftCard
           icon={IslandIcon}
           collectionName="islands"
-          // isLoading={isLoading}
-          value={collection.islands.total}
+          value={islandsCount}
         />
       </Box>
     </Box>

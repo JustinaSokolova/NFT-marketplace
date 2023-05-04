@@ -21,7 +21,7 @@ const WrapperCardNft = ({ children }) => {
     cursor: pointer
   };
   &:hover .card-favourite{
-    filter: brightness(100%);
+    filter: brightness(115%);
   }
 }`;
   return (

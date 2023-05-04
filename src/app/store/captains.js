@@ -1,66 +1,93 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import captainsService from "../services/captains.service";
 import config from "../config.json";
+import {
+  addFavourites,
+  loadFavouritesList,
+  removeFavourites,
+} from "./favourites";
+import { getIsLogIn } from "./user";
+
+export const fetchCaptains = createAsyncThunk(
+  "captains/fetchCaptains",
+  async (currentPage) => {
+    let content;
+    if (getIsLogIn()) {
+      content = await captainsService.getIfLogged(currentPage, config.pageSize);
+    } else {
+      content = await captainsService.get(currentPage, config.pageSize);
+    }
+    return content;
+  }
+);
 
 const captainsSlice = createSlice({
   name: "captains",
   initialState: {
-    entities: null,
+    entities: [],
     entitiesInfo: null,
     isLoading: true,
     error: null,
-    lastFetch: null,
   },
-  reducers: {
-    captainsRequested: (state) => {
-      state.isLoading = true;
-    },
-    captainsReceived: (state, action) => {
-      state.entities = action.payload.result;
-      state.entitiesInfo = action.payload.info;
-      state.lastFetch = Date.now();
-      state.isLoading = false;
-    },
-    captainsRequestFailed: (state, action) => {
-      state.error = action.payload;
-      state.isLoading = false;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCaptains.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCaptains.fulfilled, (state, action) => {
+        state.entities = action.payload.result;
+        state.entitiesInfo = action.payload.info;
+        state.isLoading = false;
+      })
+      .addCase(fetchCaptains.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(loadFavouritesList.fulfilled, (state, action) => {
+        const favourites = action.payload;
+        if (state.entities) {
+          state.entities.forEach((entity) => {
+            const isFavourite = favourites.some(
+              (fav) =>
+                entity.tokenId === fav.tokenId &&
+                entity.contractAddress === fav.contractAddress
+            );
+            if (isFavourite) {
+              entity.favourite = true;
+            }
+          });
+        }
+      })
+      .addCase(removeFavourites.fulfilled, (state, action) => {
+        const { contractAddress, tokenId } = action.payload;
+        const index = state.entities.findIndex(
+          (item) =>
+            item.tokenId === tokenId && item.contractAddress === contractAddress
+        );
+        if (index !== -1) {
+          state.entities[index].favourite = false;
+        }
+      })
+      .addCase(addFavourites.fulfilled, (state, action) => {
+        const { contractAddress, tokenId } = action.payload;
+        const index = state.entities.findIndex(
+          (item) =>
+            item.tokenId === tokenId && item.contractAddress === contractAddress
+        );
+        if (index !== -1) {
+          state.entities[index].favourite = true;
+        }
+      });
   },
 });
 
-const { reducer: captainsReducer, actions } = captainsSlice;
-const { captainsRequested, captainsReceived, captainsRequestFailed } = actions;
+const { reducer: captainsReducer } = captainsSlice;
 
-function isOutdated(date) {
-  if (Date.now() - date > 10 * 60 * 1000) {
-    return true;
-  }
-  return false;
-}
-
-export const loadCaptainsList = (currentPage) => async (dispatch, getState) => {
-  // const { lastFetch } = getState().captains;
-  // if (isOutdated(lastFetch)) {
-  dispatch(captainsRequested());
-  try {
-    const content = await captainsService.get(currentPage, config.pageSize);
-    dispatch(captainsReceived(content));
-  } catch (error) {
-    dispatch(captainsRequestFailed(error.message));
-  }
-  // }
-};
-
-export const getCaptains = () => (state) => state.captains.entities; // ф-ии селекторы
+export const getCaptains = () => (state) => state.captains.entities;
 export const getCaptainsInfo = () => (state) => state.captains.entitiesInfo;
 
 export const getCaptainsLoadingStatus = () => (state) =>
   state.captains.isLoading;
-
-export const getCaptainsByIds = (id) => (state) => {
-  if (state.captains.entities) {
-    return state.captains.entities.find((p) => p._id === id);
-  }
-};
 
 export default captainsReducer;

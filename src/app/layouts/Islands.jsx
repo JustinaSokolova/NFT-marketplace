@@ -4,11 +4,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import CollectionPage from "../components/pages/Collection/CollectionPage";
 import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
+import { loadFavouritesList } from "../store/favourites";
 import {
+  fetchIslands,
   getIslands,
   getIslandsInfo,
   getIslandsLoadingStatus,
-  loadIslandsList,
 } from "../store/islands";
 
 const Islands = () => {
@@ -24,21 +25,25 @@ const Islands = () => {
   );
 
   useEffect(() => {
-    dispatch(loadIslandsList(currentPage));
+    dispatch(fetchIslands(currentPage));
   }, []);
 
   useEffect(() => {
-    dispatch(loadIslandsList(currentPage));
+    dispatch(fetchIslands(currentPage));
     if (!isLoading && collectionIslandsInfo.pages < currentPage) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
   }, [currentPage]);
 
+  useEffect(() => {
+    dispatch(loadFavouritesList());
+  }, [dispatch]);
+
   const handlePageChange = (pageIndex) => {
     if (pageIndex !== currentPage) {
       setCurrentPage(pageIndex);
-      dispatch(loadIslandsList(pageIndex));
+      dispatch(fetchIslands(pageIndex));
     }
   };
 
