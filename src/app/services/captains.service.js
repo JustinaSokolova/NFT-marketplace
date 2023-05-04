@@ -2,7 +2,7 @@ import httpService from "./http.service";
 import localStorageService from "./localStorage.service";
 
 const captainsEndpoint =
-  "collection/0x61a03eed4c0220bb6ee89b0cda10dc171f772577/all";
+  "collection/0x7e77efa1050aac8e12bee238c596d1561231e2ed/all";
 
 const captainsService = {
   get: async (page, size) => {

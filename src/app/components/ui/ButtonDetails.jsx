@@ -3,7 +3,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
-const ButtonDetails = () => {
+const ButtonDetails = ({ handleClick }) => {
   const ButtonStyled = styled(Button)(() => ({
     position: "absolute",
     top: "60%",
@@ -21,6 +21,7 @@ const ButtonDetails = () => {
       variant="contained"
       size="small"
       color="secondary"
+      onClick={handleClick}
     >
       Details
     </ButtonStyled>

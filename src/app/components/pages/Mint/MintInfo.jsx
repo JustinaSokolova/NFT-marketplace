@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -9,26 +10,23 @@ import CategoryCard from "./CategoryCard";
 import RarityNftColor from "../../ui/RarityNftBadge";
 import СollectionPreview from "./СollectionPreview";
 import BoxContainer from "../../common/BoxContainer";
-import mintService from "../../../services/mint.service";
+
 import SkeletonDescription from "../../ui/skeleton/SkeletonDescription";
 import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
+import {
+  fetchMintInfo,
+  getMintInfo,
+  getMintInfoLoadingStatus,
+} from "../../../store/mintInfo";
 
 const MintInfo = () => {
-  const [data, setData] = useState();
-  const [isLoading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const mintInfoData = useSelector(getMintInfo());
+  const isLoading = useSelector(getMintInfoLoadingStatus());
 
   useEffect(() => {
-    const getMintInfo = async () => {
-      try {
-        const data = await mintService.get();
-        setData(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getMintInfo();
-  }, []);
+    dispatch(fetchMintInfo());
+  }, [dispatch]);
 
   return !isLoading ? (
     <>
@@ -48,13 +46,13 @@ const MintInfo = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" }, my: 2 }}
           >
-            {data.descriptionTitle}
+            {mintInfoData.descriptionTitle}
           </Typography>
           <Box sx={{ typography: "body1", my: 2, whiteSpace: "pre-wrap" }}>
-            {data.descriptionDescription}
+            {mintInfoData.descriptionDescription}
           </Box>
           <Divider />
-          {data.rarity && (
+          {mintInfoData.rarity && (
             <>
               <Typography
                 variant="h5"
@@ -66,12 +64,12 @@ const MintInfo = () => {
                   my: 2,
                 }}
               >
-                {data.rarityTitle}
+                {mintInfoData.rarityTitle}
               </Typography>
               <Box sx={{ typography: "body1", my: 2 }}>
-                {data.rarityDescription}
+                {mintInfoData.rarityDescription}
               </Box>
-              {data.rarityItems.map((item, i) => {
+              {mintInfoData.rarityItems.map((item, i) => {
                 return (
                   <Box
                     sx={{
@@ -90,7 +88,7 @@ const MintInfo = () => {
               <Divider />
             </>
           )}
-          {data.profitability && (
+          {mintInfoData.profitability && (
             <>
               <Typography
                 variant="h5"
@@ -102,15 +100,15 @@ const MintInfo = () => {
                   my: 2,
                 }}
               >
-                {data.profitabilityTitle}
+                {mintInfoData.profitabilityTitle}
               </Typography>
               <Box sx={{ typography: "body1", my: 2, whiteSpace: "pre-wrap" }}>
-                {data.profitabilityDescription}
+                {mintInfoData.profitabilityDescription}
               </Box>
               <Divider />
             </>
           )}
-          {data.nftParts && (
+          {mintInfoData.nftParts && (
             <>
               <Typography
                 variant="h5"
@@ -122,12 +120,12 @@ const MintInfo = () => {
                   my: 2,
                 }}
               >
-                {data.nftPartsTitle}
+                {mintInfoData.nftPartsTitle}
               </Typography>
               <Box sx={{ typography: "body1", my: 2 }}>
-                {data.nftPartsDescription}
+                {mintInfoData.nftPartsDescription}
               </Box>
-              {data.nftPartsItems.map((item, i) => {
+              {mintInfoData.nftPartsItems.map((item, i) => {
                 return (
                   <Box key={item.categoryTitle + i}>
                     <Typography variant="overline" component="div">
@@ -156,7 +154,7 @@ const MintInfo = () => {
         </BoxContainer>
         <Box sx={{ position: "sticky", top: "64px" }}>
           <BoxContainer>
-            <СollectionPreview data={data} />
+            <СollectionPreview data={mintInfoData} />
           </BoxContainer>
         </Box>
       </Box>

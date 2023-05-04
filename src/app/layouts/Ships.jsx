@@ -46,7 +46,7 @@ const Ships = () => {
     }
   };
 
-  return collectionShipsData.length > 0 && !isLoading ? (
+  return !isLoading ? (
     <CollectionPage
       collection={collectionShipsData}
       isLoading={isLoading}

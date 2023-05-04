@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import BoxContainer from "../../common/BoxContainer";
 import {
@@ -20,9 +18,9 @@ import UserCollection from "./UserCollection";
 import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 import { UserFavouritesNFT } from "./UserFavouritesNFT";
 import { loadFavouritesList } from "../../../store/favourites";
+import BackButton from "../../common/BackButton";
 
 const UserPage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userNftCaptains = useSelector(getUserNftCaptains());
@@ -37,10 +35,6 @@ const UserPage = () => {
   useEffect(() => {
     dispatch(loadFavouritesList());
   }, [dispatch]);
-
-  const handleClick = () => {
-    navigate(-1);
-  };
 
   return (
     <BoxContainer>
@@ -61,23 +55,7 @@ const UserPage = () => {
           p: "16px",
         }}
       >
-        <Button
-          color="primary"
-          variant="outlined"
-          size="medium"
-          sx={{
-            maxWidth: "140px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: "24px",
-            mt: "14px",
-          }}
-          onClick={handleClick}
-        >
-          <NavigateBeforeIcon />
-          Go back
-        </Button>
+        <BackButton />
         <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
         <Box sx={{ width: "100%", mb: "24px" }}>
           {!isLoading ? (

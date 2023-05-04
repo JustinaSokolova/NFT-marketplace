@@ -18,6 +18,8 @@ import WrapperCardNft from "../../ui/WrapperCardNft";
 import { cronosIcon } from "../../ui/CronosIcon";
 import { addFavourites, removeFavourites } from "../../../store/favourites";
 import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
+import { fetchCollectionItem } from "../../../store/collectionItem";
+import { useNavigate } from "react-router-dom";
 
 const CollectionItemCard = ({ item, userNft, favItems }) => {
   const { tokenId, collectionName } = item;
@@ -25,6 +27,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   const [isLoadingCollection, setLoadingCollection] = useState(true);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const nft = useSelector((state) => {
     if (item.marketplaceState === 1) {
@@ -70,13 +73,18 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
     };
   }, [nft]);
 
+  const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
+
   const handleToggleFavourite = () => {
     favourite
       ? dispatch(removeFavourites({ contractAddress, tokenId }))
       : dispatch(addFavourites({ contractAddress, tokenId }));
   };
 
-  const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
+  const handleClick = () => {
+    // dispatch(fetchCollectionItem({ contractAddress, tokenId }));
+    navigate(`/${contractAddress}/${tokenId}`);
+  };
 
   return !isLoadingCollection ? (
     <>
@@ -254,7 +262,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
             </CardActions>
           </Card>
         </Box>
-        <ButtonDetails />
+        <ButtonDetails handleClick={handleClick} />
       </WrapperCardNft>
     </>
   ) : (

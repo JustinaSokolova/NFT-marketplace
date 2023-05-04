@@ -38,10 +38,13 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
               <Route path="mint" element={<Mint />} />
-              <Route path="ships/*" element={<Ships />} />
-              <Route path="captains/*" element={<Captains />} />
-              <Route path="islands/*" element={<Islands />} />
-              <Route path=":tokenId" element={<CollectionItemPage />} />
+              <Route path="ships" element={<Ships />} />
+              <Route path="captains" element={<Captains />} />
+              <Route path="islands" element={<Islands />} />
+              <Route
+                path="/:address/:tokenId"
+                element={<CollectionItemPage />}
+              />
               <Route path="faq" element={<FaqLayout />} />
               <Route path="feedback" element={<Feedback />} />
               <Route
