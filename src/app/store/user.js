@@ -76,23 +76,25 @@ const {
 
 export { clearErrorMessage };
 
-export const logIn = (payload) => async (dispatch) => {
-  const { email, password } = payload;
-  dispatch(authRequested());
-  try {
-    const data = await authService.login({ email, password });
-    dispatch(authRequestSuccess(data));
-    localStorageService.setToken(data.token);
-  } catch (error) {
-    const { status, data } = error.response;
-    if (status >= 400) {
-      const errorMessage = generateAuthError(data.reason);
-      dispatch(authRequestFailed(errorMessage));
-    } else {
-      dispatch(authRequestFailed(error.message));
+export const logIn =
+  ({ email, password }) =>
+  async (dispatch) => {
+    dispatch(authRequested());
+    try {
+      const data = await authService.login({ email, password });
+      localStorageService.setToken(data.token);
+      dispatch(authRequestSuccess(data));
+    } catch (error) {
+      const { status, data } = error.response;
+      if (status >= 400) {
+        const errorMessage = generateAuthError(data.reason);
+        dispatch(authRequestFailed(errorMessage));
+      } else {
+        dispatch(authRequestFailed(error.message));
+      }
+      throw error;
     }
-  }
-};
+  };
 
 export const signUp =
   ({ email, password }) =>
@@ -103,13 +105,14 @@ export const signUp =
       localStorageService.setToken(data.token);
       dispatch(authRequestSuccess(data));
     } catch (error) {
-      const { code, message } = error.response.data.error;
-      if (code >= 400) {
-        const errorMessage = generateAuthError(message);
+      const { status, data } = error.response;
+      if (status >= 400) {
+        const errorMessage = generateAuthError(data.reason);
         dispatch(authRequestFailed(errorMessage));
       } else {
         dispatch(authRequestFailed(error.message));
       }
+      throw error;
     }
   };
 

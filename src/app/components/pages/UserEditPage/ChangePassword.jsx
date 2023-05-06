@@ -56,7 +56,6 @@ const ChangePassword = () => {
       return;
     }
     setShowAlert(false);
-    console.log("close");
   };
 
   const handleClickShowPassword = () => {
@@ -73,12 +72,11 @@ const ChangePassword = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={async (values, { setStatus, setSubmitting }) => {
+          onSubmit={async (values, { setStatus, setSubmitting, resetForm }) => {
             setLoading(true);
             dispatch(clearErrorMessage());
             dispatch(updateUserPassword(values))
               .then(() => {
-                console.log("then");
                 setShowAlert(true);
                 setStatus({ success: true });
               })
@@ -88,6 +86,7 @@ const ChangePassword = () => {
               .finally(() => {
                 setLoading(false);
                 setSubmitting(false);
+                resetForm({ values: "" });
               });
           }}
         >

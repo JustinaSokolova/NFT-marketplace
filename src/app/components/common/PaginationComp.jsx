@@ -35,9 +35,8 @@ const PaginationComp = (props) => {
 };
 
 PaginationComp.propTypes = {
-  itemsCount: PropTypes.number.isRequired, // всего эл-в
-  pagesCount: PropTypes.number.isRequired, // кол-во страниц
-  // pageSize: PropTypes.number.isRequired, //  кол-во эл-в на странице
+  itemsCount: PropTypes.number.isRequired,
+  pagesCount: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   pathName: PropTypes.string.isRequired,

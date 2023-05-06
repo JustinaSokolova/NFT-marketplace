@@ -19,10 +19,11 @@ export const UserFavouritesNFT = () => {
   useEffect(() => {
     dispatch(loadFavouritesList());
   }, [dispatch]);
+  console.log(favouritesNFT);
 
   if (isLoading) return <SkeletonNftListRow />;
 
-  return !isLoading && favouritesNFT ? (
+  return favouritesNFT.length > 0 ? (
     <Box
       sx={{
         display: "flex",

@@ -6,13 +6,13 @@ import {
   loadFavouritesList,
   removeFavourites,
 } from "./favourites";
-import { getIsLogIn } from "./user";
+import localStorageService from "../services/localStorage.service";
 
 export const fetchCaptains = createAsyncThunk(
   "captains/fetchCaptains",
   async (currentPage) => {
     let content;
-    if (getIsLogIn()) {
+    if (localStorageService.getAccessToken()) {
       content = await captainsService.getIfLogged(currentPage, config.pageSize);
     } else {
       content = await captainsService.get(currentPage, config.pageSize);

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Box from "@mui/material/Box";
 
@@ -49,6 +50,15 @@ const CollectionPage = ({
   ) : (
     <SkeletonCollectionPage />
   );
+};
+
+CollectionPage.propTypes = {
+  collection: PropTypes.array,
+  isLoading: PropTypes.bool,
+  onPageChange: PropTypes.func,
+  count: PropTypes.number,
+  pages: PropTypes.number,
+  pathName: PropTypes.string,
 };
 
 export default CollectionPage;

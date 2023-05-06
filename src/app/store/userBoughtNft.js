@@ -105,7 +105,6 @@ const { reducer: userNftReducer } = userNftSlice;
 export const getUserNftCaptains = () => (state) => state.userNft.captains;
 export const getUserNftShips = () => (state) => state.userNft.ships;
 export const getUserNftIslands = () => (state) => state.userNft.islands;
-
 export const getUserNftLoadingStatus = () => (state) => state.userNft.isLoading;
 
 export default userNftReducer;

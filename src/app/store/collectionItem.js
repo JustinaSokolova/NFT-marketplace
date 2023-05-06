@@ -1,19 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import collItemService from "../services/collectionItem.service";
-import { getIsLogIn } from "./user";
+import localStorageService from "../services/localStorage.service";
 
 export const fetchCollectionItem = createAsyncThunk(
   "collectionItem/fetchCollectionItem",
   async (payload) => {
-    console.log(payload);
     let content;
-    if (getIsLogIn()) {
+    if (localStorageService.getAccessToken()) {
       content = await collItemService.getIfLogged(payload);
     } else {
       content = await collItemService.get(payload);
     }
-    console.log(content);
     return content;
   }
 );

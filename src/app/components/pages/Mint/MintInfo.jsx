@@ -32,11 +32,13 @@ const MintInfo = () => {
     <>
       <Box
         sx={{
+          maxWidth: "1180px",
           display: "flex",
           flexWrap: "nowrap",
           justifyContent: "center",
           alignItems: "flex-start",
           gap: "24px",
+          m: "0 auto",
         }}
       >
         <BoxContainer>

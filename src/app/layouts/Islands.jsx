@@ -11,11 +11,13 @@ import {
   getIslandsInfo,
   getIslandsLoadingStatus,
 } from "../store/islands";
+import { getIsLogIn } from "../store/user";
 
 const Islands = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
   const collectionIslandsData = useSelector(getIslands());
   const isLoading = useSelector(getIslandsLoadingStatus());
   const collectionIslandsInfo = useSelector(getIslandsInfo());
@@ -37,8 +39,8 @@ const Islands = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    dispatch(loadFavouritesList());
-  }, [dispatch]);
+    if (isLogIn && !isLoading) dispatch(loadFavouritesList());
+  }, [isLogIn, isLoading, dispatch]);
 
   const handlePageChange = (pageIndex) => {
     if (pageIndex !== currentPage) {

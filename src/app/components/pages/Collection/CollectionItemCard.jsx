@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -11,19 +13,20 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { pink } from "@mui/material/colors";
 
 import RarityNftBadge from "../../ui/RarityNftBadge";
-import { useCoinRate } from "../../../hooks/useCoinRate";
 import { displayDate } from "../../../utils/displayDate";
 import ButtonDetails from "../../ui/ButtonDetails";
 import WrapperCardNft from "../../ui/WrapperCardNft";
 import { cronosIcon } from "../../ui/CronosIcon";
 import { addFavourites, removeFavourites } from "../../../store/favourites";
 import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
-import { fetchCollectionItem } from "../../../store/collectionItem";
-import { useNavigate } from "react-router-dom";
+
+import NftPriceUsd from "../../common/NftPriceUsd";
+import UnlistedTitle from "../../ui/UnlistedTitle";
+import { getIsLogIn } from "../../../store/user";
 
 const CollectionItemCard = ({ item, userNft, favItems }) => {
+  const isLogIn = useSelector(getIsLogIn());
   const { tokenId, collectionName } = item;
-  const { сoinUsdPrice, isLoading } = useCoinRate();
   const [isLoadingCollection, setLoadingCollection] = useState(true);
 
   const dispatch = useDispatch();
@@ -39,7 +42,10 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
       );
     }
     if (favItems) {
-      return state.favourites.entities.find((nft) => nft.tokenId === tokenId);
+      return state.favourites.entities.find(
+        (nft) =>
+          nft.tokenId === tokenId && nft.collectionName === collectionName
+      );
     }
     return state[collectionName].entities.find(
       (nft) => nft.tokenId === tokenId
@@ -73,8 +79,6 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
     };
   }, [nft]);
 
-  const mintPriceUsd = "$" + (price * сoinUsdPrice.usd).toFixed(2);
-
   const handleToggleFavourite = () => {
     favourite
       ? dispatch(removeFavourites({ contractAddress, tokenId }))
@@ -82,7 +86,6 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   };
 
   const handleClick = () => {
-    // dispatch(fetchCollectionItem({ contractAddress, tokenId }));
     navigate(`/${contractAddress}/${tokenId}`);
   };
 
@@ -98,30 +101,33 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
             transition: "transform 0.3s",
           }}
         >
-          <Box
-            className="card-favourite"
-            sx={{
-              position: "absolute",
-              top: "0px",
-              left: "0px",
-              zIndex: "100",
-              transition: "filter 0.3s",
-            }}
-          >
-            <IconButton
-              size="small"
-              edge="end"
-              aria-label="favourite"
-              aria-haspopup="true"
-              onClick={handleToggleFavourite}
+          {isLogIn && (
+            <Box
+              className="card-favourite"
+              sx={{
+                position: "absolute",
+                top: "0px",
+                left: "0px",
+                zIndex: "100",
+                transition: "filter 0.3s",
+              }}
             >
-              {favourite === true ? (
-                <FavoriteIcon sx={{ color: pink[500] }} />
-              ) : (
-                <FavoriteBorderIcon sx={{ color: pink[500] }} />
-              )}
-            </IconButton>
-          </Box>
+              <IconButton
+                size="small"
+                edge="end"
+                aria-label="favourite"
+                aria-haspopup="true"
+                onClick={handleToggleFavourite}
+              >
+                {favourite === true ? (
+                  <FavoriteIcon sx={{ color: pink[500] }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ color: pink[500] }} />
+                )}
+              </IconButton>
+            </Box>
+          )}
+
           <Box
             className="card-rarity"
             sx={{
@@ -182,33 +188,22 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                 >
                   {`#${tokenId}`}
                 </Box>
-                {
-                  marketplaceState === 0 || marketplaceState === 1 ? (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        typography: "body1",
-                        fontWeight: "bold",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      {coinSymbol === "CRO" && cronosIcon} {price}
-                    </Box>
-                  ) : (
-                    ""
-                  )
-                  // <Box
-                  //   sx={{
-                  //     typography: "subtitle2",
-                  //     textTransform: "uppercase",
-                  //     color: "success.main",
-                  //   }}
-                  // >
-                  //   Sold
-                  // </Box>
-                }
+                {marketplaceState === 0 || marketplaceState === 1 ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      typography: "body1",
+                      fontWeight: "bold",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
+                    {coinSymbol === "CRO" && cronosIcon} {price}
+                  </Box>
+                ) : (
+                  <UnlistedTitle />
+                )}
               </Box>
               <Box
                 sx={{
@@ -232,10 +227,11 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                     typography: "body2",
                   }}
                 >
-                  {!isLoading &&
-                  (marketplaceState === 0 || marketplaceState === 1)
-                    ? mintPriceUsd
-                    : ""}{" "}
+                  {marketplaceState === 0 || marketplaceState === 1 ? (
+                    <NftPriceUsd price={price} />
+                  ) : (
+                    ""
+                  )}{" "}
                 </Box>
               </Box>
               {marketplaceState === 1 ? (
@@ -268,6 +264,12 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   ) : (
     <SkeletonCardNft />
   );
+};
+
+CollectionItemCard.propTypes = {
+  item: PropTypes.object,
+  userNft: PropTypes.string,
+  favItems: PropTypes.string,
 };
 
 export default CollectionItemCard;

@@ -9,13 +9,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 import { cronosIcon } from "../../ui/CronosIcon";
-import { useCoinRate } from "../../../hooks/useCoinRate";
+import NftPriceUsd from "../../common/NftPriceUsd";
 
 const СollectionPreview = ({ data }) => {
-  const { сoinUsdPrice, isLoading } = useCoinRate();
-
-  const mintPriceUsd =
-    "$" + (data.mintingDetails[0].mintPriceEth * сoinUsdPrice.usd).toFixed(4);
   return (
     <>
       <Box
@@ -60,19 +56,22 @@ const СollectionPreview = ({ data }) => {
           >
             <NavLink>Mint</NavLink>
           </Button>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              typography: "body1",
-              fontWeight: "bold",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            Price: {data.mintingDetails[0].coinSymbol === "CRO" && cronosIcon}{" "}
-            {data.mintingDetails[0].mintPriceEth} /{" "}
-            {!isLoading ? mintPriceUsd : "0.0"}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "4px",
+                typography: "body1",
+                fontWeight: "bold",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              Price: {data.mintingDetails[0].coinSymbol === "CRO" && cronosIcon}{" "}
+              {data.mintingDetails[0].mintPriceEth} /{" "}
+              <NftPriceUsd price={data.mintingDetails[0].mintPriceEth} />
+            </Box>
           </Box>
         </CardActions>
       </Card>
@@ -82,7 +81,6 @@ const СollectionPreview = ({ data }) => {
 
 СollectionPreview.propTypes = {
   data: PropTypes.object,
-  сoinUsdPrice: PropTypes.object,
 };
 
 export default СollectionPreview;

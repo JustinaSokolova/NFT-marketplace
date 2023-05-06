@@ -9,6 +9,7 @@ const BoxContainer = ({ children }) => {
   return (
     <Paper
       sx={{
+        width: "100%",
         p: "24px",
         ...(theme.palette.mode === "dark"
           ? { backgroundColor: theme.palette.background[900] }

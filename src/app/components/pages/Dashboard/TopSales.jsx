@@ -13,9 +13,11 @@ import {
   getTopSalesNftLoadingStatus,
 } from "../../../store/topSalesNft";
 import { loadFavouritesList } from "../../../store/favourites";
+import { getIsLogIn } from "../../../store/user";
 
 const TopSales = () => {
   const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
   const topSalesNftData = useSelector(getTopSalesNft());
   const isLoading = useSelector(getTopSalesNftLoadingStatus());
 
@@ -23,11 +25,12 @@ const TopSales = () => {
 
   useEffect(() => {
     dispatch(fetchTopSalesNft(selectedTime));
+    isLogIn && dispatch(loadFavouritesList());
   }, [selectedTime, dispatch]);
 
-  useEffect(() => {
-    dispatch(loadFavouritesList());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   isLogIn && dispatch(loadFavouritesList());
+  // }, [dispatch]);
 
   const handleSelectedTime = (value) => {
     setSelectedTime(value);

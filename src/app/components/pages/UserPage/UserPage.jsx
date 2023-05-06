@@ -37,61 +37,66 @@ const UserPage = () => {
   }, [dispatch]);
 
   return (
-    <BoxContainer>
-      <Box
-        sx={{
-          width: "100%",
-          height: "220px",
-        }}
-        className="bg-image__profile"
-      ></Box>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          p: "16px",
-        }}
-      >
-        <BackButton />
-        <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
-        <Box sx={{ width: "100%", mb: "24px" }}>
-          {!isLoading ? (
-            <UserWallet
-              captainsCount={userNftCaptains.total}
-              shipsCount={userNftShips.total}
-              islandsCount={userNftIslands.total}
-              isLoading={isLoading}
-            />
-          ) : (
-            <SkeletonNftListRow />
-          )}
+    <Box sx={{ maxWidth: "1720px", m: "0 auto" }}>
+      <BoxContainer>
+        <Box
+          sx={{
+            width: "100%",
+            height: "220px",
+          }}
+          className="bg-image__profile"
+        ></Box>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            p: "16px",
+          }}
+        >
+          <BackButton />
+          <Box sx={{ typography: "h5", mb: "24px" }}>Wallet</Box>
+          <Box sx={{ width: "100%", mb: "24px" }}>
+            {!isLoading && userNftCaptains && userNftShips && userNftIslands ? (
+              <UserWallet
+                captainsCount={userNftCaptains.total}
+                shipsCount={userNftShips.total}
+                islandsCount={userNftIslands.total}
+                isLoading={isLoading}
+              />
+            ) : (
+              <SkeletonNftListRow />
+            )}
+          </Box>
+          <Divider flexItem />
+          <Box sx={{ typography: "h5", mt: "24px" }}>Favourites NFT</Box>
+          <Box sx={{ width: "100%", mb: "24px" }}>
+            <UserFavouritesNFT />
+          </Box>
+          <Divider flexItem />
+          <Box sx={{ typography: "h5", mt: "24px" }}>My NFT</Box>
+          <Box sx={{ width: "100%", margin: "0 auto" }}>
+            {!isLoading && (
+              <UserCollection
+                collection={userNftCaptains.items}
+                title="Captains"
+              />
+            )}
+            {!isLoading && (
+              <UserCollection collection={userNftShips.items} title="Ships" />
+            )}
+            {!isLoading && (
+              <UserCollection
+                collection={userNftIslands.items}
+                title="Islands"
+              />
+            )}
+          </Box>
         </Box>
-        <Divider flexItem />
-        <Box sx={{ typography: "h5", mt: "24px" }}>Favourites NFT</Box>
-        <Box sx={{ width: "100%", mb: "24px" }}>
-          <UserFavouritesNFT />
-        </Box>
-        <Divider flexItem />
-        <Box sx={{ typography: "h5", mt: "24px" }}>My NFT</Box>
-        <Box sx={{ width: "100%", margin: "0 auto" }}>
-          {!isLoading && (
-            <UserCollection
-              collection={userNftCaptains.items}
-              title="Captains"
-            />
-          )}
-          {!isLoading && (
-            <UserCollection collection={userNftShips.items} title="Ships" />
-          )}
-          {!isLoading && (
-            <UserCollection collection={userNftIslands.items} title="Islands" />
-          )}
-        </Box>
-      </Box>
-    </BoxContainer>
+      </BoxContainer>
+    </Box>
   );
 };
 export default UserPage;

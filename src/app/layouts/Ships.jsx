@@ -11,11 +11,13 @@ import {
   getShipsInfo,
   getShipsLoadingStatus,
 } from "../store/ships";
+import { getIsLogIn } from "../store/user";
 
 const Ships = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
   const collectionShipsData = useSelector(getShips());
   const isLoading = useSelector(getShipsLoadingStatus());
   const collectionShipsInfo = useSelector(getShipsInfo());
@@ -36,8 +38,8 @@ const Ships = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (!isLoading) dispatch(loadFavouritesList());
-  }, [isLoading, dispatch]);
+    if (isLogIn && !isLoading) dispatch(loadFavouritesList());
+  }, [isLogIn, isLoading, dispatch]);
 
   const handlePageChange = (pageIndex) => {
     if (pageIndex !== currentPage) {

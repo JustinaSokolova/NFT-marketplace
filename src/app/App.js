@@ -19,9 +19,9 @@ import Register from "./components/pages/Authentication/auth/Register";
 import Login from "./components/pages/Authentication/auth/Login";
 import Auth from "./layouts/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import CollectionItemPage from "./components/pages/Collection/CollectionItemPage";
 import FaqLayout from "./layouts/FaqLayout";
 import Feedback from "./layouts/Feedback";
+import CollectionItemPage from "./components/pages/CollectionItemPage/CollectionItemPage";
 
 function App() {
   const [componentMounted] = useDarkMode();

@@ -56,7 +56,7 @@ const AuthLogin = ({ ...others }) => {
   const location = useLocation();
 
   const messageError = useSelector(getAuthError());
-  const isLogIn = useSelector(getIsLogIn());
+  // const isLogIn = useSelector(getIsLogIn());
   const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -79,7 +79,7 @@ const AuthLogin = ({ ...others }) => {
     const redirect = location.state ? location.state.referrer.pathname : "/";
     dispatch(logInMetamask(data))
       .then(() => {
-        isLogIn && navigate(redirect, { replace: true });
+        navigate(redirect, { replace: true });
       })
       .catch(() => {
         setLoading(false);
@@ -168,7 +168,7 @@ const AuthLogin = ({ ...others }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setStatus, setSubmitting }) => {
+        onSubmit={async (values, { setStatus, setSubmitting, resetForm }) => {
           setLoading(true);
           const redirect = location.state
             ? location.state.referrer.pathname
@@ -184,6 +184,7 @@ const AuthLogin = ({ ...others }) => {
             .finally(() => {
               setLoading(false);
               setSubmitting(false);
+              resetForm({ values: "" });
             });
         }}
       >

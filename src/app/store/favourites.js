@@ -1,5 +1,8 @@
-import { createSlice, createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import favouritesService from "../services/favourites.services";
+import { fetchCaptains } from "./captains";
+import { fetchIslands } from "./islands";
+import { fetchShips } from "./ships";
 
 export const loadFavouritesList = createAsyncThunk(
   "favourites/loadFavouritesList",
@@ -12,7 +15,11 @@ export const loadFavouritesList = createAsyncThunk(
 export const addFavourites = createAsyncThunk(
   "favourites/addFavourites",
   async (payload) => {
-    const { data, status } = await favouritesService.addFavouritesNft(payload);
+    const { contractAddress, tokenId } = payload;
+    const { data, status } = await favouritesService.addFavouritesNft({
+      contractAddress,
+      tokenId,
+    });
     if (status === 200) return data;
     throw new Error("Failed to add favourite");
   }
@@ -21,7 +28,11 @@ export const addFavourites = createAsyncThunk(
 export const removeFavourites = createAsyncThunk(
   "favourites/removeFavourites",
   async (payload) => {
-    const status = await favouritesService.removeFavouritesNft(payload);
+    const { contractAddress, tokenId } = payload;
+    const status = await favouritesService.removeFavouritesNft({
+      contractAddress,
+      tokenId,
+    });
     if (status === 200) return payload;
     throw new Error("Failed to remove favourite");
   }
@@ -65,8 +76,8 @@ const favouritesSlice = createSlice({
       .addCase(removeFavourites.fulfilled, (state, action) => {
         state.entities = state.entities.filter((item) => {
           return (
-            item.tokenId !== action.payload.tokenId ||
-            item.contractAddress !== action.payload.contractAddress
+            item.contractAddress !== action.payload.contractAddress ||
+            item.tokenId !== action.payload.tokenId
           );
         });
         state.isLoading = false;
@@ -75,6 +86,54 @@ const favouritesSlice = createSlice({
         state.error = action.error.message;
         state.isLoading = false;
       });
+    // .addCase(fetchCaptains.fulfilled, (state, action) => {
+    //   const captains = action.payload.result;
+    //   if (captains) {
+    //     captains.forEach((captain) => {
+    //       const isFavorite = state.entities.some(
+    //         (fav) =>
+    //           captain.contractAddress === fav.contractAddress &&
+    //           captain.tokenId === fav.tokenId
+    //       );
+    //       if (isFavorite) {
+    //         return;
+    //       }
+    //       state.entities.push(captain);
+    //     });
+    //   }
+    // })
+    // .addCase(fetchShips.fulfilled, (state, action) => {
+    //   const ships = action.payload.result;
+    //   if (ships) {
+    //     ships.forEach((ship) => {
+    //       const isFavorite = state.entities.some(
+    //         (fav) =>
+    //           ship.contractAddress === fav.contractAddress &&
+    //           ship.tokenId === fav.tokenId
+    //       );
+    //       if (isFavorite) {
+    //         return;
+    //       }
+    //       state.entities.push(ship);
+    //     });
+    //   }
+    // })
+    // .addCase(fetchIslands.fulfilled, (state, action) => {
+    //   const islands = action.payload.result;
+    //   if (islands) {
+    //     islands.forEach((island) => {
+    //       const isFavorite = state.entities.some(
+    //         (fav) =>
+    //           island.contractAddress === fav.contractAddress &&
+    //           island.tokenId === fav.tokenId
+    //       );
+    //       if (isFavorite) {
+    //         return;
+    //       }
+    //       state.entities.push(island);
+    //     });
+    //   }
+    // });
   },
 });
 
@@ -85,102 +144,3 @@ export const getFavouritesLoadingStatus = () => (state) =>
   state.favourites.isLoading;
 
 export default favouritesReducer;
-
-// const favouritesSlice = createSlice({
-//   name: "favourites",
-//   initialState: {
-//     entities: null,
-//     isLoading: true,
-//     error: null,
-//   },
-//   reducers: {
-//     favouritesRequested: (state) => {
-//       state.isLoading = true;
-//     },
-//     favouritesRequestSuccess: (state, action) => {
-//       state.entities = action.payload;
-//       state.isLoading = false;
-//     },
-//     favouritesRequestFailed: (state, action) => {
-//       state.error = action.payload;
-//       state.isLoading = false;
-//     },
-//     favouritesAddSuccess: (state, action) => {
-//       if (!Array.isArray(state.entities)) {
-//         state.entities = [];
-//       }
-//       console.log(action.payload);
-//       state.entities.push(action.payload);
-//     },
-//     addFavouritesFailed: (state, action) => {
-//       state.error = action.payload;
-//     },
-//     favouritesRemoveSuccess: (state, action) => {
-//       state.entities = state.entities.filter((item) => {
-//         return (
-//           item.tokenId !== action.payload.tokenId ||
-//           item.contractAddress !== action.payload.contractAddress
-//         );
-//       });
-//     },
-//     removeFavouritesFailed: (state, action) => {
-//       state.error = action.payload;
-//     },
-//   },
-// });
-
-// const { reducer: favouritesReducer, actions } = favouritesSlice;
-// const {
-//   favouritesRequested,
-//   favouritesRequestSuccess,
-//   favouritesRequestFailed,
-//   favouritesAddSuccess,
-//   addFavouritesFailed,
-//   favouritesRemoveSuccess,
-//   removeFavouritesFailed,
-// } = actions;
-
-// const favouritesAddRequested = createAction(
-//   "favourites/favouritesAddRequested"
-// );
-// const favouritesRemoveRequested = createAction(
-//   "favourites/favouritesRemoveRequested"
-// );
-
-// export const loadFavouritesList = () => async (dispatch) => {
-//   // {contractAddress, tokenId} = payload;
-//   dispatch(favouritesRequested());
-//   try {
-//     const content = await favouritesService.getFavouritesNft();
-//     dispatch(favouritesRequestSuccess(content));
-//   } catch (error) {
-//     dispatch(favouritesRequestFailed(error.message));
-//   }
-// };
-
-// export const addFavourites = (payload) => async (dispatch) => {
-//   console.log(payload);
-//   dispatch(favouritesAddRequested());
-//   try {
-//     const { data, status } = await favouritesService.addFavouritesNft(payload);
-//     console.log(data);
-//     if (status === 200) dispatch(favouritesAddSuccess(data));
-//   } catch (error) {
-//     dispatch(addFavouritesFailed(error.message));
-//   }
-// };
-
-// export const removeFavourites = (payload) => async (dispatch, getState) => {
-//   dispatch(favouritesRemoveRequested());
-//   try {
-//     const status = await favouritesService.removeFavouritesNft(payload);
-
-//     if (status === 200) dispatch(favouritesRemoveSuccess(payload));
-//   } catch (error) {
-//     dispatch(removeFavouritesFailed(error.message));
-//   }
-// };
-
-// export const getFavourites = () => (state) => state.favourites.entities;
-// export const getFavouritesLoadingStatus = () => (state) =>
-//   state.favourites.isLoading;

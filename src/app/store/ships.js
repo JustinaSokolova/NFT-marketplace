@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import config from "../config.json";
+import localStorageService from "../services/localStorage.service";
 import shipsService from "../services/ships.service";
 
 import {
@@ -8,13 +9,12 @@ import {
   loadFavouritesList,
   removeFavourites,
 } from "./favourites";
-import { getIsLogIn } from "./user";
 
 export const fetchShips = createAsyncThunk(
   "ships/fetchShips",
   async (currentPage) => {
     let content;
-    if (getIsLogIn()) {
+    if (localStorageService.getAccessToken()) {
       content = await shipsService.getIfLogged(currentPage, config.pageSize);
     } else {
       content = await shipsService.get(currentPage, config.pageSize);

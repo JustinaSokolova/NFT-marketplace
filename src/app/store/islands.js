@@ -2,18 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import config from "../config.json";
 import islandsService from "../services/islands.service";
+import localStorageService from "../services/localStorage.service";
 import {
   addFavourites,
   loadFavouritesList,
   removeFavourites,
 } from "./favourites";
-import { getIsLogIn } from "./user";
 
 export const fetchIslands = createAsyncThunk(
   "islands/fetchIslands",
   async (currentPage) => {
     let content;
-    if (getIsLogIn()) {
+    if (localStorageService.getAccessToken()) {
       content = await islandsService.getIfLogged(currentPage, config.pageSize);
     } else {
       content = await islandsService.get(currentPage, config.pageSize);
@@ -51,8 +51,8 @@ const islandsSlice = createSlice({
           state.entities.forEach((entity) => {
             const isFavourite = favourites.some(
               (fav) =>
-                entity.tokenId === fav.tokenId &&
-                entity.contractAddress === fav.contractAddress
+                entity.contractAddress === fav.contractAddress &&
+                entity.tokenId === fav.tokenId
             );
             if (isFavourite) {
               entity.favourite = true;
@@ -64,7 +64,7 @@ const islandsSlice = createSlice({
         const { contractAddress, tokenId } = action.payload;
         const index = state.entities.findIndex(
           (item) =>
-            item.tokenId === tokenId && item.contractAddress === contractAddress
+            item.contractAddress === contractAddress && item.tokenId === tokenId
         );
         if (index !== -1) {
           state.entities[index].favourite = false;
@@ -74,7 +74,7 @@ const islandsSlice = createSlice({
         const { contractAddress, tokenId } = action.payload;
         const index = state.entities.findIndex(
           (item) =>
-            item.tokenId === tokenId && item.contractAddress === contractAddress
+            item.contractAddress === contractAddress && item.tokenId === tokenId
         );
         if (index !== -1) {
           state.entities[index].favourite = true;

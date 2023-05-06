@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import localStorageService from "../services/localStorage.service";
 
 import topSalesNftService from "../services/topSalesNft.service";
 
@@ -7,13 +8,12 @@ import {
   loadFavouritesList,
   removeFavourites,
 } from "./favourites";
-import { getIsLogIn } from "./user";
 
 export const fetchTopSalesNft = createAsyncThunk(
   "topSalesNft/fetchTopSalesNft",
   async (payload) => {
     let content;
-    if (getIsLogIn()) {
+    if (localStorageService.getAccessToken()) {
       content = await topSalesNftService.getIfLogged(payload);
     } else {
       content = await topSalesNftService.get(payload);

@@ -11,11 +11,13 @@ import {
   getCaptainsLoadingStatus,
 } from "../store/captains";
 import { loadFavouritesList } from "../store/favourites";
+import { getIsLogIn } from "../store/user";
 
 const Captains = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLogIn = useSelector(getIsLogIn());
   const collectionCaptainsData = useSelector(getCaptains());
   const isLoading = useSelector(getCaptainsLoadingStatus());
   const collectionCaptainsInfo = useSelector(getCaptainsInfo());
@@ -36,8 +38,8 @@ const Captains = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (!isLoading) dispatch(loadFavouritesList());
-  }, [isLoading, dispatch]);
+    if (isLogIn && !isLoading) dispatch(loadFavouritesList());
+  }, [isLogIn, isLoading, dispatch]);
 
   const handlePageChange = (pageIndex) => {
     if (pageIndex !== currentPage) {
