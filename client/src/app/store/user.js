@@ -10,6 +10,9 @@ const initialState = {
   addressWallet: localStorageService.getWallet()
     ? localStorageService.getWallet()
     : null,
+  attachedWalletAddress: localStorageService.getAttachedWalletAddress()
+    ? localStorageService.getAttachedWalletAddress()
+    : null,
   email: null,
   error: null,
   isLogIn: localStorageService.getAccessToken() ? true : false,
@@ -25,6 +28,9 @@ const userSlice = createSlice({
     },
     authRequestSuccess: (state, action) => {
       state.authToken = action.payload.token;
+      if (action.payload.ethAddress) {
+        state.attachedWalletAddress = action.payload.ethAddress;
+      }
       state.isLogIn = true;
     },
     authRequestFailed: (state, action) => {
@@ -38,10 +44,18 @@ const userSlice = createSlice({
     authWalletFailed: (state, action) => {
       state.error = action.payload;
     },
+    attachWalletSuccess: (state, action) => {
+      state.addressWallet = action.payload.ethAddress;
+      state.isLogIn = true;
+    },
+    attachWalletFailed: (state, action) => {
+      state.error = action.payload;
+    },
     userLogOut: (state) => {
       state.isLogIn = false;
       state.authToken = null;
       state.addressWallet = null;
+      state.attachedWalletAddress = null;
     },
     userUpdateRequest: (state) => {
       state.status = false;
@@ -72,6 +86,8 @@ const {
   clearErrorMessage,
   userUpdateRequest,
   userUpdateFailed,
+  attachWalletSuccess,
+  attachWalletFailed,
 } = actions;
 
 export { clearErrorMessage };
@@ -83,6 +99,9 @@ export const logIn =
     try {
       const data = await authService.login({ email, password });
       localStorageService.setToken(data.token);
+      if (data.ethAddress) {
+        localStorageService.setAttachedWalletAddress(data.ethAddress);
+      }
       dispatch(authRequestSuccess(data));
     } catch (error) {
       const { status, data } = error.response;
@@ -186,11 +205,34 @@ export const signUpMetamask = (payload) => async (dispatch) => {
   }
 };
 
+export const attachMetamask = (payload) => async (dispatch) => {
+  dispatch(authRequested());
+  try {
+    const data = await authService.attachWallet(payload);
+    console.log(data);
+    localStorageService.setWallet(data.ethAddress);
+    dispatch(attachWalletSuccess(data));
+  } catch (error) {
+    console.log(error);
+    const { status, data } = error.response;
+    if (status >= 400) {
+      const errorMessage = generateAuthError(data.reason);
+      console.log(errorMessage);
+      dispatch(attachWalletFailed(errorMessage));
+    } else {
+      dispatch(attachWalletFailed(error.message));
+    }
+  }
+};
+
 export const getIsLogIn = () => (state) => state.user.isLogIn;
 
 export const getUserAuthToken = () => (state) => state.user.authToken;
 
 export const getUserWallet = () => (state) => state.user.addressWallet;
+
+export const getUserAttachedWallet = () => (state) =>
+  state.user.attachedWalletAddress;
 
 export const getUpdateUserStatus = () => (state) => state.user.status;
 

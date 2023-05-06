@@ -35,6 +35,20 @@ export async function AddressSignatureMetamask() {
   }
 }
 
+export async function ConnectMetamask() {
+  IsMetamaskInstalled();
+  if (MetamaskAvailable) {
+    await changeNetworkToTestCronosIfNeeded();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const accounts = await provider.listAccounts();
+    const ethAddress = accounts[0];
+
+    return { ethAddress };
+  } else {
+    alert("MetaMask not installed!");
+  }
+}
+
 export async function getUserBalance(address) {
   let balance = await web3.eth.getBalance(address);
   balance = web3.utils.fromWei(balance);

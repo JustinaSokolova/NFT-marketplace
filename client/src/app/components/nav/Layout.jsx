@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { styled, useTheme } from "@mui/material/styles";
@@ -23,8 +23,19 @@ import ToggleTheme from "../ToggleTheme";
 import Logo from "../ui/Logo";
 import config from "../../config.json";
 import UserMenu from "./UserMenu";
-import { getIsLogIn, logOut, getUserWallet } from "../../store/user";
+import {
+  getIsLogIn,
+  logOut,
+  getUserWallet,
+  attachMetamask,
+  getUserAttachedWallet,
+} from "../../store/user";
 import { walletAddressShort } from "../../utils/walletAddressShort";
+import {
+  AddressSignatureMetamask,
+  ConnectMetamask,
+} from "../../services/web3.service";
+import localStorageService from "../../services/localStorage.service";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -75,9 +86,11 @@ const Layout = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuId = "primary-search-account-menu";
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogIn = useSelector(getIsLogIn());
   const userWallet = useSelector(getUserWallet());
+  const attachedWalletAddress = useSelector(getUserAttachedWallet());
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,6 +110,29 @@ const Layout = () => {
   const handleLogout = () => {
     dispatch(logOut());
     window.location.reload();
+  };
+
+  const handleMetamask = async () => {
+    if (!userWallet) {
+      if (isLogIn) {
+        console.log(11);
+        if (attachedWalletAddress) {
+          console.log(22);
+          const { ethAddress } = await ConnectMetamask();
+          if (attachedWalletAddress === ethAddress) {
+            console.log(33);
+            localStorageService.setWallet(ethAddress);
+            window.location.reload();
+          }
+        } else {
+          console.log(44);
+          const data = await AddressSignatureMetamask();
+          dispatch(attachMetamask(data));
+        }
+      } else {
+        navigate("/auth/login");
+      }
+    }
   };
 
   return (
@@ -149,16 +185,14 @@ const Layout = () => {
                   size="medium"
                   variant="contained"
                   className="main-btn"
+                  onClick={handleMetamask}
+                  sx={{
+                    textTransform: userWallet ? "lowercase" : "uppercase",
+                  }}
                 >
-                  <NavLink
-                    sx={{
-                      textTransform: userWallet ? "lowercase" : "uppercase",
-                    }}
-                  >
-                    {isLogIn && userWallet
-                      ? walletAddressShort(userWallet)
-                      : "Connect wallet"}
-                  </NavLink>
+                  {isLogIn && userWallet
+                    ? walletAddressShort(userWallet)
+                    : "Connect wallet"}
                 </Button>
 
                 {isLogIn && (

@@ -1,5 +1,6 @@
 const TOKEN_KEY = "jwt-token";
 const WALLET_KEY = "wallet-address";
+const ATTACHED_WALLET_KEY = "attached-wallet-address";
 const THEME_KEY = "theme";
 const THEME_BUTTON_KEY = "button_theme";
 
@@ -19,12 +20,21 @@ export function getWallet() {
   return localStorage.getItem(WALLET_KEY);
 }
 
+export function setAttachedWalletAddress(address) {
+  localStorage.setItem(ATTACHED_WALLET_KEY, address);
+}
+
+export function getAttachedWalletAddress() {
+  return localStorage.getItem(ATTACHED_WALLET_KEY);
+}
+
 export function removeAuthData() {
   localStorage.removeItem(TOKEN_KEY);
 }
 
 export function removeWalletData() {
   localStorage.removeItem(WALLET_KEY);
+  localStorage.removeItem(ATTACHED_WALLET_KEY);
 }
 
 export function setThemeToken(idToken) {
@@ -53,6 +63,8 @@ const localStorageService = {
   getThemeButtonToken,
   setWallet,
   getWallet,
+  setAttachedWalletAddress,
+  getAttachedWalletAddress,
   removeWalletData,
 };
 export default localStorageService;

@@ -30,6 +30,21 @@ const authService = {
     });
     return data;
   },
+  attachWallet: async ({ ethAddress, signedMessage }) => {
+    const { data } = await httpService.post(
+      `auth/attachWallet`,
+      {
+        ethAddress,
+        signedMessage,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorageService.getAccessToken()}`,
+        },
+      }
+    );
+    return data;
+  },
   updatePassword: async ({ currentPassword, newPassword }) => {
     const { status } = await httpService.patch(
       `auth/updatePassword`,
