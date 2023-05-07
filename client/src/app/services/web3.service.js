@@ -9,14 +9,15 @@ let MetamaskAvailable = false;
 async function IsMetamaskInstalled() {
   if (typeof window.ethereum !== "undefined") {
     MetamaskAvailable = true;
-    changeNetworkToTestCronosIfNeeded();
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+    await changeNetworkToTestCronosIfNeeded();
   } else {
     toast.error("MetaMask not installed!");
   }
 }
 
 export async function AddressSignatureMetamask() {
-  IsMetamaskInstalled();
+  await IsMetamaskInstalled();
   if (MetamaskAvailable) {
     await changeNetworkToTestCronosIfNeeded();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -35,7 +36,7 @@ export async function AddressSignatureMetamask() {
 }
 
 export async function ConnectMetamask() {
-  IsMetamaskInstalled();
+  await IsMetamaskInstalled();
   if (MetamaskAvailable) {
     await changeNetworkToTestCronosIfNeeded();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -87,7 +88,7 @@ const CaptainsMarketplaceContractAddress =
   "0x7246eA171D0F1a4c88479B10790824b2622F49b6";
 
 export async function MintCaptains() {
-  IsMetamaskInstalled();
+  await IsMetamaskInstalled();
   if (MetamaskAvailable) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const accounts = await provider.listAccounts();
@@ -104,7 +105,7 @@ export async function MintCaptains() {
 }
 
 export async function BuyCaptain(tokenId) {
-  IsMetamaskInstalled();
+  await IsMetamaskInstalled();
   if (MetamaskAvailable) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const accounts = await provider.listAccounts();

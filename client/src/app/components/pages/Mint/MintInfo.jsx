@@ -8,7 +8,7 @@ import { Grid } from "@mui/material";
 
 import CategoryCard from "./CategoryCard";
 import RarityNftColor from "../../ui/RarityNftBadge";
-import СollectionPreview from "./СollectionPreview";
+import CollectionPreview from "./CollectionPreview";
 import BoxContainer from "../../common/BoxContainer";
 
 import SkeletonDescription from "../../ui/skeleton/SkeletonDescription";
@@ -156,7 +156,7 @@ const MintInfo = () => {
         </BoxContainer>
         <Box sx={{ position: "sticky", top: "64px" }}>
           <BoxContainer>
-            <СollectionPreview data={mintInfoData} />
+            <CollectionPreview data={mintInfoData} />
           </BoxContainer>
         </Box>
       </Box>
