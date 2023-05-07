@@ -1,9 +1,10 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import FeedbackPage from "../components/pages/FeedbackPage/FeedbackPage";
 import EmailImg from "../assets/img/email-icon.png";
 
 const Feedback = () => {
+  const theme = useTheme();
   return (
     <Box
       className="bg-image__faq "
@@ -18,7 +19,14 @@ const Feedback = () => {
         position: "relative",
       }}
     >
-      <Box sx={{ typography: "h3", fontWeight: "bold", mt: "56px" }}>
+      <Box
+        sx={{
+          typography: "h3",
+          fontWeight: "bold",
+          mt: "56px",
+          color: theme.palette.primary.light,
+        }}
+      >
         Send us a message
       </Box>
       <Box
@@ -27,6 +35,7 @@ const Feedback = () => {
           maxWidth: "500px",
           textAlign: "center",
           mt: "18px",
+          color: theme.palette.primary.light,
         }}
       >
         If you have any problems or have any suggestions, please contact us. We

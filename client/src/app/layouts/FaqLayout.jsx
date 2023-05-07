@@ -1,9 +1,10 @@
 import React from "react";
 
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import FaqPage from "../components/pages/Faq/FaqPage";
 
 const FaqLayout = () => {
+  const theme = useTheme();
   return (
     <Box
       className="bg-image__faq "
@@ -18,8 +19,23 @@ const FaqLayout = () => {
         position: "relative",
       }}
     >
-      <Box sx={{ typography: "h3", fontWeight: "bold", mt: "56px" }}>FAQs</Box>
-      <Box sx={{ typography: "body1", mt: "18px" }}>
+      <Box
+        sx={{
+          typography: "h3",
+          fontWeight: "bold",
+          mt: "56px",
+          color: theme.palette.primary.light,
+        }}
+      >
+        FAQs
+      </Box>
+      <Box
+        sx={{
+          typography: "body1",
+          mt: "18px",
+          color: theme.palette.primary.light,
+        }}
+      >
         Please refer the Frequently ask question for your quick help
       </Box>
       <Box sx={{ position: "absolute", alignSelf: "center", top: "50%" }}>

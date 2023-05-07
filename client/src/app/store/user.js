@@ -63,6 +63,7 @@ const userSlice = createSlice({
       state.authToken = null;
       state.addressWallet = null;
       state.attachedWalletAddress = null;
+      state.email = null;
     },
     userUpdateRequest: (state) => {
       state.status = false;
@@ -249,6 +250,8 @@ export const getIsLogIn = () => (state) => state.user.isLogIn;
 export const getUserAuthToken = () => (state) => state.user.authToken;
 
 export const getUserWallet = () => (state) => state.user.addressWallet;
+
+export const getUserEmail = () => (state) => state.user.email;
 
 export const getUserAttachedWallet = () => (state) =>
   state.user.attachedWalletAddress;

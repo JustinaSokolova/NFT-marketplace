@@ -12,7 +12,7 @@ import {
   Button,
   Snackbar,
   Alert,
-  // Typography,
+  Typography,
 } from "@mui/material";
 
 import Visibility from "@mui/icons-material/Visibility";
@@ -26,6 +26,7 @@ import {
   clearErrorMessage,
   getAuthError,
   getUpdateUserStatus,
+  getUserEmail,
   updateUserPassword,
 } from "../../../store/user";
 
@@ -45,6 +46,7 @@ const ChangePassword = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const messageError = useSelector(getAuthError());
+  const userEmail = useSelector(getUserEmail());
   // const updateStatus = useSelector(getUpdateUserStatus());
 
   useEffect(() => {
@@ -67,6 +69,25 @@ const ChangePassword = () => {
 
   return (
     <Box>
+      {userEmail ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ typography: "body1", mb: "24px", mr: "24px" }}>
+            You are logged in as:{" "}
+          </Box>
+          <Box sx={{ typography: "body1", mb: "24px" }}>{userEmail} </Box>
+        </Box>
+      ) : (
+        <Typography variant="caption" color="error" sx={{ ml: 1 }}>
+          You need to log in by mail
+        </Typography>
+      )}
+
       <Box sx={{ typography: "h5", mb: "24px" }}>Change password:</Box>
       <Box>
         <Formik

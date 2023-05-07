@@ -39,6 +39,7 @@ export function getAttachedWalletAddress() {
 
 export function removeAuthData() {
   localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(EMAIL_KEY);
 }
 
 export function removeWalletData() {
