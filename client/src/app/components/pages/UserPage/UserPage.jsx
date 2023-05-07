@@ -28,9 +28,6 @@ const UserPage = () => {
   const userNftIslands = useSelector(getUserNftIslands());
   const isLoading = useSelector(getUserNftLoadingStatus());
 
-  console.log(userNftCaptains);
-  console.log(userNftShips);
-  console.log(userNftIslands);
   useEffect(() => {
     dispatch(fetchUserNft());
   }, [dispatch]);

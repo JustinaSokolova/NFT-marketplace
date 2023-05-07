@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -126,7 +127,7 @@ const Layout = () => {
             const data = await AddressSignatureMetamask();
             dispatch(attachMetamask(data));
           } catch (error) {
-            alert(error);
+            toast.error(error);
           }
         }
       } else {

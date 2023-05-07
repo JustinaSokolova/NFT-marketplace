@@ -19,7 +19,6 @@ export const UserFavouritesNFT = () => {
   useEffect(() => {
     dispatch(loadFavouritesList());
   }, [dispatch]);
-  console.log(favouritesNFT);
 
   if (isLoading)
     return (

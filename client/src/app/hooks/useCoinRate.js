@@ -40,7 +40,7 @@ export const CoinRateProvider = ({ children }) => {
   }
   useEffect(() => {
     if (error !== null) {
-      toast(error);
+      toast.error(error);
       setError(null);
     }
   }, [error]);

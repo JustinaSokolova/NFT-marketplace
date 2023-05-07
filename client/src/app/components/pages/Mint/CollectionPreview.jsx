@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,40 +14,30 @@ import { cronosIcon } from "../../ui/CronosIcon";
 import NftPriceUsd from "../../common/NftPriceUsd";
 import { getIsLogIn, getUserWallet } from "../../../store/user";
 import { MintCaptains } from "../../../services/web3.service";
-import { Alert, Snackbar, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 const СollectionPreview = ({ data }) => {
   const navigate = useNavigate();
   const isLogIn = useSelector(getIsLogIn());
   const userWallet = useSelector(getUserWallet());
-  // const [showAlert, setShowAlert] = useState(false);
   const handleMint = async () => {
     if (isLogIn) {
       if (userWallet) {
         try {
-          MintCaptains();
-          // setShowAlert(true);
-          // toast.success("You need to connect a wallet to mint");
-          alert(
+          await MintCaptains();
+          toast.success(
             "Your Captain has been successfully minted! You will see it in the profile in a few minutes."
           );
         } catch (error) {
-          alert(error);
+          toast.error(error);
         }
       } else {
-        alert("You need to connect a wallet to mint");
+        toast.error("You need to connect a wallet to mint");
       }
     } else {
       navigate("/auth/register");
     }
   };
-
-  // const handleCloseAlert = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   setShowAlert(false);
-  // };
 
   return (
     <>
@@ -121,25 +111,6 @@ const СollectionPreview = ({ data }) => {
       ) : (
         ""
       )}
-      {/* <Snackbar
-        open={showAlert}
-        autoHideDuration={6000}
-        onClose={handleCloseAlert}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        sx={{ zIndex: "10000" }}
-      >
-        <Alert
-          onClose={handleCloseAlert}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Your Captain has been successfully minted! You will see it in the
-          profile in a few minutes.
-        </Alert>
-      </Snackbar> */}
     </>
   );
 };

@@ -1,5 +1,4 @@
 import axios from "axios";
-// import logger from "./log.service"; // for Sentry
 import { toast } from "react-toastify";
 import config from "../config.json";
 

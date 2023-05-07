@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   Box,
@@ -28,6 +29,7 @@ import { walletAddressShort } from "../../../utils/walletAddressShort";
 import { cronosIcon } from "../../ui/CronosIcon";
 import NftPriceUsd from "../../common/NftPriceUsd";
 import UnlistedTitle from "../../ui/UnlistedTitle";
+import { BuyCaptain } from "../../../services/web3.service";
 
 const CollectionItemPage = () => {
   const dispatch = useDispatch();
@@ -47,6 +49,21 @@ const CollectionItemPage = () => {
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
+  };
+
+  const handleBuy = async () => {
+    if (userWallet) {
+      try {
+        await BuyCaptain(tokenId);
+        toast.success(
+          "You bought the nft! You will see it in the profile in a few minutes."
+        );
+      } catch (error) {
+        toast.error(error);
+      }
+    } else {
+      toast.error("You need to connect a wallet to mint");
+    }
   };
 
   return !isLoading && nftItemData ? (
@@ -94,6 +111,17 @@ const CollectionItemPage = () => {
               <Box sx={{ typography: "h5", mb: 2 }}>
                 {nftItemData.collectionName} #{nftItemData.tokenId}
               </Box>
+              {nftItemData.collectionName === "captains" && (
+                <Button variant="outlined" sx={{ mb: 2 }}>
+                  <NavLink
+                    to={`https://testnet.cronoscan.com/token/0xa7d87ec62772c3cb9b59de6f4aca4c8602910bcd?a=${tokenId}`}
+                    target="_blank"
+                  >
+                    View on blockchain
+                  </NavLink>
+                </Button>
+              )}
+
               <Card variant="outlined" sx={{ maxWidth: 320, mb: 2 }}>
                 <CardContent
                   sx={{
@@ -133,14 +161,15 @@ const CollectionItemPage = () => {
                 <CardActions>
                   {isLogIn &&
                     userWallet &&
-                    nftItemData.marketplaceState === 1 && (
+                    nftItemData.marketplaceState === 0 && (
                       <Button
                         color="primary"
                         size="small"
                         variant="contained"
                         fullWidth
+                        onClick={handleBuy}
                       >
-                        <NavLink>Buy</NavLink>
+                        Buy
                       </Button>
                     )}
                   {!isLogIn || !userWallet ? (
@@ -173,11 +202,11 @@ const CollectionItemPage = () => {
                       flexWrap: "wrap",
                     }}
                   >
-                    {nftItemData.visuals.map((item) => (
+                    {nftItemData.visuals.map((item, index) => (
                       <Card
                         variant="outlined"
                         sx={{ minWidth: 120, m: 2 }}
-                        key={item.value}
+                        key={item.value + index}
                       >
                         <CardContent>
                           <Typography
@@ -278,9 +307,9 @@ const CollectionItemPage = () => {
                       flexDirection: "column",
                     }}
                   >
-                    {nftItemData.traits.map((item) => (
+                    {nftItemData.traits.map((item, index) => (
                       <Box
-                        key={item.value}
+                        key={item.description + index}
                         sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -288,9 +317,9 @@ const CollectionItemPage = () => {
                         }}
                       >
                         <Box sx={{ typography: "body2" }}>
-                          {item.trait_type}
+                          {item.description}
                         </Box>
-                        <Box>{item.value}</Box>
+                        <Box>{item.shipStatsAffected.join(", ")}</Box>
                       </Box>
                     ))}
                   </AccordionDetails>

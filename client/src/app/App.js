@@ -75,7 +75,7 @@ function App() {
         </CoinRateProvider>
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={6000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

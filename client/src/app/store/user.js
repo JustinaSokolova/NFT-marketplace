@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
 import generateAuthError from "../utils/generateAuthError";
+import { toast } from "react-toastify";
 
 const initialState = {
   authToken: localStorageService.getAccessToken()
@@ -238,7 +239,7 @@ export const attachMetamask = (payload) => async (dispatch) => {
       const errorMessage = generateAuthError(data.reason);
       console.log(errorMessage);
       dispatch(attachWalletFailed(errorMessage));
-      alert(errorMessage);
+      toast.error(errorMessage);
     } else {
       dispatch(attachWalletFailed(error.message));
     }

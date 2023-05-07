@@ -12,6 +12,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import "./app/assets/scss/style.scss";
 import "./app/assets/fonts/QuickDog/QuickDog.ttf";
 import "react-multi-carousel/lib/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { createStore } from "./app/store/createStore";
 import { Provider } from "react-redux";

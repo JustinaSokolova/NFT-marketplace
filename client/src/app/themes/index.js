@@ -7,7 +7,6 @@ import themeContext from "../components/themeContext";
 import getThemePallete from "./theme";
 
 import componentStyleOverrides from "./compStyleOverride";
-// import themeTypography from "./typography";
 
 const ThemeCustomization = ({ children }) => {
   const [mode, colorMode] = useDarkMode();
@@ -27,7 +26,6 @@ const ThemeCustomization = ({ children }) => {
       },
       direction: "ltr",
       palette: theme.palette,
-      // typography: themeTypography
     }),
     [theme]
   );

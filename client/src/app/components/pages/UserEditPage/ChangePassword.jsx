@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import {
   Box,
@@ -10,8 +11,6 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
-  Snackbar,
-  Alert,
   Typography,
 } from "@mui/material";
 
@@ -25,7 +24,6 @@ import Loader from "../../ui/Loader";
 import {
   clearErrorMessage,
   getAuthError,
-  getUpdateUserStatus,
   getUserEmail,
   updateUserPassword,
 } from "../../../store/user";
@@ -43,22 +41,13 @@ const validationSchema = Yup.object().shape({
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const messageError = useSelector(getAuthError());
   const userEmail = useSelector(getUserEmail());
-  // const updateStatus = useSelector(getUpdateUserStatus());
 
   useEffect(() => {
     dispatch(clearErrorMessage());
   }, [dispatch]);
-
-  const handleCloseAlert = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowAlert(false);
-  };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -83,8 +72,8 @@ const ChangePassword = () => {
           <Box sx={{ typography: "body1", mb: "24px" }}>{userEmail} </Box>
         </Box>
       ) : (
-        <Typography variant="caption" color="error" sx={{ ml: 1 }}>
-          You need to log in by mail
+        <Typography variant="caption" color="error">
+          You need to log in by email
         </Typography>
       )}
 
@@ -98,7 +87,7 @@ const ChangePassword = () => {
             dispatch(clearErrorMessage());
             dispatch(updateUserPassword(values))
               .then(() => {
-                setShowAlert(true);
+                toast.success("Password changed successfully!");
                 setStatus({ success: true });
               })
               .catch(() => {
@@ -132,7 +121,6 @@ const ChangePassword = () => {
                     sx={{ m: 1, width: "25ch" }}
                     variant="outlined"
                     error={Boolean(touched.email && errors.password)}
-                    // sx={{ ...theme.typography.customInput }}
                   >
                     <InputLabel htmlFor="outlined-adornment-password">
                       Current password
@@ -174,7 +162,6 @@ const ChangePassword = () => {
                     sx={{ m: 1, width: "25ch" }}
                     variant="outlined"
                     error={Boolean(touched.email && errors.password)}
-                    // sx={{ ...theme.typography.customInput }}
                   >
                     <InputLabel htmlFor="outlined-adornment-password">
                       New password
@@ -240,23 +227,6 @@ const ChangePassword = () => {
             </form>
           )}
         </Formik>
-        <Snackbar
-          open={showAlert}
-          autoHideDuration={3000}
-          onClose={handleCloseAlert}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-        >
-          <Alert
-            onClose={handleCloseAlert}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Password changed successfully!
-          </Alert>
-        </Snackbar>
       </Box>
     </Box>
   );

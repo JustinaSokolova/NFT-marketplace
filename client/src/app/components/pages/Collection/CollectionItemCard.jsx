@@ -31,7 +31,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(collectionName);
+
   const nft = useSelector((state) => {
     if (item.marketplaceState === 1) {
       return state.topSalesNft.entities.find((nft) => nft.tokenId === tokenId);

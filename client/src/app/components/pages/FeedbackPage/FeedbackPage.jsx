@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -11,8 +12,6 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 
 import BoxContainer from "../../common/BoxContainer";
@@ -23,7 +22,6 @@ import { getUserEmail } from "../../../store/user";
 const FeedbackPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
 
   const userEmail = useSelector(getUserEmail());
 
@@ -38,13 +36,6 @@ const FeedbackPage = () => {
     subject: Yup.string().required("Subject is required"),
     message: Yup.string().required("Message is required"),
   });
-
-  const handleCloseAlert = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowAlert(false);
-  };
 
   return (
     <Box sx={{ maxWidth: "800px", minWidth: "600px" }}>
@@ -66,7 +57,7 @@ const FeedbackPage = () => {
                   message
                 );
                 if (status === 200) {
-                  setShowAlert(true);
+                  toast.success("Your message has been sent successfully!");
                   setStatus({ success: true });
                 }
               } catch (error) {
@@ -227,23 +218,6 @@ const FeedbackPage = () => {
               </form>
             )}
           </Formik>
-          <Snackbar
-            open={showAlert}
-            autoHideDuration={6000}
-            onClose={handleCloseAlert}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <Alert
-              onClose={handleCloseAlert}
-              severity="success"
-              sx={{ width: "100%" }}
-            >
-              Your message has been sent successfully!
-            </Alert>
-          </Snackbar>
         </Box>
       </BoxContainer>
     </Box>
