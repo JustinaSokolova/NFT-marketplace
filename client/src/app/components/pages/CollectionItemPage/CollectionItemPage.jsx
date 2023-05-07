@@ -110,8 +110,7 @@ const CollectionItemPage = () => {
                   >
                     Price:
                   </Typography>
-                  {nftItemData.marketplaceState === 0 ||
-                  nftItemData.marketplaceState === 1 ? (
+                  {nftItemData.marketplaceState !== 2 ? (
                     <Typography
                       variant="h6"
                       component="div"
@@ -132,19 +131,24 @@ const CollectionItemPage = () => {
                   )}
                 </CardContent>
                 <CardActions>
-                  {isLogIn && userWallet ? (
-                    <Button
-                      color="primary"
-                      size="small"
-                      variant="contained"
-                      fullWidth
-                    >
-                      <NavLink>Buy</NavLink>
-                    </Button>
-                  ) : (
-                    <Typography variant="subtitle2" color="error" sx={{ m: 2 }}>
+                  {isLogIn &&
+                    userWallet &&
+                    nftItemData.marketplaceState === 1 && (
+                      <Button
+                        color="primary"
+                        size="small"
+                        variant="contained"
+                        fullWidth
+                      >
+                        <NavLink>Buy</NavLink>
+                      </Button>
+                    )}
+                  {!isLogIn || !userWallet ? (
+                    <Typography variant="caption" color="error">
                       You need to connect a wallet to buy
                     </Typography>
+                  ) : (
+                    ""
                   )}
                 </CardActions>
               </Card>

@@ -36,7 +36,6 @@ import {
 import {
   clearErrorMessage,
   getAuthError,
-  getIsLogIn,
   signUp,
   signUpMetamask,
 } from "../../../../store/user";
@@ -61,7 +60,6 @@ const AuthRegister = ({ ...others }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // const isLogIn = useSelector(getIsLogIn());
   const messageError = useSelector(getAuthError());
   const [loading, setLoading] = useState(false);
 
@@ -181,6 +179,7 @@ const AuthRegister = ({ ...others }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setStatus, setSubmitting, resetForm }) => {
+          setLoading(true);
           const redirect = location.state
             ? location.state.referrer.pathname
             : "/";
@@ -194,6 +193,7 @@ const AuthRegister = ({ ...others }) => {
             })
             .finally(() => {
               setSubmitting(false);
+              setLoading(false);
               resetForm({ values: "" });
             });
         }}
@@ -220,6 +220,7 @@ const AuthRegister = ({ ...others }) => {
                 type="email"
                 value={values.email}
                 name="email"
+                label="Email Address"
                 onChange={handleChange}
                 inputProps={{}}
               />

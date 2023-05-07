@@ -133,7 +133,7 @@ const ListItems = () => {
                     alt="Island Icon"
                   />
                 </Box>
-                <StyledNavLink to="feedback">Feedback</StyledNavLink>
+                <StyledNavLink to="feedback">Сontact us</StyledNavLink>
               </ListItemButton>
             </ListItem>
             <ListItem>

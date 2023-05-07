@@ -31,12 +31,12 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log(collectionName);
   const nft = useSelector((state) => {
     if (item.marketplaceState === 1) {
       return state.topSalesNft.entities.find((nft) => nft.tokenId === tokenId);
     }
-    if (userNft) {
+    if (userNft && state.userNft[collectionName]) {
       return state.userNft[collectionName].items.find(
         (nft) => nft.tokenId === tokenId
       );
@@ -47,6 +47,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
           nft.tokenId === tokenId && nft.collectionName === collectionName
       );
     }
+
     return state[collectionName].entities.find(
       (nft) => nft.tokenId === tokenId
     );

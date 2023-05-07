@@ -8,15 +8,22 @@ import BackButton from "../../common/BackButton";
 
 const UserEditPage = () => {
   return (
-    <Box sx={{ maxWidth: "1720px", m: "0 auto" }}>
+    <Box
+      sx={{
+        maxWidth: "1720px",
+        m: "0 auto",
+        borderRadius: "12px 12px 0px 0px",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          height: "200px",
+          borderRadius: "12px 12px 0px 0px",
+        }}
+        className="bg-image__settings"
+      ></Box>
       <BoxContainer>
-        <Box
-          sx={{
-            width: "100%",
-            height: "220px",
-          }}
-          className="bg-image__settings"
-        ></Box>
         <Box
           sx={{
             width: "100%",

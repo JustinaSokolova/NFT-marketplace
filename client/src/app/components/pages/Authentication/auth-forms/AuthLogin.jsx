@@ -6,10 +6,8 @@ import { useTheme } from "@mui/material/styles";
 import {
   Box,
   Button,
-  // Checkbox,
   Divider,
   FormControl,
-  // FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -29,7 +27,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   clearErrorMessage,
   getAuthError,
-  getIsLogIn,
   logIn,
   logInMetamask,
 } from "../../../../store/user";
@@ -56,7 +53,6 @@ const AuthLogin = ({ ...others }) => {
   const location = useLocation();
 
   const messageError = useSelector(getAuthError());
-  // const isLogIn = useSelector(getIsLogIn());
   const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);

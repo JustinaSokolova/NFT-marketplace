@@ -8,7 +8,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CollectionItemCard from "../pages/Collection/CollectionItemCard";
 
 const SliderComp = ({ collection, userNft, favItems }) => {
-  // console.log(userNft);
   const handleDragStart = (e) => e.preventDefault();
   const responsive = {
     superLargeDesktop: {

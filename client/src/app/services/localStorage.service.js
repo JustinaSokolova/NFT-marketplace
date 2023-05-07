@@ -1,6 +1,7 @@
 const TOKEN_KEY = "jwt-token";
 const WALLET_KEY = "wallet-address";
 const ATTACHED_WALLET_KEY = "attached-wallet-address";
+const EMAIL_KEY = "email-address";
 const THEME_KEY = "theme";
 const THEME_BUTTON_KEY = "button_theme";
 
@@ -18,6 +19,14 @@ export function setWallet(address) {
 
 export function getWallet() {
   return localStorage.getItem(WALLET_KEY);
+}
+
+export function setEmailAddress(email) {
+  localStorage.setItem(EMAIL_KEY, email);
+}
+
+export function getEmailAddress() {
+  return localStorage.getItem(EMAIL_KEY);
 }
 
 export function setAttachedWalletAddress(address) {
@@ -56,6 +65,8 @@ export function getThemeButtonToken() {
 const localStorageService = {
   setToken,
   getAccessToken,
+  setEmailAddress,
+  getEmailAddress,
   removeAuthData,
   setThemeToken,
   setThemeButtonToken,

@@ -8,7 +8,7 @@ import {
   getFavouritesLoadingStatus,
   loadFavouritesList,
 } from "../../../store/favourites";
-import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
+import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 
 export const UserFavouritesNFT = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,17 @@ export const UserFavouritesNFT = () => {
   }, [dispatch]);
   console.log(favouritesNFT);
 
-  if (isLoading) return <SkeletonNftListRow />;
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          mt: "24px",
+        }}
+      >
+        <SkeletonCardNft />
+      </Box>
+    );
 
   return favouritesNFT.length > 0 ? (
     <Box

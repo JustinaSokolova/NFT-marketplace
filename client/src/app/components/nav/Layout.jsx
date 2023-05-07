@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -115,19 +115,19 @@ const Layout = () => {
   const handleMetamask = async () => {
     if (!userWallet) {
       if (isLogIn) {
-        console.log(11);
         if (attachedWalletAddress) {
-          console.log(22);
           const { ethAddress } = await ConnectMetamask();
           if (attachedWalletAddress === ethAddress) {
-            console.log(33);
             localStorageService.setWallet(ethAddress);
             window.location.reload();
           }
         } else {
-          console.log(44);
-          const data = await AddressSignatureMetamask();
-          dispatch(attachMetamask(data));
+          try {
+            const data = await AddressSignatureMetamask();
+            dispatch(attachMetamask(data));
+          } catch (error) {
+            alert(error);
+          }
         }
       } else {
         navigate("/auth/login");

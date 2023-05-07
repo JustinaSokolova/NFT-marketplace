@@ -1,4 +1,4 @@
-import { createSlice, createAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
 import generateAuthError from "../utils/generateAuthError";
@@ -13,7 +13,9 @@ const initialState = {
   attachedWalletAddress: localStorageService.getAttachedWalletAddress()
     ? localStorageService.getAttachedWalletAddress()
     : null,
-  email: null,
+  email: localStorageService.getEmailAddress()
+    ? localStorageService.getEmailAddress()
+    : null,
   error: null,
   isLogIn: localStorageService.getAccessToken() ? true : false,
   status: false,
@@ -28,6 +30,7 @@ const userSlice = createSlice({
     },
     authRequestSuccess: (state, action) => {
       state.authToken = action.payload.token;
+      state.email = action.payload.email;
       if (action.payload.ethAddress) {
         state.attachedWalletAddress = action.payload.ethAddress;
       }
@@ -39,6 +42,9 @@ const userSlice = createSlice({
     authWalletSuccess: (state, action) => {
       state.addressWallet = action.payload.ethAddress;
       state.authToken = action.payload.token;
+      if (action.payload.email) {
+        state.email = action.payload.email;
+      }
       state.isLogIn = true;
     },
     authWalletFailed: (state, action) => {
@@ -46,6 +52,7 @@ const userSlice = createSlice({
     },
     attachWalletSuccess: (state, action) => {
       state.addressWallet = action.payload.ethAddress;
+      state.email = action.payload.email;
       state.isLogIn = true;
     },
     attachWalletFailed: (state, action) => {
@@ -99,6 +106,7 @@ export const logIn =
     try {
       const data = await authService.login({ email, password });
       localStorageService.setToken(data.token);
+      localStorageService.setEmailAddress(data.email);
       if (data.ethAddress) {
         localStorageService.setAttachedWalletAddress(data.ethAddress);
       }
@@ -122,6 +130,7 @@ export const signUp =
     try {
       const data = await authService.register({ email, password });
       localStorageService.setToken(data.token);
+      localStorageService.setEmailAddress(data.email);
       dispatch(authRequestSuccess(data));
     } catch (error) {
       const { status, data } = error.response;
@@ -169,6 +178,9 @@ export const logInMetamask = (payload) => async (dispatch) => {
     console.log(data);
     localStorageService.setToken(data.token);
     localStorageService.setWallet(data.ethAddress);
+    if (data.email) {
+      localStorageService.setEmailAddress(data.email);
+    }
     dispatch(authWalletSuccess(data));
   } catch (error) {
     console.log(error);
@@ -181,6 +193,7 @@ export const logInMetamask = (payload) => async (dispatch) => {
       console.log(error);
       dispatch(authWalletFailed(error.message));
     }
+    throw error;
   }
 };
 
@@ -191,6 +204,9 @@ export const signUpMetamask = (payload) => async (dispatch) => {
     console.log(data);
     localStorageService.setToken(data.token);
     localStorageService.setWallet(data.ethAddress);
+    if (data.email) {
+      localStorageService.setEmailAddress(data.email);
+    }
     dispatch(authWalletSuccess(data));
   } catch (error) {
     console.log(error);
@@ -202,6 +218,7 @@ export const signUpMetamask = (payload) => async (dispatch) => {
     } else {
       dispatch(authWalletFailed(error.message));
     }
+    throw error;
   }
 };
 
@@ -211,6 +228,7 @@ export const attachMetamask = (payload) => async (dispatch) => {
     const data = await authService.attachWallet(payload);
     console.log(data);
     localStorageService.setWallet(data.ethAddress);
+    localStorageService.setEmailAddress(data.email);
     dispatch(attachWalletSuccess(data));
   } catch (error) {
     console.log(error);
@@ -219,6 +237,7 @@ export const attachMetamask = (payload) => async (dispatch) => {
       const errorMessage = generateAuthError(data.reason);
       console.log(errorMessage);
       dispatch(attachWalletFailed(errorMessage));
+      alert(errorMessage);
     } else {
       dispatch(attachWalletFailed(error.message));
     }
