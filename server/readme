@@ -1,0 +1,9 @@
+Local:
+
+1) npm i
+2) npm run start
+
+Docker:
+
+1) docker build --tag marketplace-backend -f ./marketplace-backend.dockerfile .
+2) docker run --name marketplace-backend -d -p 3027:3027 marketplace-backend  
