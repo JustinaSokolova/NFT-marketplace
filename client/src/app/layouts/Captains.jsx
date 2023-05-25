@@ -9,9 +9,12 @@ import {
   getCaptains,
   getCaptainsInfo,
   getCaptainsLoadingStatus,
+  removeFilterAttributes,
+  setFilterAttributes,
 } from "../store/captains";
 import { loadFavouritesList } from "../store/favourites";
 import { getIsLogIn } from "../store/user";
+import localStorageService from "../services/localStorage.service";
 
 const Captains = () => {
   const location = useLocation();
@@ -26,9 +29,59 @@ const Captains = () => {
     parseInt(location.search?.split("=")[1] || 1)
   );
 
+  const filterNames = ["Common", "Rare", "Epic", "Legendary"];
+  const [rarityList, setRarityList] = useState(
+    localStorageService.getCollectionFilterRarity() || []
+  );
+  const [priceOrder, setPriceOrder] = useState("");
+
+  const [marketplaceState, setMarketplaceState] = useState("");
+  const [stateSwitch, setStateSwitch] = useState({
+    isSale: false,
+  });
+
+  const handleChangeMarketState = (event) => {
+    console.log("handle");
+    setStateSwitch({
+      ...stateSwitch,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
   useEffect(() => {
+    if (stateSwitch.isSale === true) {
+      setMarketplaceState("listed");
+    } else {
+      setMarketplaceState("");
+    }
+  }, [stateSwitch]);
+
+  const handleChangeFilter = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRarityList(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+    setCurrentPage(1);
+  };
+
+  const handleChangePrice = (event) => {
+    setPriceOrder(event.target.value);
+  };
+
+  useEffect(() => {
+    dispatch(setFilterAttributes({ marketplaceState, rarityList, priceOrder }));
     dispatch(fetchCaptains(currentPage));
-  }, [currentPage, dispatch]);
+  }, [
+    currentPage,
+    marketplaceState,
+    rarityList,
+    priceOrder,
+    stateSwitch,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (!isLoading && collectionCaptainsInfo.pages < currentPage) {
@@ -48,6 +101,18 @@ const Captains = () => {
     }
   };
 
+  const handleClear = () => {
+    dispatch(removeFilterAttributes());
+    setCurrentPage(1);
+    dispatch(fetchCaptains(currentPage));
+    setRarityList([]);
+    setPriceOrder("");
+    setStateSwitch({
+      ...stateSwitch,
+      isSale: false,
+    });
+  };
+
   return !isLoading ? (
     <CollectionPage
       collection={collectionCaptainsData}
@@ -57,6 +122,14 @@ const Captains = () => {
       pages={collectionCaptainsInfo.pages}
       pathName={location.pathname}
       onPageChange={handlePageChange}
+      filterNames={filterNames}
+      rarityList={rarityList}
+      onFilterChange={handleChangeFilter}
+      onHandleClear={handleClear}
+      stateSwitch={stateSwitch}
+      onMarketStateChange={handleChangeMarketState}
+      priceOrder={priceOrder}
+      onChangePrice={handleChangePrice}
     />
   ) : (
     <SkeletonCollectionPage />

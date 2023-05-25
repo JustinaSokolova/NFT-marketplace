@@ -19,7 +19,7 @@ a:active {
 }
 
 .custom-carousel-button--next {
-  color: #f9f9f9ee;
+  color: rgba(249, 249, 249, 0.9333333333);
   position: absolute;
   right: 0;
   outline: 0;
@@ -33,15 +33,14 @@ a:active {
   min-height: 43px;
   opacity: 1;
   cursor: pointer;
-
-  &:hover {
-    color: #fff;
-    background: rgba(0, 0, 0, 0.7);
-  }
+}
+.custom-carousel-button--next:hover {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .custom-carousel-button--prev {
-  color: #f6f6f6ee;
+  color: rgba(246, 246, 246, 0.9333333333);
   position: absolute;
   left: 0;
   outline: 0;
@@ -54,11 +53,10 @@ a:active {
   min-height: 43px;
   opacity: 1;
   cursor: pointer;
-
-  &:hover {
-    color: #fff;
-    background: rgba(0, 0, 0, 0.7);
-  }
+}
+.custom-carousel-button--prev:hover {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .cronos-icon {
@@ -78,7 +76,6 @@ a:active {
 .bg-image__settings {
   background: url("../img/islandbg.png");
   background-size: 100%;
-  -webkit-filter: brightness(120%);
   filter: brightness(120%);
 }
 
@@ -118,7 +115,7 @@ a:active {
   cursor: pointer;
 }
 
-@keyframes wings {
+@-webkit-keyframes wings {
   50% {
     transform: translateY(-40px);
   }
@@ -127,75 +124,21 @@ a:active {
   }
 }
 
+@keyframes wings {
+  50% {
+    transform: translateY(-40px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 .bg-email-icon {
   position: absolute;
   top: -20%;
   right: 5%;
   width: 300px;
   z-index: 1000;
-  animation: 5s ease-in-out 0s infinite normal none running wings;
+  -webkit-animation: 5s ease-in-out 0s infinite normal none running wings;
+          animation: 5s ease-in-out 0s infinite normal none running wings;
   filter: drop-shadow(9px 33px 26px rgba(31, 112, 171, 0.934));
-}
-
-// @keyframes blink {
-//   50% {
-//     opacity: 0;
-//   }
-//   100% {
-//     opacity: 1;
-//   }
-// }
-
-// @keyframes bounce {
-//   0%,
-//   20%,
-//   53%,
-//   to {
-//     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-//     transform: translateZ(0);
-//   }
-//   40%,
-//   43% {
-//     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-//     transform: translate3d(0, -5px, 0);
-//   }
-//   70% {
-//     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-//     transform: translate3d(0, -7px, 0);
-//   }
-//   80% {
-//     transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-//     transform: translateZ(0);
-//   }
-//   90% {
-//     transform: translate3d(0, -2px, 0);
-//   }
-// }
-
-// @keyframes slideY {
-//   0%,
-//   50%,
-//   100% {
-//     transform: translateY(0px);
-//   }
-//   25% {
-//     transform: translateY(-10px);
-//   }
-//   75% {
-//     transform: translateY(10px);
-//   }
-// }
-
-// @keyframes slideX {
-//   0%,
-//   50%,
-//   100% {
-//     transform: translateX(0px);
-//   }
-//   25% {
-//     transform: translateX(-10px);
-//   }
-//   75% {
-//     transform: translateX(10px);
-//   }
-// }
+}/*# sourceMappingURL=style.css.map */

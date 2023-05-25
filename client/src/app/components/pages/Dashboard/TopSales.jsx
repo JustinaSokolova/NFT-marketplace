@@ -28,17 +28,9 @@ const TopSales = () => {
     isLogIn && dispatch(loadFavouritesList());
   }, [selectedTime, dispatch]);
 
-  // useEffect(() => {
-  //   isLogIn && dispatch(loadFavouritesList());
-  // }, [dispatch]);
-
   const handleSelectedTime = (value) => {
     setSelectedTime(value);
   };
-
-  if (topSalesNftData === null) {
-    return "There are no sold NFTs for the selected period";
-  }
 
   return (
     <BoxContainer>
@@ -58,6 +50,8 @@ const TopSales = () => {
         />
         <Box sx={{ width: "100%", margin: "0 auto" }}>
           {!isLoading && <SliderComp collection={topSalesNftData} />}
+          {topSalesNftData.length <= 0 &&
+            "There are no sold NFTs for the selected period"}
         </Box>
       </Box>
     </BoxContainer>

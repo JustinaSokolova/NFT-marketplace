@@ -114,7 +114,7 @@ const CollectionItemPage = () => {
               {nftItemData.collectionName === "captains" && (
                 <Button variant="outlined" sx={{ mb: 2 }}>
                   <NavLink
-                    to={`https://testnet.cronoscan.com/token/0xa7d87ec62772c3cb9b59de6f4aca4c8602910bcd?a=${tokenId}`}
+                    to={`https://cronos.org/explorer/testnet3/token/0xa7d87ec62772c3cb9b59de6f4aca4c8602910bcd/instance/${tokenId}/token-transfers`}
                     target="_blank"
                   >
                     View on blockchain
@@ -138,7 +138,7 @@ const CollectionItemPage = () => {
                   >
                     Price:
                   </Typography>
-                  {nftItemData.marketplaceState !== 2 ? (
+                  {nftItemData.marketplaceState !== "None" ? (
                     <Typography
                       variant="h6"
                       component="div"
@@ -161,7 +161,7 @@ const CollectionItemPage = () => {
                 <CardActions>
                   {isLogIn &&
                     userWallet &&
-                    nftItemData.marketplaceState === 0 && (
+                    nftItemData.marketplaceState === "Listed" && (
                       <Button
                         color="primary"
                         size="small"

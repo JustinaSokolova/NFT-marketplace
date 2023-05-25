@@ -11,13 +11,16 @@ import {
 
 export const fetchIslands = createAsyncThunk(
   "islands/fetchIslands",
-  async (currentPage) => {
+  async (currentPage, { getState }) => {
     let content;
-    if (localStorageService.getAccessToken()) {
-      content = await islandsService.getIfLogged(currentPage, config.pageSize);
-    } else {
-      content = await islandsService.get(currentPage, config.pageSize);
-    }
+    const { islands } = getState();
+    content = await islandsService.get(
+      currentPage,
+      config.pageSize,
+      islands.attributesFilters.marketplaceState,
+      islands.attributesFilters.rarity,
+      islands.attributesFilters.priceOrder
+    );
     return content;
   }
 );
@@ -29,8 +32,31 @@ const islandsSlice = createSlice({
     entitiesInfo: null,
     isLoading: true,
     error: null,
+    attributesFilters: {
+      marketplaceState: localStorageService.getFilterMarketState()
+        ? localStorageService.getFilterMarketState()
+        : null,
+      rarity: localStorageService.getCollectionFilterRarity()
+        ? localStorageService.getCollectionFilterRarity()
+        : [],
+      priceOrder: localStorageService.getFilterPriceOrder()
+        ? localStorageService.getFilterPriceOrder()
+        : null,
+    },
   },
-  reducers: {},
+  reducers: {
+    addFilterAttributes: (state, action) => {
+      state.attributesFilters.marketplaceState =
+        action.payload.marketplaceState;
+      state.attributesFilters.rarity = action.payload.rarityList;
+      state.attributesFilters.priceOrder = action.payload.priceOrder;
+    },
+    clearFilterAttributes: (state) => {
+      state.attributesFilters.marketplaceState = null;
+      state.attributesFilters.rarity = [];
+      state.attributesFilters.priceOrder = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIslands.pending, (state) => {
@@ -83,7 +109,21 @@ const islandsSlice = createSlice({
   },
 });
 
-const { reducer: islandsReducer } = islandsSlice;
+const { reducer: islandsReducer, actions } = islandsSlice;
+const { addFilterAttributes, clearFilterAttributes } = actions;
+
+export const setFilterAttributes = (payload) => (dispatch) => {
+  console.log(payload);
+  localStorageService.setFilterMarketState(payload.marketplaceState);
+  localStorageService.setCollectionFilterRarity(payload.rarityList);
+  localStorageService.setFilterPriceOrder(payload.priceOrder);
+  dispatch(addFilterAttributes(payload));
+};
+
+export const removeFilterAttributes = () => (dispatch) => {
+  localStorageService.removeFilterData();
+  dispatch(clearFilterAttributes());
+};
 
 export const getIslands = () => (state) => state.islands.entities;
 export const getIslandsInfo = () => (state) => state.islands.entitiesInfo;

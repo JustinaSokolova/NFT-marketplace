@@ -35,6 +35,8 @@ import { walletAddressShort } from "../../utils/walletAddressShort";
 import {
   AddressSignatureMetamask,
   ConnectMetamask,
+  IsMetamaskExtension,
+  IsMetamaskTrue,
 } from "../../services/web3.service";
 import localStorageService from "../../services/localStorage.service";
 
@@ -116,18 +118,22 @@ const Layout = () => {
   const handleMetamask = async () => {
     if (!userWallet) {
       if (isLogIn) {
-        if (attachedWalletAddress) {
-          const { ethAddress } = await ConnectMetamask();
-          if (attachedWalletAddress === ethAddress) {
-            localStorageService.setWallet(ethAddress);
-            window.location.reload();
-          }
+        if (IsMetamaskTrue() === false) {
+          return toast.error("MetaMask not installed!");
         } else {
-          try {
-            const data = await AddressSignatureMetamask();
-            dispatch(attachMetamask(data));
-          } catch (error) {
-            toast.error(error);
+          if (attachedWalletAddress) {
+            const { ethAddress } = await ConnectMetamask();
+            if (attachedWalletAddress === ethAddress) {
+              localStorageService.setWallet(ethAddress);
+              window.location.reload();
+            }
+          } else {
+            try {
+              const data = await AddressSignatureMetamask();
+              dispatch(attachMetamask(data));
+            } catch (error) {
+              toast.error(error);
+            }
           }
         }
       } else {
@@ -153,7 +159,7 @@ const Layout = () => {
               border: "none",
               bgcolor: theme.palette.background.paper,
               color: theme.palette.text.primary,
-              height: "88px",
+              height: "100px",
             }}
             open={open}
           >
@@ -161,7 +167,7 @@ const Layout = () => {
               sx={{
                 bgcolor: theme.palette.background.paper,
                 color: theme.palette.text.primary,
-                height: "88px",
+                height: "100px",
               }}
             >
               <IconButton
@@ -173,51 +179,55 @@ const Layout = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <Logo variant="h2" />
+
               <Box
                 sx={{
+                  width: "100%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <Button
-                  color="secondary"
-                  size="medium"
-                  variant="contained"
-                  className="main-btn"
-                  onClick={handleMetamask}
-                  sx={{
-                    textTransform: userWallet ? "lowercase" : "uppercase",
-                  }}
-                >
-                  {isLogIn && userWallet
-                    ? walletAddressShort(userWallet)
-                    : "Connect wallet"}
-                </Button>
+                <Logo variant="h3" variantSubtitle="h5" />
+                <Box>
+                  <Button
+                    color="secondary"
+                    size="medium"
+                    variant="contained"
+                    className="main-btn"
+                    onClick={handleMetamask}
+                    sx={{
+                      textTransform: userWallet ? "lowercase" : "uppercase",
+                    }}
+                  >
+                    {isLogIn && userWallet
+                      ? walletAddressShort(userWallet)
+                      : "Connect wallet"}
+                  </Button>
 
-                {isLogIn && (
-                  <Box>
-                    <IconButton
-                      size="large"
-                      edge="end"
-                      aria-label="account of current user"
-                      aria-controls={menuId}
-                      aria-haspopup="true"
-                      onClick={handleProfileMenuOpen}
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                    <UserMenu
-                      menuId={menuId}
-                      anchorEl={anchorEl}
-                      isMenuOpen={isMenuOpen}
-                      handleMenuClose={handleMenuClose}
-                    />
-                  </Box>
-                )}
+                  {isLogIn && (
+                    <Box>
+                      <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="account of current user"
+                        aria-controls={menuId}
+                        aria-haspopup="true"
+                        onClick={handleProfileMenuOpen}
+                      >
+                        <AccountCircle />
+                      </IconButton>
+                      <UserMenu
+                        menuId={menuId}
+                        anchorEl={anchorEl}
+                        isMenuOpen={isMenuOpen}
+                        handleMenuClose={handleMenuClose}
+                      />
+                    </Box>
+                  )}
 
-                <ToggleTheme />
+                  <ToggleTheme />
+                </Box>
               </Box>
             </Toolbar>
           </AppBar>
@@ -277,10 +287,10 @@ const Layout = () => {
           open={open}
           sx={{
             padding: "24px",
-            mt: "88px",
+            mt: "100px",
             mr: "20px",
             borderRadius: "12px 12px 0px 0px",
-            minHeight: "calc(100vh - 88px)",
+            minHeight: "calc(100vh - 100px)",
             ...(theme.palette.mode === "dark"
               ? { backgroundColor: theme.palette.background.default }
               : { backgroundColor: theme.palette.primary.light }),

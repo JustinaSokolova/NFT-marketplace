@@ -40,7 +40,7 @@ const Login = () => {
                       to="#"
                       sx={{ textDecoration: "none" }}
                     >
-                      <Logo variant={"h3"} />
+                      <Logo variant="h3" variantSubtitle="h6" />
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>

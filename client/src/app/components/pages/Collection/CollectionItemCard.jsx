@@ -33,7 +33,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   const navigate = useNavigate();
 
   const nft = useSelector((state) => {
-    if (item.marketplaceState === 1) {
+    if (item.marketplaceState === "Sold") {
       return state.topSalesNft.entities.find((nft) => nft.tokenId === tokenId);
     }
     if (userNft && state.userNft[collectionName]) {
@@ -189,7 +189,8 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                 >
                   {`#${tokenId}`}
                 </Box>
-                {marketplaceState === 0 || marketplaceState === 1 ? (
+                {marketplaceState === "Listed" ||
+                marketplaceState === "Sold" ? (
                   <Box
                     sx={{
                       display: "flex",
@@ -228,14 +229,15 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                     typography: "body2",
                   }}
                 >
-                  {marketplaceState === 0 || marketplaceState === 1 ? (
+                  {marketplaceState === "Listed" ||
+                  marketplaceState === "Sold" ? (
                     <NftPriceUsd price={price} />
                   ) : (
                     ""
                   )}{" "}
                 </Box>
               </Box>
-              {marketplaceState === 1 ? (
+              {marketplaceState === "Sold" ? (
                 <Box
                   sx={{
                     typography: "caption",

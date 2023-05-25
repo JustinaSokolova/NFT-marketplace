@@ -4,6 +4,9 @@ const ATTACHED_WALLET_KEY = "attached-wallet-address";
 const EMAIL_KEY = "email-address";
 const THEME_KEY = "theme";
 const THEME_BUTTON_KEY = "button_theme";
+const COLLECTION_FILTER_RARITY = "collectionFilter_rariry";
+const COLLECTION_FILTER_MARKET_STATE = "collectionFilter_marketState";
+const COLLECTION_FILTER_PRICE_ORDER = "collectionFilter_priceOrder";
 
 export function setToken(idToken) {
   localStorage.setItem(TOKEN_KEY, idToken);
@@ -63,6 +66,37 @@ export function getThemeButtonToken() {
   return localStorage.getItem(THEME_BUTTON_KEY);
 }
 
+export function setCollectionFilterRarity(arr) {
+  return localStorage.setItem(COLLECTION_FILTER_RARITY, JSON.stringify(arr));
+}
+
+export function getCollectionFilterRarity() {
+  if (localStorage.getItem(COLLECTION_FILTER_RARITY)) {
+    return JSON.parse(localStorage.getItem(COLLECTION_FILTER_RARITY));
+  }
+}
+
+export function setFilterMarketState(state) {
+  localStorage.setItem(COLLECTION_FILTER_MARKET_STATE, state);
+}
+
+export function getFilterMarketState() {
+  return localStorage.getItem(COLLECTION_FILTER_MARKET_STATE);
+}
+
+export function setFilterPriceOrder(str) {
+  localStorage.setItem(COLLECTION_FILTER_PRICE_ORDER, str);
+}
+
+export function getFilterPriceOrder() {
+  return localStorage.getItem(COLLECTION_FILTER_PRICE_ORDER);
+}
+export function removeFilterData() {
+  localStorage.removeItem(COLLECTION_FILTER_RARITY);
+  localStorage.removeItem(COLLECTION_FILTER_MARKET_STATE);
+  localStorage.removeItem(COLLECTION_FILTER_PRICE_ORDER);
+}
+
 const localStorageService = {
   setToken,
   getAccessToken,
@@ -78,5 +112,12 @@ const localStorageService = {
   setAttachedWalletAddress,
   getAttachedWalletAddress,
   removeWalletData,
+  setCollectionFilterRarity,
+  getCollectionFilterRarity,
+  setFilterMarketState,
+  getFilterMarketState,
+  setFilterPriceOrder,
+  getFilterPriceOrder,
+  removeFilterData,
 };
 export default localStorageService;

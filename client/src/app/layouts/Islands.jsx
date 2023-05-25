@@ -10,8 +10,11 @@ import {
   getIslands,
   getIslandsInfo,
   getIslandsLoadingStatus,
+  removeFilterAttributes,
+  setFilterAttributes,
 } from "../store/islands";
 import { getIsLogIn } from "../store/user";
+import localStorageService from "../services/localStorage.service";
 
 const Islands = () => {
   const location = useLocation();
@@ -26,9 +29,59 @@ const Islands = () => {
     parseInt(location.search?.split("=")[1] || 1)
   );
 
+  const filterNames = ["Common", "Rare", "Epic", "Legendary"];
+  const [rarityList, setRarityList] = useState(
+    localStorageService.getCollectionFilterRarity() || []
+  );
+  const [priceOrder, setPriceOrder] = useState("");
+
+  const [marketplaceState, setMarketplaceState] = useState("");
+  const [stateSwitch, setStateSwitch] = useState({
+    isSale: false,
+  });
+
+  const handleChangeMarketState = (event) => {
+    console.log("handle");
+    setStateSwitch({
+      ...stateSwitch,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
   useEffect(() => {
+    if (stateSwitch.isSale === true) {
+      setMarketplaceState("listed");
+    } else {
+      setMarketplaceState("");
+    }
+  }, [stateSwitch]);
+
+  const handleChangeFilter = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRarityList(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+    setCurrentPage(1);
+  };
+
+  const handleChangePrice = (event) => {
+    setPriceOrder(event.target.value);
+  };
+
+  useEffect(() => {
+    dispatch(setFilterAttributes({ marketplaceState, rarityList, priceOrder }));
     dispatch(fetchIslands(currentPage));
-  }, []);
+  }, [
+    currentPage,
+    marketplaceState,
+    rarityList,
+    priceOrder,
+    stateSwitch,
+    dispatch,
+  ]);
 
   useEffect(() => {
     dispatch(fetchIslands(currentPage));
@@ -49,6 +102,18 @@ const Islands = () => {
     }
   };
 
+  const handleClear = () => {
+    dispatch(removeFilterAttributes());
+    setCurrentPage(1);
+    dispatch(fetchIslands(currentPage));
+    setRarityList([]);
+    setPriceOrder("");
+    setStateSwitch({
+      ...stateSwitch,
+      isSale: false,
+    });
+  };
+
   return !isLoading ? (
     <CollectionPage
       collection={collectionIslandsData}
@@ -58,6 +123,14 @@ const Islands = () => {
       pages={collectionIslandsInfo.pages}
       pathName={location.pathname}
       onPageChange={handlePageChange}
+      filterNames={filterNames}
+      rarityList={rarityList}
+      onFilterChange={handleChangeFilter}
+      onHandleClear={handleClear}
+      stateSwitch={stateSwitch}
+      onMarketStateChange={handleChangeMarketState}
+      priceOrder={priceOrder}
+      onChangePrice={handleChangePrice}
     />
   ) : (
     <SkeletonCollectionPage />

@@ -1,6 +1,6 @@
 import httpService from "./http.service";
 
-const mintEndpoint = "mint/0xA7D87Ec62772c3cB9b59de6f4ACa4c8602910bcd/";
+const mintEndpoint = "mint/0xcefd45799326f48a4d23222bb8fa15b49baf28ec/";
 
 const mintService = {
   get: async () => {

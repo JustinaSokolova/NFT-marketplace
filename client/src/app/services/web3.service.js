@@ -6,7 +6,15 @@ const web3 = new Web3(givenProvider);
 
 let MetamaskAvailable = false;
 
-async function IsMetamaskInstalled() {
+export function IsMetamaskTrue() {
+  if (typeof window.ethereum === "undefined") {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export async function IsMetamaskInstalled() {
   if (typeof window.ethereum !== "undefined") {
     MetamaskAvailable = true;
     await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -38,7 +46,6 @@ export async function AddressSignatureMetamask() {
 export async function ConnectMetamask() {
   await IsMetamaskInstalled();
   if (MetamaskAvailable) {
-    await changeNetworkToTestCronosIfNeeded();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const accounts = await provider.listAccounts();
     const ethAddress = accounts[0];

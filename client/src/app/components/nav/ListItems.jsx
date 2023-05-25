@@ -146,7 +146,10 @@ const ListItems = () => {
                     alt="Island Icon"
                   />
                 </Box>
-                <StyledNavLink to="https://www.navy.online/" target="_blank">
+                <StyledNavLink
+                  to="https://navy-metaverse.online/"
+                  target="_blank"
+                >
                   About project
                 </StyledNavLink>
               </ListItemButton>
