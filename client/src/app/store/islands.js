@@ -10,23 +10,23 @@ import {
 } from "./favourites";
 
 export const fetchIslands = createAsyncThunk(
-  "islands/fetchIslands",
+  "Islands/fetchIslands",
   async (currentPage, { getState }) => {
     let content;
-    const { islands } = getState();
+    const { Islands } = getState();
     content = await islandsService.get(
       currentPage,
       config.pageSize,
-      islands.attributesFilters.marketplaceState,
-      islands.attributesFilters.rarity,
-      islands.attributesFilters.priceOrder
+      Islands.attributesFilters.marketplaceState,
+      Islands.attributesFilters.rarity,
+      Islands.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const islandsSlice = createSlice({
-  name: "islands",
+  name: "Islands",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -43,6 +43,9 @@ const islandsSlice = createSlice({
         ? localStorageService.getFilterPriceOrder()
         : null,
     },
+    blockchainType: localStorageService.getBlockchainType()
+      ? localStorageService.getBlockchainType()
+      : null,
   },
   reducers: {
     addFilterAttributes: (state, action) => {
@@ -113,7 +116,6 @@ const { reducer: islandsReducer, actions } = islandsSlice;
 const { addFilterAttributes, clearFilterAttributes } = actions;
 
 export const setFilterAttributes = (payload) => (dispatch) => {
-  console.log(payload);
   localStorageService.setFilterMarketState(payload.marketplaceState);
   localStorageService.setCollectionFilterRarity(payload.rarityList);
   localStorageService.setFilterPriceOrder(payload.priceOrder);
@@ -125,9 +127,9 @@ export const removeFilterAttributes = () => (dispatch) => {
   dispatch(clearFilterAttributes());
 };
 
-export const getIslands = () => (state) => state.islands.entities;
-export const getIslandsInfo = () => (state) => state.islands.entitiesInfo;
+export const getIslands = () => (state) => state.Islands.entities;
+export const getIslandsInfo = () => (state) => state.Islands.entitiesInfo;
 
-export const getIslandsLoadingStatus = () => (state) => state.islands.isLoading;
+export const getIslandsLoadingStatus = () => (state) => state.Islands.isLoading;
 
 export default islandsReducer;

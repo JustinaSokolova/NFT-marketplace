@@ -24,6 +24,8 @@ const MintInfo = () => {
   const mintInfoData = useSelector(getMintInfo());
   const isLoading = useSelector(getMintInfoLoadingStatus());
 
+  console.log(mintInfoData);
+
   useEffect(() => {
     dispatch(fetchMintInfo());
   }, [dispatch]);

@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 import { cronosIcon } from "../../ui/CronosIcon";
+import { venomIcon } from "../../ui/VenomIcon";
 import NftPriceUsd from "../../common/NftPriceUsd";
 import { getIsLogIn, getUserWallet } from "../../../store/user";
 import { MintCaptains } from "../../../services/web3.service";
@@ -97,9 +98,15 @@ const СollectionPreview = ({ data }) => {
                 whiteSpace: "pre-wrap",
               }}
             >
-              Price: {data.mintingDetails[0].coinSymbol === "CRO" && cronosIcon}{" "}
-              {data.mintingDetails[0].mintPriceEth} /{" "}
-              <NftPriceUsd price={data.mintingDetails[0].mintPriceEth} />
+              Price:{" "}
+              {data.mintingDetails.tokenSymbol === "CRO"
+                ? cronosIcon
+                : venomIcon}{" "}
+              {data.mintingDetails.mintPriceNativeCoin} /{" "}
+              <NftPriceUsd
+                price={data.mintingDetails.mintPriceNativeCoin}
+                chainName={data.mintingDetails.chainName}
+              />
             </Box>
           </Box>
         </CardActions>

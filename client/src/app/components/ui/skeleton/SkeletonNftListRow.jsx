@@ -19,7 +19,7 @@ const SkeletonNftListRow = () => (
                   <Skeleton variant="text" />
                 </Grid>
                 <Grid item xs={12}>
-                  <Skeleton variant="rectangular" height={20} />
+                  <Skeleton variant="rectangular" height={40} />
                 </Grid>
               </Grid>
             </Grid>

@@ -4,16 +4,21 @@ import localStorageService from "./localStorage.service";
 const topSalesNftEndpoint = "topSales/";
 
 const topSalesNftService = {
-  get: async (value) => {
-    const { data } = await httpService.get(topSalesNftEndpoint + value);
+  get: async ({ blockchainType, selectedTime }) => {
+    const { data } = await httpService.get(
+      topSalesNftEndpoint + blockchainType + "/" + selectedTime
+    );
     return data;
   },
-  getIfLogged: async (value) => {
-    const { data } = await httpService.get(topSalesNftEndpoint + value, {
-      headers: {
-        Authorization: `Bearer ${localStorageService.getAccessToken()}`,
-      },
-    });
+  getIfLogged: async ({ blockchainType, selectedTime }) => {
+    const { data } = await httpService.get(
+      topSalesNftEndpoint + blockchainType + "/" + selectedTime,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorageService.getAccessToken()}`,
+        },
+      }
+    );
     return data;
   },
 };

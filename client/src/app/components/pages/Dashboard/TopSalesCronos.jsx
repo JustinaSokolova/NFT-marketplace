@@ -8,25 +8,26 @@ import SliderComp from "../../common/SliderComp";
 
 import FilterButtonGroup from "./FilterButtonGroup";
 import {
-  fetchTopSalesNft,
-  getTopSalesNft,
-  getTopSalesNftLoadingStatus,
+  fetchTopSalesCronos,
+  getTopSalesCronos,
+  getTopSalesCronosLoadingStatus,
 } from "../../../store/topSalesNft";
 import { loadFavouritesList } from "../../../store/favourites";
 import { getIsLogIn } from "../../../store/user";
+import SkeletonNftListRow from "../../ui/skeleton/SkeletonNftListRow";
 
-const TopSales = () => {
+const TopSalesCronos = () => {
   const dispatch = useDispatch();
   const isLogIn = useSelector(getIsLogIn());
-  const topSalesNftData = useSelector(getTopSalesNft());
-  const isLoading = useSelector(getTopSalesNftLoadingStatus());
-
+  const topSalesNftData = useSelector(getTopSalesCronos());
+  const isLoading = useSelector(getTopSalesCronosLoadingStatus());
   const [selectedTime, setSelectedTime] = useState(30);
+  const blockchainType = "cronos";
 
   useEffect(() => {
-    dispatch(fetchTopSalesNft(selectedTime));
+    dispatch(fetchTopSalesCronos({ blockchainType, selectedTime }));
     isLogIn && dispatch(loadFavouritesList());
-  }, [selectedTime, dispatch]);
+  }, [selectedTime, isLogIn, dispatch]);
 
   const handleSelectedTime = (value) => {
     setSelectedTime(value);
@@ -44,17 +45,22 @@ const TopSales = () => {
         }}
       >
         <FilterButtonGroup
-          title="Top Sales"
+          title="Cronos Top Sales"
           onButtonSelect={handleSelectedTime}
           selectedTime={selectedTime}
         />
         <Box sx={{ width: "100%", margin: "0 auto" }}>
-          {!isLoading && <SliderComp collection={topSalesNftData} />}
-          {topSalesNftData.length <= 0 &&
+          {!isLoading ? (
+            <SliderComp collection={topSalesNftData} />
+          ) : (
+            <SkeletonNftListRow />
+          )}
+          {topSalesNftData &&
+            topSalesNftData.length <= 0 &&
             "There are no sold NFTs for the selected period"}
         </Box>
       </Box>
     </BoxContainer>
   );
 };
-export default TopSales;
+export default TopSalesCronos;

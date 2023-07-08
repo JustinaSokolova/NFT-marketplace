@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import CollectionPage from "../components/pages/Collection/CollectionPage";
-import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
+import CollectionItems from "../components/pages/Collection/CollectionItems";
+import SkeletonCollectionItems from "../components/ui/skeleton/SkeletonCollectionItems";
 
 import { loadFavouritesList } from "../store/favourites";
 import {
@@ -15,6 +15,10 @@ import {
 } from "../store/ships";
 import { getIsLogIn } from "../store/user";
 import localStorageService from "../services/localStorage.service";
+import { Box } from "@mui/material";
+import ChooseBlockchain from "../components/pages/Collection/ChooseBlockchain";
+import FilterGroup from "../components/pages/Collection/FilterGroup";
+import BoxContainer from "../components/common/BoxContainer";
 
 const Ships = () => {
   const location = useLocation();
@@ -40,8 +44,17 @@ const Ships = () => {
     isSale: false,
   });
 
+  const [selectedBlockchain, setSelectedBlockchain] = useState(
+    localStorageService.getBlockchainType() || "venom"
+  );
+
+  const handleSelectedBlockchain = (value) => {
+    setSelectedBlockchain(value);
+    localStorageService.setBlockchainType(value);
+    dispatch(fetchShips(currentPage));
+  };
+
   const handleChangeMarketState = (event) => {
-    console.log("handle");
     setStateSwitch({
       ...stateSwitch,
       [event.target.name]: event.target.checked,
@@ -50,7 +63,7 @@ const Ships = () => {
 
   useEffect(() => {
     if (stateSwitch.isSale === true) {
-      setMarketplaceState("listed");
+      setMarketplaceState("Listed");
     } else {
       setMarketplaceState("");
     }
@@ -84,7 +97,11 @@ const Ships = () => {
   ]);
 
   useEffect(() => {
-    if (!isLoading && collectionShipsInfo.pages < currentPage) {
+    if (
+      !isLoading &&
+      collectionShipsData.length > 0 &&
+      collectionShipsInfo.pages < currentPage
+    ) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
@@ -113,26 +130,66 @@ const Ships = () => {
     });
   };
 
-  return !isLoading ? (
-    <CollectionPage
-      collection={collectionShipsData}
-      isLoading={isLoading}
-      currentPage={currentPage}
-      count={collectionShipsInfo.count}
-      pages={collectionShipsInfo.pages}
-      pathName={location.pathname}
-      onPageChange={handlePageChange}
-      filterNames={filterNames}
-      rarityList={rarityList}
-      onFilterChange={handleChangeFilter}
-      onHandleClear={handleClear}
-      stateSwitch={stateSwitch}
-      onMarketStateChange={handleChangeMarketState}
-      priceOrder={priceOrder}
-      onChangePrice={handleChangePrice}
-    />
-  ) : (
-    <SkeletonCollectionPage />
+  return (
+    <>
+      <BoxContainer>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: "42px",
+          }}
+        >
+          <Box>
+            <ChooseBlockchain
+              selectedBlockchain={selectedBlockchain}
+              onButtonSelectBlockchain={handleSelectedBlockchain}
+            />
+          </Box>
+          <Box>
+            <FilterGroup
+              filterNames={filterNames}
+              rarityList={rarityList}
+              onFilterChange={handleChangeFilter}
+              onHandleClear={handleClear}
+              stateSwitch={stateSwitch}
+              onMarketStateChange={handleChangeMarketState}
+              onChangePrice={handleChangePrice}
+              priceOrder={priceOrder}
+            />
+          </Box>
+        </Box>
+        {!isLoading && collectionShipsData.length <= 0 && (
+          <Box sx={{ m: "24px" }}>There are no NFTs with these parameters</Box>
+        )}
+        <Box sx={{ mt: "42px" }}>
+          {!isLoading ? (
+            <CollectionItems
+              collection={collectionShipsData}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              count={collectionShipsInfo.count}
+              pages={collectionShipsInfo.pages}
+              pathName={location.pathname}
+              onPageChange={handlePageChange}
+              filterNames={filterNames}
+              rarityList={rarityList}
+              onFilterChange={handleChangeFilter}
+              onHandleClear={handleClear}
+              stateSwitch={stateSwitch}
+              onMarketStateChange={handleChangeMarketState}
+              priceOrder={priceOrder}
+              onChangePrice={handleChangePrice}
+              onButtonSelectBlockchain={handleSelectedBlockchain}
+              selectedBlockchain={selectedBlockchain}
+            />
+          ) : (
+            <SkeletonCollectionItems />
+          )}
+        </Box>
+      </BoxContainer>
+    </>
   );
 };
 

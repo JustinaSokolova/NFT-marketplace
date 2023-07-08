@@ -1,6 +1,6 @@
 import httpService from "./http.service";
 
-const coinRateEndpoint = "cronosUsdPrice/";
+const coinRateEndpoint = "tokensUsdPrice/";
 
 const coinUsdRateService = {
   get: async () => {

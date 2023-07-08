@@ -11,23 +11,23 @@ import {
 } from "./favourites";
 
 export const fetchShips = createAsyncThunk(
-  "ships/fetchShips",
+  "Ships/fetchShips",
   async (currentPage, { getState }) => {
     let content;
-    const { ships } = getState();
+    const { Ships } = getState();
     content = await shipsService.get(
       currentPage,
       config.pageSize,
-      ships.attributesFilters.marketplaceState,
-      ships.attributesFilters.rarity,
-      ships.attributesFilters.priceOrder
+      Ships.attributesFilters.marketplaceState,
+      Ships.attributesFilters.rarity,
+      Ships.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const shipsSlice = createSlice({
-  name: "ships",
+  name: "Ships",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -44,6 +44,9 @@ const shipsSlice = createSlice({
         ? localStorageService.getFilterPriceOrder()
         : null,
     },
+    blockchainType: localStorageService.getBlockchainType()
+      ? localStorageService.getBlockchainType()
+      : null,
   },
   reducers: {
     addFilterAttributes: (state, action) => {
@@ -114,7 +117,6 @@ const { reducer: shipsReducer, actions } = shipsSlice;
 const { addFilterAttributes, clearFilterAttributes } = actions;
 
 export const setFilterAttributes = (payload) => (dispatch) => {
-  console.log(payload);
   localStorageService.setFilterMarketState(payload.marketplaceState);
   localStorageService.setCollectionFilterRarity(payload.rarityList);
   localStorageService.setFilterPriceOrder(payload.priceOrder);
@@ -126,9 +128,9 @@ export const removeFilterAttributes = () => (dispatch) => {
   dispatch(clearFilterAttributes());
 };
 
-export const getShips = () => (state) => state.ships.entities;
-export const getShipsInfo = () => (state) => state.ships.entitiesInfo;
+export const getShips = () => (state) => state.Ships.entities;
+export const getShipsInfo = () => (state) => state.Ships.entitiesInfo;
 
-export const getShipsLoadingStatus = () => (state) => state.ships.isLoading;
+export const getShipsLoadingStatus = () => (state) => state.Ships.isLoading;
 
 export default shipsReducer;

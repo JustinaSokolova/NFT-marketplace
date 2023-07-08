@@ -9,14 +9,16 @@ export const useCoinRate = () => {
 };
 
 export const CoinRateProvider = ({ children }) => {
-  const [сoinUsdPrice, setCoinUsdPrice] = useState({ usd: 0 });
+  const [venomUsdPrice, setVenomUsdPrice] = useState(0);
+  const [cronosUsdPrice, setCronosUsdPrice] = useState(0);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   const getCoinRate = async () => {
     try {
       const data = await coinUsdRateService.get();
-      setCoinUsdPrice(data);
+      setVenomUsdPrice(data.venomUsdPrice);
+      setCronosUsdPrice(data.cronosUsdPrice);
       setLoading(false);
     } catch (error) {
       errorCatcher(error);
@@ -46,7 +48,9 @@ export const CoinRateProvider = ({ children }) => {
   }, [error]);
 
   return (
-    <CoinRateContex.Provider value={{ сoinUsdPrice, isLoading }}>
+    <CoinRateContex.Provider
+      value={{ venomUsdPrice, cronosUsdPrice, isLoading }}
+    >
       {children}
     </CoinRateContex.Provider>
   );

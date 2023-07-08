@@ -34,12 +34,12 @@ export async function AddressSignatureMetamask() {
     const accounts = await provider.listAccounts();
     const ethAddress = accounts[0];
 
-    const signedMessage = await signer.signMessage(
+    const ethSignedMessage = await signer.signMessage(
       "Navy.online wants to use your address: " +
         ethAddress +
         " for authentication"
     );
-    return { ethAddress, signedMessage };
+    return { ethAddress, ethSignedMessage };
   }
 }
 

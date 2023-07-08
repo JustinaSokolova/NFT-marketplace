@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import CollectionPage from "../components/pages/Collection/CollectionPage";
-import SkeletonCollectionPage from "../components/ui/skeleton/SkeletonCollectionPage";
+import Box from "@mui/material/Box";
+
+import CollectionItems from "../components/pages/Collection/CollectionItems";
+import SkeletonCollectionItems from "../components/ui/skeleton/SkeletonCollectionItems";
 import { loadFavouritesList } from "../store/favourites";
 import {
   fetchIslands,
@@ -15,6 +17,10 @@ import {
 } from "../store/islands";
 import { getIsLogIn } from "../store/user";
 import localStorageService from "../services/localStorage.service";
+import BoxContainer from "../components/common/BoxContainer";
+
+import FilterGroup from "../components/pages/Collection/FilterGroup";
+import ChooseBlockchain from "../components/pages/Collection/ChooseBlockchain";
 
 const Islands = () => {
   const location = useLocation();
@@ -40,8 +46,17 @@ const Islands = () => {
     isSale: false,
   });
 
+  const [selectedBlockchain, setSelectedBlockchain] = useState(
+    localStorageService.getBlockchainType() || "venom"
+  );
+
+  const handleSelectedBlockchain = (value) => {
+    setSelectedBlockchain(value);
+    localStorageService.setBlockchainType(value);
+    dispatch(fetchIslands(currentPage));
+  };
+
   const handleChangeMarketState = (event) => {
-    console.log("handle");
     setStateSwitch({
       ...stateSwitch,
       [event.target.name]: event.target.checked,
@@ -50,7 +65,7 @@ const Islands = () => {
 
   useEffect(() => {
     if (stateSwitch.isSale === true) {
-      setMarketplaceState("listed");
+      setMarketplaceState("Listed");
     } else {
       setMarketplaceState("");
     }
@@ -85,7 +100,11 @@ const Islands = () => {
 
   useEffect(() => {
     dispatch(fetchIslands(currentPage));
-    if (!isLoading && collectionIslandsInfo.pages < currentPage) {
+    if (
+      !isLoading &&
+      collectionIslandsData.length > 0 &&
+      collectionIslandsInfo.pages < currentPage
+    ) {
       setCurrentPage(1);
       navigate(location.pathname);
     }
@@ -114,26 +133,56 @@ const Islands = () => {
     });
   };
 
-  return !isLoading ? (
-    <CollectionPage
-      collection={collectionIslandsData}
-      isLoading={isLoading}
-      currentPage={currentPage}
-      count={collectionIslandsInfo.count}
-      pages={collectionIslandsInfo.pages}
-      pathName={location.pathname}
-      onPageChange={handlePageChange}
-      filterNames={filterNames}
-      rarityList={rarityList}
-      onFilterChange={handleChangeFilter}
-      onHandleClear={handleClear}
-      stateSwitch={stateSwitch}
-      onMarketStateChange={handleChangeMarketState}
-      priceOrder={priceOrder}
-      onChangePrice={handleChangePrice}
-    />
-  ) : (
-    <SkeletonCollectionPage />
+  return (
+    <>
+      <BoxContainer>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: "42px",
+          }}
+        >
+          <Box>
+            <ChooseBlockchain
+              selectedBlockchain={selectedBlockchain}
+              onButtonSelectBlockchain={handleSelectedBlockchain}
+            />
+          </Box>
+          <Box>
+            <FilterGroup
+              filterNames={filterNames}
+              rarityList={rarityList}
+              onFilterChange={handleChangeFilter}
+              onHandleClear={handleClear}
+              stateSwitch={stateSwitch}
+              onMarketStateChange={handleChangeMarketState}
+              onChangePrice={handleChangePrice}
+              priceOrder={priceOrder}
+            />
+          </Box>
+        </Box>
+        {!isLoading && collectionIslandsData.length <= 0 && (
+          <Box sx={{ m: "24px" }}>There are no NFTs with these parameters</Box>
+        )}
+        <Box sx={{ mt: "42px" }}>
+          {!isLoading ? (
+            <CollectionItems
+              collection={collectionIslandsData}
+              isLoading={isLoading}
+              currentPage={currentPage}
+              count={collectionIslandsInfo.count}
+              pages={collectionIslandsInfo.pages}
+              pathName={location.pathname}
+              onPageChange={handlePageChange}
+            />
+          ) : (
+            <SkeletonCollectionItems />
+          )}
+        </Box>
+      </BoxContainer>
+    </>
   );
 };
 

@@ -4,15 +4,15 @@ import localStorageService from "./localStorage.service";
 const collItemEndpoint = "collection/";
 
 const collItemService = {
-  get: async ({ address, tokenId }) => {
+  get: async ({ blockchain, address, tokenId }) => {
     const { data } = await httpService.get(
-      collItemEndpoint + `${address}/item/${tokenId}`
+      collItemEndpoint + `${blockchain}/${address}/item/${tokenId}`
     );
     return data;
   },
-  getIfLogged: async ({ address, tokenId }) => {
+  getIfLogged: async ({ blockchain, address, tokenId }) => {
     const { data } = await httpService.get(
-      collItemEndpoint + `${address}/item/${tokenId}`,
+      collItemEndpoint + `${blockchain}/${address}/item/${tokenId}`,
       {
         headers: {
           Authorization: `Bearer ${localStorageService.getAccessToken()}`,

@@ -12,20 +12,20 @@ export const fetchCaptains = createAsyncThunk(
   "captains/fetchCaptains",
   async (currentPage, { getState }) => {
     let content;
-    const { captains } = getState();
+    const { Captains } = getState();
     content = await captainsService.get(
       currentPage,
       config.pageSize,
-      captains.attributesFilters.marketplaceState,
-      captains.attributesFilters.rarity,
-      captains.attributesFilters.priceOrder
+      Captains.attributesFilters.marketplaceState,
+      Captains.attributesFilters.rarity,
+      Captains.attributesFilters.priceOrder
     );
     return content;
   }
 );
 
 const captainsSlice = createSlice({
-  name: "captains",
+  name: "Captains",
   initialState: {
     entities: [],
     entitiesInfo: null,
@@ -42,6 +42,9 @@ const captainsSlice = createSlice({
         ? localStorageService.getFilterPriceOrder()
         : null,
     },
+    // blockchainType: localStorageService.getBlockchainType()
+    //   ? localStorageService.getBlockchainType()
+    //   : null,
   },
   reducers: {
     addFilterAttributes: (state, action) => {
@@ -64,6 +67,8 @@ const captainsSlice = createSlice({
       .addCase(fetchCaptains.fulfilled, (state, action) => {
         state.entities = action.payload.result;
         state.entitiesInfo = action.payload.info;
+        // state.blockchainType =
+        //   "в ответе из ручки должно придти название блокчейна";
         state.isLoading = false;
       })
       .addCase(fetchCaptains.rejected, (state, action) => {
@@ -112,7 +117,6 @@ const { reducer: captainsReducer, actions } = captainsSlice;
 const { addFilterAttributes, clearFilterAttributes } = actions;
 
 export const setFilterAttributes = (payload) => (dispatch) => {
-  console.log(payload);
   localStorageService.setFilterMarketState(payload.marketplaceState);
   localStorageService.setCollectionFilterRarity(payload.rarityList);
   localStorageService.setFilterPriceOrder(payload.priceOrder);
@@ -124,10 +128,14 @@ export const removeFilterAttributes = () => (dispatch) => {
   dispatch(clearFilterAttributes());
 };
 
-export const getCaptains = () => (state) => state.captains.entities;
-export const getCaptainsInfo = () => (state) => state.captains.entitiesInfo;
+// export const setBlockchainType = (payload) => (dispatch) => {
+//   localStorageService.setBlockchainType(payload); // приходит строка?
+// };
+
+export const getCaptains = () => (state) => state.Captains.entities;
+export const getCaptainsInfo = () => (state) => state.Captains.entitiesInfo;
 
 export const getCaptainsLoadingStatus = () => (state) =>
-  state.captains.isLoading;
+  state.Captains.isLoading;
 
 export default captainsReducer;

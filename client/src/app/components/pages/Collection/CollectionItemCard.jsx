@@ -23,10 +23,11 @@ import SkeletonCardNft from "../../ui/skeleton/SkeletonCardNft";
 import NftPriceUsd from "../../common/NftPriceUsd";
 import UnlistedTitle from "../../ui/UnlistedTitle";
 import { getIsLogIn } from "../../../store/user";
+import { venomIcon } from "../../ui/VenomIcon";
 
 const CollectionItemCard = ({ item, userNft, favItems }) => {
   const isLogIn = useSelector(getIsLogIn());
-  const { tokenId, collectionName } = item;
+  const { tokenId, collectionName, contractAddress } = item;
   const [isLoadingCollection, setLoadingCollection] = useState(true);
 
   const dispatch = useDispatch();
@@ -34,7 +35,13 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
 
   const nft = useSelector((state) => {
     if (item.marketplaceState === "Sold") {
-      return state.topSalesNft.entities.find((nft) => nft.tokenId === tokenId);
+      const both = [];
+      both.push(...state.topSalesNft.entities.venomTopSales);
+      both.push(...state.topSalesNft.entities.cronosTopSales);
+      return both.find(
+        (nft) =>
+          nft.tokenId === tokenId && nft.contractAddress === contractAddress
+      );
     }
     if (userNft && state.userNft[collectionName]) {
       return state.userNft[collectionName].items.find(
@@ -61,9 +68,10 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
     price,
     image,
     rarity,
-    contractAddress,
+    // contractAddress,
     marketplaceState,
-    coinSymbol,
+    chainName,
+    tokenSymbol,
     lastUpdated,
     favourite,
   } = useMemo(() => {
@@ -72,9 +80,10 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
       price: nft.price,
       image: nft.image,
       rarity: nft.rarity,
-      contractAddress: nft.contractAddress,
+      // contractAddress: nft.contractAddress,
       marketplaceState: nft.marketplaceState,
-      coinSymbol: nft.coinSymbol,
+      chainName: nft.chainName,
+      tokenSymbol: nft.tokenSymbol,
       lastUpdated: nft.lastUpdated,
       favourite: nft.favourite,
     };
@@ -87,7 +96,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
   };
 
   const handleClick = () => {
-    navigate(`/${contractAddress}/${tokenId}`);
+    navigate(`${chainName.toLowerCase()}/${contractAddress}/${tokenId}`);
   };
 
   return !isLoadingCollection ? (
@@ -201,7 +210,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                       whiteSpace: "pre-wrap",
                     }}
                   >
-                    {coinSymbol === "CRO" && cronosIcon} {price}
+                    {tokenSymbol === "CRO" ? cronosIcon : venomIcon} {price}
                   </Box>
                 ) : (
                   <UnlistedTitle />
@@ -231,7 +240,7 @@ const CollectionItemCard = ({ item, userNft, favItems }) => {
                 >
                   {marketplaceState === "Listed" ||
                   marketplaceState === "Sold" ? (
-                    <NftPriceUsd price={price} />
+                    <NftPriceUsd price={price} chainName={chainName} />
                   ) : (
                     ""
                   )}{" "}

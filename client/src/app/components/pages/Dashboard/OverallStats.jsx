@@ -34,7 +34,7 @@ const OverallStats = () => {
       <Grid item xs={12}>
         <BoxContainer>
           <FilterButtonGroup
-            title="Overall Stats"
+            title="Cronos Overall Stats"
             onButtonSelect={handleSelectedTime}
             selectedTime={selectedTime}
           />
@@ -43,29 +43,29 @@ const OverallStats = () => {
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <TotalSalesCard
                   isLoading={isLoading}
-                  value={totalSalesData.tokenPerformance.performance}
-                  coinSymbol={totalSalesData.tokenPerformance.coinSymbol}
+                  value={totalSalesData.cronosPerformance.tokenTurnover}
+                  tokenSymbol={totalSalesData.cronosPerformance.tokenSymbol}
                   title="Total Sales"
                 />
               </Grid>
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <CollectionSalesCard
                   isLoading={isLoading}
-                  value={totalSalesData.captainsSold}
+                  value={totalSalesData.cronosPerformance.captainsSold}
                   title="Captans Sold"
                 />
               </Grid>
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <CollectionSalesCard
                   isLoading={isLoading}
-                  value={totalSalesData.islandsSold}
+                  value={totalSalesData.cronosPerformance.islandsSold}
                   title="Islands Sold"
                 />
               </Grid>
               <Grid item lg={3} md={6} sm={6} xs={12}>
                 <CollectionSalesCard
                   isLoading={isLoading}
-                  value={totalSalesData.shipsSold}
+                  value={totalSalesData.cronosPerformance.shipsSold}
                   title="Ships Sold"
                 />
               </Grid>

@@ -34,13 +34,13 @@ import { BuyCaptain } from "../../../services/web3.service";
 const CollectionItemPage = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  const { address, tokenId } = params;
+  const { blockchain, address, tokenId } = params;
   const isLogIn = useSelector(getIsLogIn());
   const userWallet = useSelector(getUserWallet());
   const [expanded, setExpanded] = useState("panel1");
 
   useEffect(() => {
-    dispatch(fetchCollectionItem({ address, tokenId }));
+    dispatch(fetchCollectionItem({ blockchain, address, tokenId }));
   }, [dispatch]);
 
   // const nftItemData = useSelector((state) => state.collectionItem.entities);
@@ -150,7 +150,7 @@ const CollectionItemPage = () => {
                         gap: "4px",
                       }}
                     >
-                      {nftItemData.coinSymbol === "CRO" && cronosIcon}{" "}
+                      {nftItemData.tokenSymbol === "CRO" && cronosIcon}{" "}
                       {nftItemData.price} /{" "}
                       <NftPriceUsd price={nftItemData.price} />
                     </Typography>

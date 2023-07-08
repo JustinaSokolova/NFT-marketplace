@@ -45,7 +45,7 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   },
 }));
 
-const TotalSalesCard = ({ value, title, coinSymbol }) => {
+const TotalSalesCard = ({ value, title, tokenSymbol }) => {
   const theme = useTheme();
 
   return (
@@ -66,7 +66,7 @@ const TotalSalesCard = ({ value, title, coinSymbol }) => {
                       mb: 0.75,
                     }}
                   >
-                    {value.toFixed(1)} {coinSymbol ? coinSymbol : ""}
+                    {value.toFixed(1)} {tokenSymbol ? tokenSymbol : ""}
                   </Typography>
                 </Grid>
                 <Grid item>

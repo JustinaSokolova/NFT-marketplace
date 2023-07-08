@@ -4,8 +4,9 @@ import { Box } from "@mui/material";
 
 // import gridSpacing from "../../../store/constant.js ";
 
-import TopSales from "./TopSales";
 import OverallStats from "./OverallStats";
+import TopSalesCronos from "./TopSalesCronos";
+import TopSalesVenom from "./TopSalesVenom";
 
 const DashboardPage = () => {
   return (
@@ -20,7 +21,8 @@ const DashboardPage = () => {
         }}
       >
         <OverallStats />
-        <TopSales />
+        <TopSalesVenom />
+        <TopSalesCronos />
       </Box>
     </>
   );

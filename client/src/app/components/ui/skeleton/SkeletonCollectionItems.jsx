@@ -3,7 +3,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import SkeletonCardNft from "./SkeletonCardNft";
 
-const SkeletonCollectionPage = () => {
+const SkeletonCollectionItems = () => {
   return (
     <Box
       sx={{
@@ -29,4 +29,4 @@ const SkeletonCollectionPage = () => {
   );
 };
 
-export default SkeletonCollectionPage;
+export default SkeletonCollectionItems;

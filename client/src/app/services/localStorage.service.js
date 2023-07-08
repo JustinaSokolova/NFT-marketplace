@@ -7,6 +7,7 @@ const THEME_BUTTON_KEY = "button_theme";
 const COLLECTION_FILTER_RARITY = "collectionFilter_rariry";
 const COLLECTION_FILTER_MARKET_STATE = "collectionFilter_marketState";
 const COLLECTION_FILTER_PRICE_ORDER = "collectionFilter_priceOrder";
+const BLOCKCHAIN_TYPE = "blockchain_type";
 
 export function setToken(idToken) {
   localStorage.setItem(TOKEN_KEY, idToken);
@@ -91,6 +92,14 @@ export function setFilterPriceOrder(str) {
 export function getFilterPriceOrder() {
   return localStorage.getItem(COLLECTION_FILTER_PRICE_ORDER);
 }
+
+export function setBlockchainType(str) {
+  localStorage.setItem(BLOCKCHAIN_TYPE, str);
+}
+
+export function getBlockchainType() {
+  return localStorage.getItem(BLOCKCHAIN_TYPE);
+}
 export function removeFilterData() {
   localStorage.removeItem(COLLECTION_FILTER_RARITY);
   localStorage.removeItem(COLLECTION_FILTER_MARKET_STATE);
@@ -119,5 +128,7 @@ const localStorageService = {
   setFilterPriceOrder,
   getFilterPriceOrder,
   removeFilterData,
+  setBlockchainType,
+  getBlockchainType,
 };
 export default localStorageService;

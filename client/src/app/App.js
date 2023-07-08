@@ -42,7 +42,7 @@ function App() {
               <Route path="captains" element={<Captains />} />
               <Route path="islands" element={<Islands />} />
               <Route
-                path="/:address/:tokenId"
+                path="/:blockchain/:address/:tokenId"
                 element={<CollectionItemPage />}
               />
               <Route path="faq" element={<FaqLayout />} />

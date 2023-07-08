@@ -189,7 +189,13 @@ const Layout = () => {
                 }}
               >
                 <Logo variant="h3" variantSubtitle="h5" />
-                <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <Button
                     color="secondary"
                     size="medium"

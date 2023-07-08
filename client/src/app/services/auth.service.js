@@ -16,26 +16,26 @@ const authService = {
     });
     return data;
   },
-  loginWeb3: async ({ ethAddress, signedMessage }) => {
+  loginWeb3: async ({ ethAddress, ethSignedMessage }) => {
     const { data } = await httpService.post(`auth/signIn`, {
       ethAddress,
-      signedMessage,
+      ethSignedMessage,
     });
     return data;
   },
-  registerWeb3: async ({ ethAddress, signedMessage }) => {
+  registerWeb3: async ({ ethAddress, ethSignedMessage }) => {
     const { data } = await httpService.post(`auth/signUp`, {
       ethAddress,
-      signedMessage,
+      ethSignedMessage,
     });
     return data;
   },
-  attachWallet: async ({ ethAddress, signedMessage }) => {
+  attachWallet: async ({ ethAddress, ethSignedMessage }) => {
     const { data } = await httpService.post(
       `auth/attachWallet`,
       {
         ethAddress,
-        signedMessage,
+        ethSignedMessage,
       },
       {
         headers: {

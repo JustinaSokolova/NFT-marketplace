@@ -26,8 +26,8 @@ const WalletCard = () => {
   const [shortWallet, setShortWallet] = useState();
   const userWallet = useSelector(getUserWallet());
 
-  const { сoinUsdPrice, isLoading } = useCoinRate();
-  const userBalanceUsd = "$" + (userBalance * сoinUsdPrice.usd).toFixed(2);
+  const { cronosUsdPrice, isLoading } = useCoinRate();
+  const userBalanceUsd = "$" + (userBalance * cronosUsdPrice).toFixed(2);
 
   async function getBalance() {
     if (userWallet) {
