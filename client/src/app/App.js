@@ -45,6 +45,18 @@ function App() {
                 path="/:blockchain/:address/:tokenId"
                 element={<CollectionItemPage />}
               />
+              <Route
+                path="ships/:blockchain/:address/:tokenId"
+                element={<CollectionItemPage />}
+              />
+              <Route
+                path="captains/:blockchain/:address/:tokenId"
+                element={<CollectionItemPage />}
+              />
+              <Route
+                path="islands/:blockchain/:address/:tokenId"
+                element={<CollectionItemPage />}
+              />
               <Route path="faq" element={<FaqLayout />} />
               <Route path="feedback" element={<Feedback />} />
               <Route
